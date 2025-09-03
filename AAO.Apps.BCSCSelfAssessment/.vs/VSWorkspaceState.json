@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\AAO.Apps.BCSCSelfAssessment",
+    "\\AAO.Apps.BCSCSelfAssessment\\Controllers",
+    "\\AAO.Apps.BCSCSelfAssessment\\Scripts",
+    "\\AAO.Apps.BCSCSelfAssessment\\Scripts\\BuilExam",
+    "\\AAO.Apps.BCSCSelfAssessment\\ShareResultEmailTemplete",
+    "\\AAO.Apps.BCSCSelfAssessment\\Views",
+    "\\AAO.Apps.BCSCSelfAssessment\\Views\\Assessment",
+    "\\AAO.Apps.BCSCSelfAssessment\\Views\\EmailOptOut",
+    "\\AAO.Apps.BCSCSelfAssessment\\Views\\SearchByExam"
+  ],
+  "SelectedNode": "\\AAO.Apps.BCSCSelfAssessment.sln",
+  "PreviewInSolutionExplorer": false
+}

@@ -1,0 +1,68 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}   
+<script src="~/Scripts/moment.min.js"></script>
+<link href="~/Content/admin.css" rel="stylesheet" />
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <ul class="breadcrumb"><li class="active">Reports</li></ul>
+        </div>
+    </div>
+</div>
+   <div class="col-lg-12">
+       <div class="content-bg">
+           <div class="content-padding">
+               <div class="col-lg-6 col-sm-5 xs-textcenter nopadding">
+                   <label class="active">Aggregate User Performance</label>
+               </div>
+               <div class="col-lg-6 dropdown grey-font font18 pull-right text-right nopadding xs-textcenter">
+                   <div class="inline-block">
+                       <label class="padright10 filter-label">Filter by</label>
+                       <div id="reportrange" class="pull-right reportdatepickerrange">
+                           <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;  
+                           <span></span>
+                       </div>
+                   </div>
+                   <div class="inline-block">                     
+                       <select id="Year" name="optionsval" class="form-control form-control-sm" style="padding-top: 2px!important;">
+                           <option value="-1" disabled selected hidden>All</option>
+                       </select>
+                   </div>
+                   <div class="inline-block">
+                       <input type="button" value="Export" id="Export" class="btn btn-primary marleft10 btn-export">
+                   </div>
+               </div>
+               <div class="clearfix"></div>
+               <div class="col-lg-12 nopadding table-responsive">
+                   <table class="table table-striped" id="AdminReport" style="overflow-x:hidden; ">
+                        <thead>
+                            <tr>
+                                <td>Section</td>
+                                <td>Correct number of question</td>
+                                <td>Incorrect number of question</td>
+                                <td>Correct percentage</td>
+                                <td>No of Resident attempted this section</td>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <div class="clearfix">
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+<script src="~/Scripts/daterangepicker.js"></script>
+
+<script src="@Url.Content("~/scripts/aggregateuserperformance/aggregateuserperformance.js")"></script>
+
+

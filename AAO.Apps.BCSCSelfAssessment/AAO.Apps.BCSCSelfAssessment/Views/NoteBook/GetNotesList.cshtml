@@ -1,0 +1,142 @@
+﻿
+@{
+    ViewBag.Title = "GetNotesList";
+}
+<script src="~/Scripts/jquery-ui.js"></script>
+<script src="~/Scripts/jquery.ui.touch-punch.js"></script>
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+<link href="~/fonts/font-awesome/css/font-awesome.css" rel="stylesheet" />
+<link href="~/Content/custom.css" rel="stylesheet" />
+<link href="~/Content/bootstrap-responsive-tabs.css" rel="stylesheet" />
+
+
+<!--Start of Print Div-->
+
+<div class="container view-assessment-details" id="DivIdToPrint">
+    <div class="row col-lg-12 xs-nopadding">
+        <div class="content-bg">
+            <div class="content-padding">
+                @if (ViewBag.noteBookList != null)
+                {
+                    if (ViewBag.noteBookList.Count > 0)
+                    {
+                        <div id="displayCount" class="pull-left padtop5">
+                            View Notes -<b> Section @ViewBag.noteBookList[0].BCSCSectionNumber: @ViewBag.noteBookList[0].BCSCSectionTitle</b>
+
+                        </div>
+                    }
+                }
+                <div class="clearfix"></div>
+                <hr class="mb-0 border-gray">
+
+                @if (ViewBag.noteBookList != null)
+                {
+                    if (ViewBag.noteBookList.Count > 0)
+                    {
+                        <div id="details">
+                            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                @foreach (var section in ViewBag.noteBookList)
+                                {
+                                    if (section.ChapterList.Count > 0)
+                                    {
+                                        var chapterCounter = 1;
+                                        foreach (var chapter in section.ChapterList)
+                                        {
+                                            <div>
+                                                <span class="notes-chapter">
+                                                    @Html.Raw(chapter.Chapter)
+                                                </span>
+
+                                                <span class="marleft20 font-bold">
+                                                    @Html.Raw(chapter.ChapterName)
+                                                </span>
+                                            </div>
+                                            if (chapter.QuestionList.Count > 0)
+                                            {
+                                                foreach (var item in chapter.QuestionList)
+                                                {
+                                                    <span class="notes-chapter">
+                                                        @Html.Raw(@item.Topic)
+                                                    </span>
+
+                                                    <span class="marleft10 font-bold">
+                                                        @Html.Raw(@item.TopicName)
+                                                    </span>
+
+                                                    <div class="panel panel-default notes-panel">
+                                                        <div class="clearfix">
+                                                            <div class="col-lg-12 explaination-list" id="@("notes" + @item.QuestionId)">
+                                                                <div>
+                                                                    <ul>
+                                                                        @foreach (var notes in @item.NotesList)
+                                                                        {
+                                                                            <li id="@("notes" + @item.QuestionId+@notes.NotesId)">
+                                                                                <span>@Html.Raw(@notes.NotesText)</span>
+                                                                            </li>
+
+                                                                        }
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
+                                            chapterCounter++;
+                                        }
+                                    }
+
+                                }
+
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center padtop20">No records found.</div>
+                    }
+                }
+            </div>
+
+            <div class="clearfix">
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<!--End of Print Div-->
+
+
+<div id="VersionInfo" style="display:none;"></div>
+<script>
+    var NotebookViewModel = {
+        firstSerialNo: '@ViewBag.FirstSerialNum',
+        lastSerialNo: '@ViewBag.LastSerialNum',
+        chapterCount: '@ViewBag.ChapterCount',
+        noOfRecords: '@ViewBag.NoOfRecords',
+        PageNo: '@ViewBag.PageNo',
+        subSpecialtyId: '@ViewBag.SubSpecialtyId',
+        chapterName: '@ViewBag.chapterName'
+    };
+</script>
+<script>    
+    window.print();
+    //window.document.close();
+    //window.focus();
+    //window.close()
+    //if (navigator.userAgent.match(/msie/i) || navigator.userAgent.match(/trident/i) || navigator.userAgent.match(/edge/i) || navigator.userAgent.match(/chrome/i)) {
+    //     window.focus();
+    //    window.print();
+    //    //parent.document.getElementsByName("pdfjs-frame")[0].contentWindow.document.execCommand("print", false, null);
+    //   // window.close();
+    //} else {
+    //    window.print();
+    //    window.document.close();
+    //    window.focus();
+    //    window.close();
+    //}
+
+    </script>
+<script src="@Url.Content("~/Scripts/Notebook/Notebook.js")" type="text/javascript"></script>

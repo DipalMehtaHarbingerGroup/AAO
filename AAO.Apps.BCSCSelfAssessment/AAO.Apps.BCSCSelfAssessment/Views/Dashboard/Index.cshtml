@@ -1,0 +1,558 @@
+﻿@{
+    List<AAO.Common.BCSCSelfAssessment.NotificationMessageSetting> notificationMessageSetting = new List<AAO.Common.BCSCSelfAssessment.NotificationMessageSetting>();
+    bool isCountOfMessage = false;
+    if (ViewBag.NotificationMessageSettings != null)
+    {
+        notificationMessageSetting = (List<AAO.Common.BCSCSelfAssessment.NotificationMessageSetting>)ViewBag.NotificationMessageSettings;
+        isCountOfMessage = notificationMessageSetting.Count > 0 ? true : false;
+    }
+    bool isShowFirstTime = ViewBag.ShowFirstTime != null ? (bool)ViewBag.ShowFirstTime : false;
+}
+@if (TempData["Msg"] != null)
+{
+    <div class="alert alert-dismissable alert-info">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        @TempData["Msg"].ToString()
+    </div>
+}
+@if (TempData["MsgError"] != null)
+{
+    <div class="alert alert-dismissable alert-danger">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        @TempData["MsgError"].ToString()
+    </div>
+}
+@if (!string.IsNullOrEmpty(@Model[0].RenewalMessage))
+{
+    <div class="text-danger customalert">
+        @Model[0].RenewalMessage
+        @if (!string.IsNullOrEmpty(@Model[0].RenewalLink))
+        {<button class="btn btn-cta" id="renewalLink" link="@Model[0].RenewalLink" style="background-color: red;">Renew</button>}
+
+    </div>
+}
+@if (TempData["OptMessage"] != null)
+{
+    <div class="alert alert-dismissable alert-success">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        @TempData["OptMessage"].ToString()
+    </div>
+}
+<style>
+    .model-ul {
+        padding: 10px 20px 10px 5px;
+        align-content: start;
+        align-items: start;
+        margin-top: 5px;
+    }
+
+    .message-close {
+        font-size: 2em;
+        color: #fff;
+        top: 14px !important;
+        background: none !important;
+    }
+
+        .message-close:hover {
+            color: #fff !important;
+            opacity: 1.5 !important;
+        }
+
+    .ul-messagesettings {
+        padding-left: 10px;
+    }
+
+    .li-message {
+        position: relative;
+        list-style: none;
+        padding-left: 32px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        line-height: 2;
+        font-size: 15px;
+    }
+
+        .li-message:before {
+            font-family: FontAwesome;
+            position: absolute;
+            left: 0;
+            color: #337ab7;
+            font-size: 15px;
+        }
+
+        .li-message.one:before {
+            content: "\f111";
+        }
+    .modal-content {
+        border: rgba(0, 0, 0, .2);
+    }
+</style>
+<link href="~/Content/SRLandingStyle.css" rel="stylesheet" />
+<div id="examList">
+    @Html.Partial("_ExamList")
+    @Html.Partial("_ExamHistory")
+
+    <div class="clearfix"></div>
+    <div class="space-page relative-position ">
+        <div class="col-lg-8 col-md-12 col-xs-12 xs-marbot30 marbot-30 xs-nopadding">
+            <div class="widget-exams-in-progress widget-space-repetition" style=" margin-top: 30px;">
+                <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 nopadding  xs-textcenter  first-block">
+                    <h4 class="widget-title">What is spaced repetition?</h4>
+                    <p>
+                        <span class="collapsed">
+                            Spaced Repetition presents questions at random and repeats questions at spaced intervals based on the correctness of your answers and your confidence in your answer choices.
+                            <a href="" onclick="javascript: void (0)">Learn more...</a>
+                        </span>
+
+                        <span class="expanded">
+                            Spaced Repetition presents questions at random and repeats questions at spaced intervals based on the correctness of your answers and your confidence in your answer choices. This functionality is named for and based on the evidence-based learning technique known as spaced repetition which has been proven to increase the rate of learning and is used by software programs such as Anki, Duolingo, Picmonic and Pimsleur Language Programs. As you answer questions in this mode, choose whether you are confident in your answer (Submit Confident) or not confident in your answer (Submit Not Confident). <a href="javascript:void(0)">...Less</a>
+                        </span>
+                    </p>
+                </div>
+                <div>
+                    @*@using (Html.BeginForm("SpacedRepetition", "ExamManager", FormMethod.Post, new { id = "SpacedRepetition", @class = "form-inline build-exam" }))*@
+                    @using (Html.BeginForm("SRLanding", "SpacedRepetition", FormMethod.Post, new { id = "SpacedRepetition", @class = "form-inline build-exam" }))
+                    {
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 text-right xs-textcenter md-nopadding padtop20 txt-md-left">
+                        @*<button class="btn btn-cta" id="SpacedRepetition">Start Spaced Repetition</button>*@
+                        <button class="btn btn-cta" id="SpacedRepetition">Spaced Repetition Dashboard</button> @*For HG-459*@
+                    </div>
+                    }
+                </div>
+
+                <hr class="visible-xs col-xs-12 nopadding" />
+                <div class="col-lg-12 col-sm-12 nopadding questionSection">
+                    <div class="col-lg-3 col-md-3 col-sm-6 que-block ">
+                        <div class="small">
+                            <h2><span class="QuestionAnsweredSR"></span></h2>
+                            <p>Questions Answered</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 que-block">
+                        <div class="small">
+                            <h2><span class="TopicsCoveredSR"></span></h2>
+                            <p>Topics Covered</p>
+                        </div>
+                    </div><div class="col-lg-3 col-md-3 col-sm-6 que-block">
+                        <div class="small">
+                            <h2><span class="IncorrectAnswersSR"></span></h2>
+                            <p>Incorrect Answers</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 que-block">
+                        <div class="small">
+                            <h2><span class="CorrectAnswersSR"></span></h2>
+                            <p>Correct Answers</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="clearfix">
+
+    </div>
+    @*<div></div>*@
+
+
+    <div class="col-lg-8 martop30 xs-nopadding margin-top-exam " id="ChartDivId">
+        <div class="cumulative-performance-chart">
+            <div class="col-lg-4 col-md-4 col-sm-12 nopadding">
+                <h4 class="widget-title">Exam Performance </h4>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 nopadding">
+                <div class="form-group form-inline filter-date">
+                    <label class="padright10 filter-label">Filter by</label>
+                    <div id="reportrange">
+                        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+                        <span></span>
+                    </div>
+                </div>
+                <div class="form-group form-inline filter-viewby">
+                    <label class="padright10">View by</label>
+                    <select class="form-control nopadding" id="ChartTypeId">
+                        <option value="-1">All</option>
+                        <option value="0">Custom</option>
+                        <option value="1">Simulated</option>
+                    </select>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-lg-6 col-sm-6 col-xs-12 xs-martop30 nopadding" id="ScoreComparisonToggle">
+                <div class="form-group form-inline">
+                    <label class="pull-left padright15">Score Comparison with Peers</label>
+                    <div class="toggle-switch pull-left">
+                        <input type="checkbox" name="toggle-switch1" class="toggle-switch-checkbox PeerCheck" id="toggle-switch1">
+                        <label class="toggle-switch-label margin0" for="toggle-switch1">
+                            <span class="toggle-switch-inner"></span>
+                            <span class="toggle-switch-switch"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-sm-6 col-xs- xs-font12 chart-legend nopadding" id="DefaultFilterChartId">
+                <span class="legend correct-bg"></span><span class="padright10">Correct</span>
+                <span class="legend incorrect-bg"></span><span class="padright10">Incorrect</span>
+                <span class="legend unanswered-bg"></span><span>Remaining</span>
+            </div>
+            <div class="col-lg-6 col-xs- xs-font12 chart-legend" id="OnChangeFilterChartId" style="display:none">
+                <span class="legend myscore-bg"></span><span class="padright10">My Score</span>
+                <span class="legend AvgPeer-bg"></span><span class="padright10">Average Peer Score</span>
+            </div>
+            <div class="clearfix">
+            </div>
+
+
+            <div class="loader_main" style="text-align:center;">
+                <br /><br />
+                <img src="~/Content/img/Processing.gif" />
+            </div>
+
+            <div id="CommulativePerformance_chart" style="width:100%!important" class="hidden-xs">
+            </div>
+            <div class="chart-section visible-xs martop20" id="withoutPeers">
+                <div id="no-more-tables">
+                    <table class="table-striped table-condensed cf " id="table1">
+                        <thead class="cf">
+                            <tr>
+                                <th>Specialty</th>
+                                <th>Correct</th>
+                                <th>Incorrect</th>
+                                <th>Remaining</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="Chart1"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="chart-section visible-xs martop20" id="withPeers">
+                <div id="no-more-tables">
+                    <table class="table-striped table-condensed cf ">
+                        <thead class="cf">
+                            <tr>
+                                <th>Specialty</th>
+                                <th>My Score</th>
+                                <th>Avg.Peer Score</th>
+                            </tr>
+                        </thead>
+                        <tbody id="Chart2"></tbody>
+                    </table>
+                </div>
+            </div>
+
+
+
+
+        </div>
+    </div>
+
+    @Html.Partial("_ExamAverageScore")
+
+
+
+
+
+    <div class="clearfix"></div>
+</div>
+<!--Authors Modal Start -->
+<div id="authors" class="overlay" style="z-index:20">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()" id="closeButtonNav">&times;</a>
+    <div class="overlay-content">
+        <div class="container">
+            <div class="content-area">
+                <h4 class="text-left">About</h4>
+                <p>The BCSC Self-Assessment Program fulfils the need of ophthalmology residents studying for ABO qualifying and OKAP exams during their training. It also serves practicing ophthalmologists who need to continuously improve their knowledge in order to provide quality medical care.</p>
+
+                <h4 class="text-left">Getting Started</h4>
+                <p>Begin by creating an exam with settings of your choice from the Build Exam page. In a hurry? Choose the Quick Exam type to get started with minimal delay and default settings selected for you.</p>
+
+                <h4 class="text-left">Authors and Disclosures</h4>
+                <h5 class="text-left text-color">The Academy thanks current and past members of the Resident Self-Assessment Committee who contributed to this program:</h5>
+                <div class="row clearfix">
+                    <div class="col-lg-12"><p>Resident Self-Assessment Committee 2024</p></div>
+                    <div class="col-lg-3 col-md-3 col-sm-3">
+                        <ul class="authors-list">
+                            <li>Amanda D. Henderson, MD (Chair)</li>
+                            <li>Abdelrahman M Elhusseiny, MBBCH</li>
+                            <li>Amr Khaled Hassan, MBCHB</li>
+                            <li>Arjan S. Hura, MD</li>
+                            <li>Benjamin Kuhar, DO</li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3">
+                        <ul class="authors-list">
+                            <li>Chaow Charoenkijkajorn, MD</li>
+                            <li>Courtney L. Kraus, MD</li>
+                            <li>Emma K. Loucks, MD</li>
+                            <li>Jamie B. Rosenberg, MD</li>
+                            <li>Jeong-Hyeon Sohn, MD</li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3">
+                        <ul class="authors-list">
+                            <li>Kammi B. Gunton, MD</li>
+                            <li>Kevin Halenda, MD</li>
+                            <li>Malcolm Kates, MD</li>
+                            <li>Peggy H. Gramates, MD</li>
+                            <li>Roxana Fu, MD</li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3">
+                        <ul class="authors-list">
+                            <li>Ruchi D. Shah, MD</li>
+                            <li>Sina John Sabet, MD</li>
+                            <li>Sumit Sharma, MD</li>
+                            <li>Victoria S. Chang, MD</li>
+                            <li>Whitney L Stuard Sambhariya, MD</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>Wills Eye Hospital</h3>
+                <p>The Academy also thanks the faculty at Wills Eye Hospital for donating a considerable number of questions to the program and supporting development of additional questions.</p>
+
+                <h3>Financial Disclosures</h3>
+                <p>
+                    All contributors to Academy educational activities must disclose all financial relationships with any entity producing, marketing, re-selling, or distributing ophthalmic health care goods or services consumed by, or used on, patients within the previous 12 months to the Academy annually. The Academy ensures potential conflicts of interest are resolved prior to the delivery of the activity.
+                    All relevant financial relationships have been mitigated.
+                </p>
+
+                <h3>Contributors who have disclosed financial relationships:</h3>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <ul class="authors-list">
+                            <li><b>Amanda D. Henderson, MD</b>: (C,) Horizon Therapeutics Plc.</li>
+                            <li><b>Arjan S. Hura, MD</b>: (C) Alcon Laboratories, Allergan, Beaver-Visitec International, Bruder Healthcare Company, Carl Zeiss, Meditec, Glaukos, Rayner Intraocular Lenses, Tarsus Pharmaceuticals, Visus Therapeutics; (L) AcuFocus , Alcon Laboratories, Carl Zeiss Meditec, STAAR Surgical.</li>
+                            <li><b>Sumit Sharma, MD</b>: (C) Abbvie, Alimera Sciences, Apellis Pharmaceuticals Bausch + Lomb, Carl Zeiss Meditec, Clearside Biomedical, EyePoint Pharmaceuticals, GENENTECH, Hoffman La Roche, Iveric Bio, Kodiak, Regeneron Pharmaceuticals, REGENXBIO, Ripple, Santen; Volk Optical (S) Acelyrin, EyePoint Pharmaceuticals, GENENTECH, Gilead Sciences, Hoffman La Roche, Ionis; Kodiak, Regeneron Pharmaceuticals, Ripple, Santen.
+                            </li>
+                            <li><b>Victoria S. Chang, MD</b>: (SO), Johnson + Johnson Vision.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3 class="sub-title">Key:</h3>
+                <p class="discussion-content">
+                    <table class="table key-grid" id="no-more-tables">
+                        <thead>
+                            <tr>
+                                <th width="20%">Category</th>
+                                <th width="20%">Code</th>
+                                <th width="60%">Description </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td data-title="Category">Consultant / Advisor</td>
+                                <td data-title="Code">C</td>
+                                <td data-title="Description">Consultant fee, paid advisory boards or fees for attending a meeting (for the past 1 year)</td>
+                            </tr>
+                            <tr>
+                                <td data-title="Category">Lecture Fees/Speakers Bureau</td>
+                                <td data-title="Code">L</td>
+                                <td data-title="Description">Lecture fees or honoraria, travel fees or reimbursements when speaking at the invitation of a commercial company</td>
+                            </tr>
+                            <tr>
+                                <td data-title="Category">Grant Support</td>
+                                <td data-title="Code">S</td>
+                                <td data-title="Description">Grant support or other financial support to the investigator from all sources, including research support from government agencies, foundations, device manufacturers, and/or pharmaceutical companies.</td>
+                            </tr>
+                            <tr>
+                                <td data-title="Category">Stock Options</td>
+                                <td data-title="Code">SO</td>
+                                <td data-title="Description">Stock options in a private or public company</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </p>
+
+                <h3>Contributors who state they have no financial relationships to disclose:</h3>
+                <div class="row">
+                    <div class="col-lg-3 col-md-3 col-sm-3">
+                        <ul class="authors-list">
+                            <li>Amanda Henderson, MD (2021)</li>
+                            <li>Abdelrahman M. Elhusseiny, MBBCH</li>
+                            <li>Amr Khaled Hassan, MBCHB</li>
+                            <li>Benjamin Kuhar, MD</li>
+                            <li>Chaow Charoenkijkajorn, MD</li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3">
+                        <ul class="authors-list">
+                            <li>Courtney K. Kraus, MD</li>
+                            <li>Emma K. Loucks, MD</li>
+                            <li>Jamie B. Rosenberg, MD</li>
+                            <li>Jeong-Hyeon Sohn, MD</li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3">
+                        <ul class="authors-list">
+                            <li>Kammi Gunton, MD</li>
+                            <li>Kevin Halenda, MD</li>
+                            <li>Malcolm Kates, MD</li>
+                            <li>Peggy H. Gramates, MD</li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3">
+                        <ul class="authors-list">                            
+                            <li>Roxana Fu, MD</li>
+                            <li>Ruchi D. Shah, MD</li>
+                            <li>Sina John Sabet, MD</li>
+                            <li>Whitney Stuard Sambhariya, MD</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>Staff who state they have no financial relationships to disclose:</h3>
+                <ul class="authors-list">
+                    <li>Tony Ching</li>
+                    <li>Sian Hillier</li>
+                    <li>Sarah Page</li>
+                    <li>Kathryn Peters</li>
+                    <li>Donna Scism</li>
+                </ul>
+                <p>
+                    The American Academy of Ophthalmology is accredited by the Accreditation Council for Continuing Medical Education (ACCME) to provide continuing medical education for physicians. The American Academy of Ophthalmology designates this enduring material for a maximum of 65 <em>AMA PRA Category 1 Credits™</em>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Authors Modal End -->
+<!--OptIn Model Start-->
+@{Html.RenderPartial("_OptInPartial");}
+<!--OptIn Model End-->
+<!-- SeeMessageSettingModal start -->
+<div class="modal fade" id="SeeMessageSettingModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content message-modal-content">
+            <div class="modal-header bg-primary message-modal-header ">
+                <button type="button" class="close message-close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">New Updates</h4>
+            </div>
+            <div class="model-ul">
+                @if (notificationMessageSetting.Any())
+                {
+                    <ul class="ul-messagesettings">
+                        @foreach (var item in notificationMessageSetting)
+                        {
+                            <li class="li-message one">@Html.Raw(item.NotificationMessage)</li>
+                        }
+                    </ul>
+                }
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- SeeMessageSetting end-->
+<script src="~/Scripts/moment.min.js"></script>
+<script src="~/Scripts/daterangepicker.js"></script>
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="~/Scripts/Dashboard/jquery.slimscroll.js"></script>
+<script>
+        var DashboardGoogleChart = {
+            url: '@Url.Action("GetChartDetail")',
+        };
+</script>
+<script src="~/Scripts/Dashboard/dashboard.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        if ("@isShowFirstTime" == "True" && "@isCountOfMessage" == "True") {
+            $('#SeeMessageSettingModal').modal('show');
+        }
+        //	//$('#authors').show();
+        //$('body').addClass('my-body-noscroll-class');
+        var winHeight = $(window).height();
+        var contentHeight = $(".content-area").height(winHeight - 200)
+        $(".content-area").slimscroll({
+            height: contentHeight,
+            color: '#888'
+        });
+        var ExcerptArray = [];
+        $('.value').each(function () {
+            var text = $(this).text();
+            $(this).parent().css('width', text);
+        });
+        $(".expanded").hide();
+
+        //$("#PerformanceSummeryId").addclass('addnormaltopscore');
+        $(".first-block .expanded a,.first-block .collapsed a").click(function (eve) {
+            eve.preventDefault();
+            $(".first-block .expanded, .first-block .collapsed").toggle();
+            if ($("#PerformanceSummeryId").hasClass('addnormaltopscore')) {
+                $("#PerformanceSummeryId").removeClass('addnormaltopscore').addClass('addexpandtopscore');
+            }
+            else {
+                $("#PerformanceSummeryId").removeClass('addexpandtopscore').addClass('addnormaltopscore');
+            }
+
+
+        });
+    });
+
+    $.ajax({
+        type: 'Post',
+        dataType: "JSON",
+        url: '/SpacedRepetition/GetExamStatusCountSR',
+        success: function (result1) {
+            var responseTextObject = JSON.parse(result1);
+            $(".QuestionAnsweredSR").append(responseTextObject.TotalAnsweredQuestions);
+            $(".TopicsCoveredSR").append(responseTextObject.TopicCount);
+            $(".CorrectAnswersSR").append(responseTextObject.AnsweredCorrectly);
+            $(".IncorrectAnswersSR").append(responseTextObject.AnsweredInCorrectly);
+        }
+    });
+    function closeNav() {
+        $("#authors").fadeOut("slow");
+        $('body').removeClass('my-body-noscroll-class');
+    }
+</script>
+
+<style>
+    .text-color {
+        color: #737476;
+    }
+
+    .addnormaltop {
+        margin-top: -187px
+    }
+
+    .addexpandtop {
+        margin-top: -70px
+    }
+
+    .addnormaltopscore {
+        margin-top: -280px
+    }
+
+    .addexpandtopscore {
+        margin-top: -400px
+    }
+
+    .margin-top-exam {
+        margin-top: -5px
+    }
+
+    .loader_main {
+        height: 100%;
+        width: 100%;
+        position: relative;
+    }
+
+    .customalert {
+        background-color: unset;
+        border-color: unset;
+        margin: 0px 0px 4px 16px !important;
+        color: red;
+    }
+
+    .navbar-default {
+        margin-bottom: 12px !important;
+    }
+</style>
+

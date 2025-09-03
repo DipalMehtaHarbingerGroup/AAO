@@ -1,0 +1,99 @@
+﻿@{
+    Layout = null;
+    //ViewBag.Title = "Index";
+    string optOutIdDetails = ViewBag.OptOutIdDetails;
+}
+
+<!doctype html>
+<html>
+<head>
+    <title>Eamil OptOut AAO - BCSC Self Assessment Program</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link href="~/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <style type="text/css">
+        body {
+            background-color: #dddddf;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        .Outer1 {
+            width: 80%; /* Adjust width for smaller screens */
+            max-width: 700px; /* Maximum width for larger screens */
+            margin: 5em auto;
+            padding: 2em;
+            background-color: #fdfdff;
+            border-radius: 0.5em;
+            box-shadow: 2px 3px 7px 2px rgba(0,0,0,0.02);
+        }
+
+        .success-symbol {
+            width: 80px; /* Adjust size as needed */
+            height: 80px; /* Adjust size as needed */
+            background-color: green; /* Color of the circle */
+            border-radius: 50%; /* Shape the circle */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px; /* Adjust margin as needed */
+        }
+
+        .tick {
+            color: white; /* Color of the tick symbol */
+            font-size: 48px; /* Adjust size as needed */
+        }
+
+        a:link, a:visited {
+            color: #38488f;
+            text-decoration: none;
+        }
+        .below_tick {
+            margin-top: 3.6%;
+        }
+
+        /* Media Query for smaller screens */
+        @@media screen and (max-width: 768px) {
+            .Outer1 {
+                width: 70%;
+            }
+            .below_tick {
+                margin-top: 23px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="Outer1">
+        <div style="text-align: center; font-size: 24px;">
+            @*<strong>@ViewBag.optOutIdDetails</strong>*@
+            <strong>Exam Results Opt Out</strong>
+        </div>
+        <hr />
+        <div class="below_tick">
+            <div class="success-symbol">
+                <span class="tick">&#10004;</span>
+            </div>
+            <div style="text-align: center;">
+                <h2>You’ve successfully unsubscribed</h2>
+            </div>
+            <div>
+                <p>
+                    You will no longer receive exam results emails from users of the <b>BCSC Self-Assessment Program</b>. If this was a mistake send an email to <a href="mailto:education@aao.org">education@aao.org</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+
+

@@ -1,0 +1,232 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>OpenTelemetry.Instrumentation.Owin</name>
+    </assembly>
+    <members>
+        <member name="T:Owin.AppBuilderExtensions">
+            <summary>
+            Provides extension methods for the <see cref="T:Owin.IAppBuilder"/> class.
+            </summary>
+        </member>
+        <member name="M:Owin.AppBuilderExtensions.UseOpenTelemetry(Owin.IAppBuilder)">
+            <summary>Adds a component to the OWIN pipeline for instrumenting
+            incoming request with <see cref="T:System.Diagnostics.Activity"/> and notifying listeners
+            with <see cref="T:System.Diagnostics.ActivitySource"/>.</summary>
+            <param name="appBuilder"><see cref="T:Owin.IAppBuilder"/>.</param>
+            <returns>Supplied <see cref="T:Owin.IAppBuilder"/> for chaining.</returns>
+        </member>
+        <member name="T:OpenTelemetry.Instrumentation.Owin.DiagnosticsMiddleware">
+            <summary>
+            Instruments incoming request with <see cref="T:System.Diagnostics.Activity"/> and notifies listeners with <see cref="T:System.Diagnostics.ActivitySource"/>.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Instrumentation.Owin.DiagnosticsMiddleware.#ctor(Microsoft.Owin.OwinMiddleware)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OpenTelemetry.Instrumentation.Owin.DiagnosticsMiddleware"/> class.
+            </summary>
+            <param name="next">An optional pointer to the next component.</param>
+        </member>
+        <member name="M:OpenTelemetry.Instrumentation.Owin.DiagnosticsMiddleware.Invoke(Microsoft.Owin.IOwinContext)">
+            <inheritdoc />
+        </member>
+        <member name="M:OpenTelemetry.Instrumentation.Owin.DiagnosticsMiddleware.GetUriTagValueFromRequestUri(System.Uri)">
+            <summary>
+            Gets the OpenTelemetry standard uri tag value for a span based on its request <see cref="T:System.Uri"/>.
+            </summary>
+            <param name="uri"><see cref="T:System.Uri"/>.</param>
+            <returns>Span uri value.</returns>
+        </member>
+        <member name="T:OpenTelemetry.Instrumentation.Owin.OwinInstrumentationEventSource">
+            <summary>
+            EventSource events emitted from the project.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Instrumentation.Owin.OwinInstrumentationEventSource.ToInvariantString(System.Exception)">
+            <summary>
+            Returns a culture-independent string representation of the given <paramref name="exception"/> object,
+            appropriate for diagnostics tracing.
+            </summary>
+        </member>
+        <member name="T:OpenTelemetry.Instrumentation.Owin.OwinEnrichEventType">
+            <summary>
+            Describes the possible events fired when enriching an <see cref="T:System.Diagnostics.Activity"/>.
+            </summary>
+        </member>
+        <member name="F:OpenTelemetry.Instrumentation.Owin.OwinEnrichEventType.BeginRequest">
+            <summary>
+            Begin request.
+            </summary>
+        </member>
+        <member name="F:OpenTelemetry.Instrumentation.Owin.OwinEnrichEventType.EndRequest">
+            <summary>
+            End request.
+            </summary>
+        </member>
+        <member name="T:OpenTelemetry.Instrumentation.Owin.OwinInstrumentationOptions">
+            <summary>
+            Options for requests instrumentation.
+            </summary>
+        </member>
+        <member name="P:OpenTelemetry.Instrumentation.Owin.OwinInstrumentationOptions.Filter">
+            <summary>
+            Gets or sets a Filter function that determines whether or not to collect telemetry about requests on a per request basis.
+            The Filter gets the <see cref="T:Microsoft.Owin.IOwinContext"/>, and should return a boolean.
+            If Filter returns true, the request is collected.
+            If Filter returns false or throw exception, the request is filtered out.
+            </summary>
+        </member>
+        <member name="P:OpenTelemetry.Instrumentation.Owin.OwinInstrumentationOptions.Enrich">
+            <summary>
+            Gets or sets an action to enrich the <see cref="T:System.Diagnostics.Activity"/> created by the instrumentation.
+            </summary>
+        </member>
+        <member name="P:OpenTelemetry.Instrumentation.Owin.OwinInstrumentationOptions.RecordException">
+            <summary>
+            Gets or sets a value indicating whether the exception will be recorded as <see cref="T:System.Diagnostics.ActivityEvent"/> or not.
+            </summary>
+            <remarks>
+            https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/trace/semantic_conventions/exceptions.md.
+            </remarks>
+        </member>
+        <member name="T:OpenTelemetry.Trace.TracerProviderBuilderExtensions">
+            <summary>
+            Extension methods to simplify registering of OWIN request instrumentation.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Trace.TracerProviderBuilderExtensions.AddOwinInstrumentation(OpenTelemetry.Trace.TracerProviderBuilder,System.Action{OpenTelemetry.Instrumentation.Owin.OwinInstrumentationOptions})">
+            <summary>
+            Enables the incoming requests automatic data collection for OWIN.
+            </summary>
+            <param name="builder"><see cref="T:OpenTelemetry.Trace.TracerProviderBuilder"/> being configured.</param>
+            <param name="configureOwinInstrumentationOptions">OWIN Request configuration options.</param>
+            <returns>The instance of <see cref="T:OpenTelemetry.Trace.TracerProviderBuilder"/> to chain the calls.</returns>
+        </member>
+        <member name="T:OpenTelemetry.Trace.SemanticConventions">
+            <summary>
+            Constants for semantic attribute names outlined by the OpenTelemetry specifications.
+            <see href="https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/trace/semantic_conventions/README.md"/>.
+            </summary>
+        </member>
+        <member name="T:OpenTelemetry.Trace.SpanHelper">
+            <summary>
+            A collection of helper methods to be used when building spans.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Trace.SpanHelper.ResolveSpanStatusForHttpStatusCode(System.Int32)">
+            <summary>
+            Helper method that populates span properties from http status code according
+            to https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/trace/semantic_conventions/http.md#status.
+            </summary>
+            <param name="httpStatusCode">Http status code.</param>
+            <returns>Resolved span <see cref="T:OpenTelemetry.Trace.Status"/> for the Http status code.</returns>
+        </member>
+        <member name="M:OpenTelemetry.Trace.SpanHelper.ResolveSpanStatusForHttpStatusCode(System.Diagnostics.ActivityKind,System.Int32)">
+            <summary>
+            Helper method that populates span properties from http status code according
+            to https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/trace/semantic_conventions/http.md#status.
+            </summary>
+            <param name="kind">The span kind.</param>
+            <param name="httpStatusCode">Http status code.</param>
+            <returns>Resolved span <see cref="T:OpenTelemetry.Trace.Status"/> for the Http status code.</returns>
+        </member>
+        <member name="M:OpenTelemetry.Internal.ExceptionExtensions.ToInvariantString(System.Exception)">
+            <summary>
+            Returns a culture-independent string representation of the given <paramref name="exception"/> object,
+            appropriate for diagnostics tracing.
+            </summary>
+            <param name="exception">Exception to convert to string.</param>
+            <returns>Exception as string with no culture.</returns>
+        </member>
+        <member name="T:OpenTelemetry.Internal.Guard">
+            <summary>
+            Methods for guarding against exception throwing values.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfNull(System.Object,System.String)">
+            <summary>
+            Throw an exception if the value is null.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfNullOrEmpty(System.String,System.String)">
+            <summary>
+            Throw an exception if the value is null or empty.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfNullOrWhitespace(System.String,System.String)">
+            <summary>
+            Throw an exception if the value is null or whitespace.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfZero(System.Int32,System.String,System.String)">
+            <summary>
+            Throw an exception if the value is zero.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="message">The message to use in the thrown exception.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfInvalidTimeout(System.Int32,System.String)">
+            <summary>
+            Throw an exception if the value is not considered a valid timeout.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfOutOfRange(System.Int32,System.String,System.Int32,System.Int32,System.String,System.String,System.String)">
+            <summary>
+            Throw an exception if the value is not within the given range.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+            <param name="min">The inclusive lower bound.</param>
+            <param name="max">The inclusive upper bound.</param>
+            <param name="minName">The name of the lower bound.</param>
+            <param name="maxName">The name of the upper bound.</param>
+            <param name="message">An optional custom message to use in the thrown exception.</param>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfOutOfRange(System.Double,System.String,System.Double,System.Double,System.String,System.String,System.String)">
+            <summary>
+            Throw an exception if the value is not within the given range.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+            <param name="min">The inclusive lower bound.</param>
+            <param name="max">The inclusive upper bound.</param>
+            <param name="minName">The name of the lower bound.</param>
+            <param name="maxName">The name of the upper bound.</param>
+            <param name="message">An optional custom message to use in the thrown exception.</param>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfNotOfType``1(System.Object,System.String)">
+            <summary>
+            Throw an exception if the value is not of the expected type.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+            <typeparam name="T">The type attempted to convert to.</typeparam>
+            <returns>The value casted to the specified type.</returns>
+        </member>
+        <member name="T:System.Runtime.CompilerServices.CallerArgumentExpressionAttribute">
+            <summary>
+            Allows capturing of the expressions passed to a method.
+            </summary>
+        </member>
+        <member name="M:System.Runtime.CompilerServices.CallerArgumentExpressionAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.Runtime.CompilerServices.CallerArgumentExpressionAttribute"/> class.
+            </summary>
+            <param name="parameterName">The name of the targeted parameter.</param>
+        </member>
+        <member name="P:System.Runtime.CompilerServices.CallerArgumentExpressionAttribute.ParameterName">
+            <summary>
+            Gets the target parameter name of the CallerArgumentExpression.
+            </summary>
+        </member>
+    </members>
+</doc>

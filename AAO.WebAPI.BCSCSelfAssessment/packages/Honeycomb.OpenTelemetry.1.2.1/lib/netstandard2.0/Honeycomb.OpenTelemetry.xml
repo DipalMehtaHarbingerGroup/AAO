@@ -1,0 +1,306 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Honeycomb.OpenTelemetry</name>
+    </assembly>
+    <members>
+        <member name="T:Honeycomb.OpenTelemetry.BaggageSpanProcessor">
+            <summary>
+            Span processor that adds <see cref="T:OpenTelemetry.Baggage"/> fields to every new span
+            </summary>
+        </member>
+        <member name="M:Honeycomb.OpenTelemetry.BaggageSpanProcessor.OnStart(System.Diagnostics.Activity)">
+            <inheritdoc />
+        </member>
+        <member name="T:Honeycomb.OpenTelemetry.ConsoleTraceLinkExporter">
+            <summary>
+            Writes links to the Honeycomb UI for all root spans to the console
+            </summary>
+        </member>
+        <member name="M:Honeycomb.OpenTelemetry.ConsoleTraceLinkExporter.#ctor(Honeycomb.OpenTelemetry.HoneycombOptions)">
+            <summary>
+            Initializes the <see cref="T:Honeycomb.OpenTelemetry.ConsoleTraceLinkExporter" /> class
+            </summary>
+            <param name="options">Settings for Link generation</param>
+        </member>
+        <member name="M:Honeycomb.OpenTelemetry.ConsoleTraceLinkExporter.Export(OpenTelemetry.Batch{System.Diagnostics.Activity}@)">
+            <inheritdoc />
+        </member>
+        <member name="T:Honeycomb.OpenTelemetry.DeterministicSampler">
+            <summary>
+            This Sampler implementation allows for distributed sampling based on a trace ID.
+            It accepts a sample rate N and will deterministically sample 1/N events based
+            on the target field. Hence, two or more processes can decide whether or not to
+            sample related events without communication.
+            <para />
+            - A sample rate of 0 means the Sampler will never sample.
+            <para />
+            - A sampler rate of 1 means the Sampler will always sample.
+            <para />
+            This implementation is based on the implementations (and necessarily needs to
+            be in line with) other Honeycomb SDK implementations.
+            </summary>
+        </member>
+        <member name="M:Honeycomb.OpenTelemetry.DeterministicSampler.#ctor(System.UInt32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Honeycomb.OpenTelemetry.DeterministicSampler"/> class.
+            </summary>
+            <param name="sampleRate">The desired sample rate, expressed as 1/{sampleRate}.
+            </param>
+        </member>
+        <member name="M:Honeycomb.OpenTelemetry.DeterministicSampler.ShouldSample(OpenTelemetry.Trace.SamplingParameters@)">
+            <inheritdoc cref="M:OpenTelemetry.Trace.Sampler.ShouldSample(OpenTelemetry.Trace.SamplingParameters@)"/>
+        </member>
+        <member name="T:Honeycomb.OpenTelemetry.HoneycombOptions">
+            <summary>
+            Configuration options used to configure <see cref="T:OpenTelemetry.Trace.TracerProviderBuilder"/> to send telemetry data to Honeycomb.
+            </summary>
+        </member>
+        <member name="F:Honeycomb.OpenTelemetry.HoneycombOptions.SDefaultServiceName">
+            <summary>
+            Default service name if service name is not provided.
+            </summary>
+        </member>
+        <member name="F:Honeycomb.OpenTelemetry.HoneycombOptions.ConfigSectionName">
+            <summary>
+            Name of the Honeycomb section of IConfiguration
+            </summary>
+        </member>
+        <member name="F:Honeycomb.OpenTelemetry.HoneycombOptions.DefaultEndpoint">
+            <summary>
+            Default API endpoint.
+            </summary>
+        </member>
+        <member name="F:Honeycomb.OpenTelemetry.HoneycombOptions.DefaultSampleRate">
+            <summary>
+            Default sample rate - sample everything.
+            </summary>
+        </member>
+        <member name="P:Honeycomb.OpenTelemetry.HoneycombOptions.ApiKey">
+            <summary>
+            API key used to send telemetry data to Honeycomb.
+            <para/>
+            </summary>
+        </member>
+        <member name="M:Honeycomb.OpenTelemetry.HoneycombOptions.IsClassicKey(System.String)">
+            <summary>
+            Returns whether the provided API key is a legacy key.
+            </summary>
+            <remarks>
+            Legacy keys have 32 characters.
+            </remarks>
+        </member>
+        <member name="P:Honeycomb.OpenTelemetry.HoneycombOptions.EnableLocalVisualizations">
+            <summary>
+            Write links to honeycomb traces as they come in
+            </summary>
+        </member>
+        <member name="P:Honeycomb.OpenTelemetry.HoneycombOptions.TracesApiKey">
+            <summary>
+            API key used to send trace telemetry data to Honeycomb. Defaults to <see cref="P:Honeycomb.OpenTelemetry.HoneycombOptions.ApiKey"/>.
+            </summary>
+        </member>
+        <member name="P:Honeycomb.OpenTelemetry.HoneycombOptions.MetricsApiKey">
+            <summary>
+            API key used to send metrics telemetry data to Honeycomb. Defaults to <see cref="P:Honeycomb.OpenTelemetry.HoneycombOptions.ApiKey"/>.
+            </summary>
+        </member>
+        <member name="P:Honeycomb.OpenTelemetry.HoneycombOptions.Dataset">
+            <summary>
+            Honeycomb dataset to store telemetry data.
+            <para/>
+            </summary>
+        </member>
+        <member name="P:Honeycomb.OpenTelemetry.HoneycombOptions.TracesDataset">
+            <summary>
+            Honeycomb dataset to store trace telemetry data. Defaults to <see cref="P:Honeycomb.OpenTelemetry.HoneycombOptions.Dataset"/>.
+            </summary>
+        </member>
+        <member name="P:Honeycomb.OpenTelemetry.HoneycombOptions.MetricsDataset">
+            <summary>
+            Honeycomb dataset to store metrics telemetry data. Defaults to "null".
+            <para/>
+            Required to enable metrics.
+            </summary>
+        </member>
+        <member name="P:Honeycomb.OpenTelemetry.HoneycombOptions.Endpoint">
+            <summary>
+            API endpoint to send telemetry data. Defaults to <see cref="F:Honeycomb.OpenTelemetry.HoneycombOptions.DefaultEndpoint"/>.
+            </summary>
+        </member>
+        <member name="P:Honeycomb.OpenTelemetry.HoneycombOptions.TracesEndpoint">
+            <summary>
+            API endpoint to send telemetry data. Defaults to <see cref="P:Honeycomb.OpenTelemetry.HoneycombOptions.Endpoint"/>.
+            </summary>
+        </member>
+        <member name="P:Honeycomb.OpenTelemetry.HoneycombOptions.MetricsEndpoint">
+            <summary>
+            API endpoint to send telemetry data. Defaults to <see cref="P:Honeycomb.OpenTelemetry.HoneycombOptions.Endpoint"/>.
+            </summary>
+        </member>
+        <member name="P:Honeycomb.OpenTelemetry.HoneycombOptions.SampleRate">
+            <summary>
+            Sample rate for sending telemetry data. Defaults to <see cref="F:Honeycomb.OpenTelemetry.HoneycombOptions.DefaultSampleRate"/>.
+            <para/>
+            See <see cref="T:Honeycomb.OpenTelemetry.DeterministicSampler"/> for more details on how sampling is applied.
+            </summary>
+        </member>
+        <member name="P:Honeycomb.OpenTelemetry.HoneycombOptions.ServiceName">
+            <summary>
+            Service name used to identify application. Defaults to unknown_process:processname.
+            </summary>
+        </member>
+        <member name="P:Honeycomb.OpenTelemetry.HoneycombOptions.ServiceVersion">
+            <summary>
+            Service version. Defaults to application assembly information version.
+            </summary>
+        </member>
+        <member name="P:Honeycomb.OpenTelemetry.HoneycombOptions.MeterNames">
+            <summary>
+            (Optional) Additional <see cref="T:System.Diagnostics.Metrics.Meter"/> names for generating metrics.
+            <see cref="P:Honeycomb.OpenTelemetry.HoneycombOptions.ServiceName"/> is configured as a meter name by default.
+            </summary>
+        </member>
+        <member name="P:Honeycomb.OpenTelemetry.HoneycombOptions.ResourceBuilder">
+            <summary>
+            The <see cref="P:Honeycomb.OpenTelemetry.HoneycombOptions.ResourceBuilder" /> to use to add Resource attributes to.
+            A custom ResouceBuilder can be used to set additional resources and then passed here to add
+            Honeycomb attributes.
+            </summary>
+        </member>
+        <member name="P:Honeycomb.OpenTelemetry.HoneycombOptions.AddBaggageSpanProcessor">
+            <summary>
+            Determines whether the <see cref="T:Honeycomb.OpenTelemetry.BaggageSpanProcessor"/> is added when configuring a <see cref="T:OpenTelemetry.Trace.TracerProviderBuilder"/>.
+            </summary>
+        </member>
+        <member name="P:Honeycomb.OpenTelemetry.HoneycombOptions.AddDeterministicSampler">
+            <summary>
+            Determines whether the <see cref="T:Honeycomb.OpenTelemetry.DeterministicSampler"/> sampler is added when configuring a <see cref="T:OpenTelemetry.Trace.TracerProviderBuilder"/>.
+            </summary>
+        </member>
+        <member name="P:Honeycomb.OpenTelemetry.HoneycombOptions.Debug">
+            <summary>
+            If set to true, enables the console span exporter for local debugging.
+            </summary>
+        </member>
+        <member name="M:Honeycomb.OpenTelemetry.HoneycombOptions.ApplyEnvironmentOptions(Honeycomb.OpenTelemetry.EnvironmentOptions)">
+            <summary>
+            Applies environment variable option overrides.
+            </summary>
+        </member>
+        <member name="M:Honeycomb.OpenTelemetry.HoneycombOptions.GetTracesEndpoint">
+            <summary>
+            Gets the <see cref="P:Honeycomb.OpenTelemetry.HoneycombOptions.TracesEndpoint" /> or falls back to the generic <see cref="P:Honeycomb.OpenTelemetry.HoneycombOptions.Endpoint" />.
+            </summary>
+        </member>
+        <member name="M:Honeycomb.OpenTelemetry.HoneycombOptions.GetMetricsEndpoint">
+            <summary>
+            Gets the <see cref="P:Honeycomb.OpenTelemetry.HoneycombOptions.MetricsEndpoint" /> or falls back to the generic <see cref="P:Honeycomb.OpenTelemetry.HoneycombOptions.Endpoint" />.
+            </summary>
+        </member>
+        <member name="M:Honeycomb.OpenTelemetry.HoneycombOptions.GetMetricsApiKey">
+            <summary>
+            Gets the <see cref="P:Honeycomb.OpenTelemetry.HoneycombOptions.MetricsApiKey" /> or falls back to the generic <see cref="P:Honeycomb.OpenTelemetry.HoneycombOptions.ApiKey" />.
+            </summary>
+        </member>
+        <member name="T:OpenTelemetry.Metrics.MeterProviderBuilderExtensions">
+            <summary>
+            Extension methods to configure <see cref="T:OpenTelemetry.Metrics.MeterProviderBuilder"/> to send metrics telemetry data to Honeycomb.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Metrics.MeterProviderBuilderExtensions.AddHoneycomb(OpenTelemetry.Metrics.MeterProviderBuilder,System.Action{Honeycomb.OpenTelemetry.HoneycombOptions})">
+            <summary>
+            Configures the <see cref="T:OpenTelemetry.Metrics.MeterProviderBuilder"/> to send metrics telemetry data to Honeycomb.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Metrics.MeterProviderBuilderExtensions.AddHoneycomb(OpenTelemetry.Metrics.MeterProviderBuilder,Honeycomb.OpenTelemetry.HoneycombOptions)">
+            <summary>
+            Configures the <see cref="T:OpenTelemetry.Metrics.MeterProviderBuilder"/> to send metrics telemetry data to Honeycomb using an instance of <see cref="T:Honeycomb.OpenTelemetry.HoneycombOptions"/>.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Metrics.MeterProviderBuilderExtensions.AddHoneycombOtlpExporter(OpenTelemetry.Metrics.MeterProviderBuilder,System.String,System.String,System.String)">
+            <summary>
+            Configures the <see cref="T:OpenTelemetry.Metrics.MeterProviderBuilder"/> with an OTLP exporter that sends metrics telemetry to Honeycomb.
+            </summary>
+        </member>
+        <member name="T:OpenTelemetry.Resources.ResourceBuilderExtensions">
+            <summary>
+            Extension methods to configure <see cref="T:OpenTelemetry.Resources.ResourceBuilder"/> with Honeycomb distro attributes.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Resources.ResourceBuilderExtensions.AddHoneycombAttributes(OpenTelemetry.Resources.ResourceBuilder)">
+            <summary>
+            Configures the <see cref="T:OpenTelemetry.Resources.ResourceBuilder"/> with Honeycomb attributes.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Resources.ResourceBuilderExtensions.AddRuntimeResource(OpenTelemetry.Resources.ResourceBuilder)">
+            <summary>
+            Determines process runtime resources and adds them to the <see cref="T:OpenTelemetry.Resources.ResourceBuilder"/>.
+            </summary>
+            <remarks>
+            See https://opentelemetry.io/docs/reference/specification/resource/semantic_conventions/process/#process-runtimes
+            </remarks>
+        </member>
+        <member name="T:OpenTelemetry.Trace.TracerProviderBuilderExtensions">
+            <summary>
+            Extension methods to configure <see cref="T:OpenTelemetry.Trace.TracerProviderBuilder"/> to send telemetry data to Honeycomb.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Trace.TracerProviderBuilderExtensions.AddHoneycomb(OpenTelemetry.Trace.TracerProviderBuilder,System.Action{Honeycomb.OpenTelemetry.HoneycombOptions})">
+            <summary>
+            Configures the <see cref="T:OpenTelemetry.Trace.TracerProviderBuilder"/> to send telemetry data to Honeycomb.
+            </summary>
+            <param name="builder"><see cref="T:OpenTelemetry.Trace.TracerProviderBuilder"/> being configured.</param>
+            <param name="configureHoneycombOptions">Action delegate that configures a <see cref="T:Honeycomb.OpenTelemetry.HoneycombOptions"/>.</param>
+            <returns>The instance of <see cref="T:OpenTelemetry.Trace.TracerProviderBuilder"/> to chain the calls.</returns>
+        </member>
+        <member name="M:OpenTelemetry.Trace.TracerProviderBuilderExtensions.AddHoneycomb(OpenTelemetry.Trace.TracerProviderBuilder,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Configures the <see cref="T:OpenTelemetry.Trace.TracerProviderBuilder"/> to send telemetry data to Honeycomb.
+            </summary>
+            <param name="builder"><see cref="T:OpenTelemetry.Trace.TracerProviderBuilder"/> being configured.</param>
+            <param name="configuration">The <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/> to configure with</param>
+            <returns>The instance of <see cref="T:OpenTelemetry.Trace.TracerProviderBuilder"/> to chain the calls.</returns>
+        </member>
+        <member name="M:OpenTelemetry.Trace.TracerProviderBuilderExtensions.AddHoneycomb(OpenTelemetry.Trace.TracerProviderBuilder,Honeycomb.OpenTelemetry.HoneycombOptions)">
+            <summary>
+            Configures the <see cref="T:OpenTelemetry.Trace.TracerProviderBuilder"/> to send telemetry data to Honeycomb using an instance of <see cref="T:Honeycomb.OpenTelemetry.HoneycombOptions"/>.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Trace.TracerProviderBuilderExtensions.AddBaggageSpanProcessor(OpenTelemetry.Trace.TracerProviderBuilder)">
+            <summary>
+            Configures the <see cref="T:OpenTelemetry.Trace.TracerProviderBuilder"/> to add the <see cref="T:Honeycomb.OpenTelemetry.BaggageSpanProcessor"/> span processor.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Trace.TracerProviderBuilderExtensions.AddDeterministicSampler(OpenTelemetry.Trace.TracerProviderBuilder,System.UInt32)">
+            <summary>
+            Configures the <see cref="T:OpenTelemetry.Trace.TracerProviderBuilder"/> to add the <see cref="T:Honeycomb.OpenTelemetry.DeterministicSampler"/> trace sampler.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Trace.TracerProviderBuilderExtensions.AddHoneycombOtlpExporter(OpenTelemetry.Trace.TracerProviderBuilder,System.String,System.String,System.String)">
+            <summary>
+            Configures the <see cref="T:OpenTelemetry.Trace.TracerProviderBuilder"/> with an OTLP exporter that sends trace telemetry to Honeycomb.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Extensions.Configuration.ConfigurationManagerExtensions">
+            <summary>
+            Extension methods for <see cref="T:Microsoft.Extensions.Configuration.ConfigurationManager"/> to help configure Honeycomb with OpenTelemetry.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Extensions.Configuration.ConfigurationManagerExtensions.GetHoneycombOptions(Microsoft.Extensions.Configuration.ConfigurationManager)">
+            <summary>
+            Attempts to retrieve an instance of <see cref="T:Honeycomb.OpenTelemetry.HoneycombOptions"/> used to configure the OpenTelemetry SDK.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Extensions.Configuration.ConfigurationInterfaceExtensions">
+            <summary>
+            Extension methods for <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/> to help configure Honeycomb with OpenTelemetry.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Extensions.Configuration.ConfigurationInterfaceExtensions.GetHoneycombOptions(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Attempts to retrieve an instance of <see cref="T:Honeycomb.OpenTelemetry.HoneycombOptions"/> used to configure the OpenTelemetry SDK.
+            </summary>
+        </member>
+    </members>
+</doc>

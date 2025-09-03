@@ -1,0 +1,779 @@
+﻿@model AAO.Common.BCSCSelfAssessment.QuestionDetails
+@{
+    ViewBag.Title = "Index";
+}
+@{
+    Layout = null;
+}
+@*<script src="~/Scripts/jquery-ui.js"></script>*@
+<script src="~/Scripts/jquery-ui.min.js"></script>
+<script src="~/Scripts/jquery.ui.touch-punch.js"></script>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-8 xs-nopadding">
+            <ul class="breadcrumb">
+                <li class="active">@Model.ExamName</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="assessment-screen" id="assessment_screen@(Model.serialNumber)" >
+    <div class="col-lg-12 xs-nopadding">
+        <div class="content-bg">
+            <div class="content-padding">
+                <div class="col-lg-6 col-sm-6 question-number grey-font font12">
+
+                    @if (@Model.ExamType != 3)
+                    {
+                        <p>
+                            Question <span class="question-count">@Model.serialNumber of @Model.QuestionCount</span>
+                        </p>
+                    }
+
+                </div>
+                <div class="col-lg-6 col-sm-6 nopadding assessment-features text-right">
+                    <ul>
+                        @if (@Model.ExamType != 4)
+                        {
+                            <li>
+                                <a href="#" data-toggle="modal" data-target="#createNotes">
+                                    <i class="fa fa-sticky-note-o text-center menu-icons"></i>
+                                    <span class="hidden-xs">Create Notes</span>
+                                </a>
+                            </li>
+                        }
+                        @if (@Model.ExamType != 4) 
+                        { 
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-star-o text-center menu-icons" id="Markstatus"> </i>
+                                    <div id="markQuestion" alreadyMarked="@Model.markCheck.ToString()">
+                                        @if (@Model.markCheck)
+                                        {
+                                            <span class="hidden-xs">Bookmarked</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="hidden-xs">Bookmark</span>
+                                        }
+                                    </div>
+                                </a>
+                            </li>
+                        }
+                        <li>
+                            <a href="#" id="Feedback">
+                                <i class="fa fa-envelope-o text-center menu-icons"></i>
+                                <span class="hidden-xs">Feedback</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="clearfix">
+                </div>
+
+                <!--Question div starts--->
+                <div id="dvQuestion">
+
+                    @if (Model.questionImage.Count == 0 && Convert.ToString(Model.questionText).ToLower() != "null")
+                    {
+                        @*@Html.LabelFor(model => model.questionText, (string)Model.questionText, new { id = "labelquestionTextId" })*@
+                        <div for="questionText" id="labelquestionTextId">@Html.Raw(Model.questionText)</div>
+                    }
+                    else
+                    {
+                        if (Model.questionImage.Count > 0)
+                        {
+                            if (Model.questionText.ToString().ToLower() != "null")
+                            {
+                                @*@Html.LabelFor(model => @Html.Raw(model.questionText), (string)Model.questionText)*@
+                                <div for="questionText" id="labelquestionTextId">@Html.Raw(Model.questionText)</div>
+
+                            }
+                            if (Model.questionImage.Count > 0 && Model.questionImage.Count < 4)
+                            {
+                                <div class="col-lg-12 nopadding">
+
+                                    @foreach (var item in Model.questionImage)
+                                    {
+                                        <div class="col-sm-2 col-xs-6 nopadding mar10">
+                                            <a href="@Url.Content(item.ImagePath)" class="thumbnail" data-toggle="modal" data-target="#myModal" data-image="@Url.Content(item.ImagePath)">
+                                                <img src="@Url.Content(item.ImagePath)" id="@item.QuestionImageId" alt="Image" class="img-responsive img-center img11" />
+                                                <div class="zoom-icon-background text-right myDIV">
+                                                    <i class="glyphicon glyphicon-zoom-in text-right">
+                                                    </i>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            if (Model.questionImage.Count == 4)
+                            {
+                                <div class="col-lg-12 nopadding">
+
+                                    @foreach (var item in Model.questionImage)
+                                    {
+
+                                        <div class="col-sm-2 col-xs-6 nopadding mar10">
+                                            <a href="@Url.Content(item.ImagePath)" class="thumbnail" data-toggle="modal" data-target="#myModal" data-image="@Url.Content(item.ImagePath)">
+                                                <img src="@Url.Content(item.ImagePath)" id="@item.QuestionImageId" alt="Image" class="img-responsive img-center img11" />
+                                                <div class="zoom-icon-background text-right myDIV"><i class="glyphicon glyphicon-zoom-in text-right" data-image="@Url.Content(item.ImagePath)"></i></div>
+                                            </a>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        }
+                    }
+                    <div class="clearfix"></div>
+
+                    <!----Challenge Mode Div start--->
+                    <div id="ChallengeModediv" style="display:none">
+                        <div class="form-group col-lg-10 nopadding martop20 marbot20 flex-row-bottom">
+                            @if (@Model.examAttemptText != "")
+                            {
+                                <div class="col-lg-10 col-sm-10 nopadding">
+                                    <textarea id="challengeModetext" name="challengeModetext" class="form-control" rows="5" disabled>@Model.examAttemptText</textarea>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-lg-10 col-sm-10 nopadding">
+                                    <textarea id="challengeModetext" name="challengeModetext" class="form-control" rows="5" placeholder="Type your answer..." onkeyup="nospaces(this)"></textarea>
+                                </div>
+                            }
+                            @*@if (Model.ExamType == 3)
+                        {
+                            <div class="col-lg-6 text-right nopadding xs-textleft xs-martop20">
+                                <button type="button" class="btn btn-secondary" id="SpacedRepetitionSubmitConfident" disabled="disabled">Submit Confident</button>
+                                <button type="button" class="btn btn-secondary" id="SpacedRepetitionSubmitNotConfident" disabled="disabled">Submit Not Confident</button>
+                            </div>
+                        }*@
+
+                            @*else
+                        {*@
+                            <div class="col-lg-2 col-sm-2">
+
+                                <button type="button" class="btn btn-primary" name="challengemode" id="challengemodeSubmit" disabled="disabled">Submit</button>
+                            </div>
+                            @*}*@
+                        </div>
+                        <div class="clearfix">
+                        </div>
+
+                    </div>
+                    <!--End of challenge mode div---->
+                </div>
+                <!--Question div ends!!!--->
+                <div class="clearfix"></div>
+
+                <!--Answer choice div--->
+                <div id="answerChoice" style="display:none">
+                    @{ string status = "disabled";}
+                    @foreach (var items in Model.choiceList)
+                    {
+                        if (Model.rightChoiceId == Model.examAttemptAnswerDTO.ChoiceId)
+                        {
+                            status = "disabled";
+                        }
+                        if (items.ChoiceImage.Count == 0 && items.choiceText.ToString().ToLower() != "null")
+                        {
+                            if (items.choiceId == Model.examAttemptAnswerDTO.ChoiceId && Model.examAttemptAnswerDTO.ChoiceId != 0)
+                            {
+                                <div class="radio radio ChoiceWrapper" id="radioBtn@(items.choiceId)">
+                                    <div class="col-lg-10 col-md-10 col-sm-10 width100percent padright0">
+                                        <div id="showdivstatus@(items.choiceId)">
+                                            @if (Model.ExamType == 1 || Model.examAnswerToShow == false)
+                                            {
+                                                <input type="radio" class="ChoiceAnswerclass" name="ChoiceAnswer" value="@items.choiceId" checked="checked" />@items.choiceSequence<span>. </span> @Html.Raw(items.choiceText)
+                                            }
+                                            else
+                                            {
+                                                <input type="radio" class="ChoiceAnswerclass" name="ChoiceAnswer" value="@items.choiceId" disabled="@status" checked="checked" />@items.choiceSequence<span>. </span> @Html.Raw(items.choiceText)
+                                            }
+                                            <input type="hidden" id="choiceSequence_@(items.choiceSequence)" value="@items.choiceId">
+
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2 text-right nopadding">
+                                        <div id="answertext@(items.choiceId)" class="font12"></div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            }
+                            else if (items.choiceId != Model.examAttemptAnswerDTO.ChoiceId && Model.examAttemptAnswerDTO.ChoiceId != 0)
+                            {
+                                <div class="radio radio ChoiceWrapper" id="radioBtn@(items.choiceId)">
+                                    <div class="col-lg-10 col-md-10 col-sm-10 width100percent padright0">
+                                        <div id="showdivstatus@(items.choiceId)">
+                                            @if (Model.ExamType == 1 || Model.examAnswerToShow == false)
+                                            {
+                                                <input type="radio" class="ChoiceAnswerclass" name="ChoiceAnswer" value="@items.choiceId" />@items.choiceSequence<span>. </span> @Html.Raw(items.choiceText)
+                                            }
+                                            else
+                                            {
+                                                <input type="radio" class="ChoiceAnswerclass" name="ChoiceAnswer" value="@items.choiceId" disabled="@status" />@items.choiceSequence<span>. </span> @Html.Raw(items.choiceText)
+                                            }
+                                            <input type="hidden" id="choiceSequence_@(items.choiceSequence)" value="@items.choiceId">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2 text-right nopadding">
+                                        <div id="answertext@(items.choiceId)" class="font12"></div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="radio radio ChoiceWrapper" id="radioBtn@(items.choiceId)">
+                                    <div class="col-lg-10 col-md-10 col-sm-10 width100percent padright0">
+                                        <div id="showdivstatus@(items.choiceId)">
+                                            <input type="radio" class="ChoiceAnswerclass" name="ChoiceAnswer" value="@items.choiceId" />@items.choiceSequence<span>. </span>@Html.Raw(items.choiceText)
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2 text-right nopadding">
+                                        <div id="answertext@(items.choiceId)" class="font12"></div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            if (items.ChoiceImage.Count > 0)
+                            {
+                                if (items.choiceId == Model.examAttemptAnswerDTO.ChoiceId && Model.examAttemptAnswerDTO.ChoiceId != 0)
+                                {
+                                    <div class="radio radio ChoiceWrapper" id="radioBtn@(items.choiceId)">
+                                        <div class="col-lg-10 col-md-10 col-sm-10 width100percent padright0">
+                                            <div id="showdivstatus@(items.choiceId)">
+                                                @if (Model.ExamType == 1 || Model.examAnswerToShow == false)
+                                                {
+                                                    <input type="radio" class="ChoiceAnswerclass" name="ChoiceAnswer" value="@items.choiceId" checked="checked" />@items.choiceSequence<span>. </span> if (items.choiceText.ToString().ToLower() != "null")
+                                                    {@Html.Raw(items.choiceText)}
+                                            }
+                                            else
+                                            {
+                                                <input type="radio" class="ChoiceAnswerclass" name="ChoiceAnswer" value="@items.choiceId" disabled="@status" checked="checked" />@items.choiceSequence<span>. </span> if (items.choiceText.ToString().ToLower() != "null")
+                                                {@Html.Raw(items.choiceText)}
+                                        }
+
+                                                <div class="col-lg-12 nopadding">
+
+                                                    @foreach (var item in items.ChoiceImage)
+                                                    {
+                                                        <div class="col-sm-2 nopadding mar10">
+                                                            <a class="thumbnail" data-toggle="modal" data-target="#myModal" data-image="@Url.Content(item.ImagePath)">
+                                                                <img src="@Url.Content(@item.ImagePath)" id="@item.AnswerChoiceImageId" alt="Image" class="img-responsive img-center img11" />
+                                                                <div class="zoom-icon-background myDIV">
+                                                                    <i class="glyphicon glyphicon-zoom-in text-right"></i>
+                                                                </div>
+                                                            </a>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2 text-right nopadding">
+                                            <div id="answertext@(items.choiceId)" class="font12"></div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                }
+                                else if (items.choiceId != Model.examAttemptAnswerDTO.ChoiceId && Model.examAttemptAnswerDTO.ChoiceId != 0)
+                                {
+                                    <div class="radio radio ChoiceWrapper" id="radioBtn@(items.choiceId)">
+                                        <div class="col-lg-10 col-md-10 col-sm-10 width100percent padright0">
+                                            <div id="showdivstatus@(items.choiceId)">
+                                                @if (Model.ExamType == 1 || Model.examAnswerToShow == false)
+                                                {
+                                                    <input type="radio" class="ChoiceAnswerclass" name="ChoiceAnswer" value="@items.choiceId" /> @items.choiceSequence<span>. </span> if (items.choiceText.ToString().ToLower() != "null")
+                                                    {@Html.Raw(items.choiceText)}
+                                            }
+                                            else
+                                            {
+                                                <input type="radio" class="ChoiceAnswerclass" name="ChoiceAnswer" value="@items.choiceId" disabled="disabled" /> @items.choiceSequence<span>. </span> if (items.choiceText.ToString().ToLower() != "null")
+                                                {@Html.Raw(items.choiceText)}
+
+                                        }
+
+                                                <div class="col-lg-12 nopadding">
+                                                    @foreach (var item in items.ChoiceImage)
+                                                    {
+                                                        <div class="col-sm-2 nopadding mar10">
+                                                            <a class="thumbnail" data-toggle="modal" data-target="#myModal" data-image="@Url.Content(item.ImagePath)">
+                                                                <img src="@Url.Content(@item.ImagePath)" id="@item.AnswerChoiceImageId" alt="Image" class="img-responsive img-center img11" />
+                                                                <div class="zoom-icon-background myDIV">
+                                                                    <i class="glyphicon glyphicon-zoom-in text-right"></i>
+                                                                </div>
+                                                            </a>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2 text-right nopadding">
+                                            <div id="answertext@(items.choiceId)" class="font12"></div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="radio radio ChoiceWrapper" id="radioBtn@(items.choiceId)">
+                                        <div class="col-lg-10 col-md-10 col-sm-10 width100percent padright0">
+                                            <div id="showdivstatus@(items.choiceId)">
+                                                <input type="radio" class="ChoiceAnswerclass" name="ChoiceAnswer" value="@items.choiceId" />@items.choiceSequence<span>. </span> @if (items.choiceText.ToString().ToLower() != "null")
+                                                {@Html.Raw(items.choiceText)}
+                                                <div class="col-lg-12 nopadding">
+                                                    @foreach (var item in items.ChoiceImage)
+                                                    {
+                                                        <div class="col-sm-2 nopadding mar10">
+                                                            <a class="thumbnail" data-toggle="modal" data-target="#myModal" data-image="@Url.Content(item.ImagePath)">
+                                                                <img src="@Url.Content(@item.ImagePath)" alt="Image" id="@item.AnswerChoiceImageId" class="img-responsive img-center img11" />
+                                                                <div class="zoom-icon-background myDIV">
+                                                                    <i class="glyphicon glyphicon-zoom-in text-right"></i>
+                                                                </div>
+                                                            </a>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2 text-right nopadding">
+                                            <div id="answertext@(items.choiceId)" class="font12"></div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                }
+                            }
+                        }
+                    }
+                </div>
+                <!----End of answer choice div--->
+
+                <!---Challenge mode yes/no div--->
+                <div id="AnswerChoiceSelectDiv" style="display:none">
+                    <div class="form-group form-inline martop20 marbot20">
+                        <span class="padright10">Was the answer you wrote correct?<span class="font-red">*</span></span>
+                        <label class="radio-inline">
+                            <input type="radio" name="inlineRadioOptions" id="inlineRadio1" class="AnswerRadio" value="yes" />
+                            Yes
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="inlineRadioOptions" id="inlineRadio2" class="AnswerRadio" value="no" />
+                            No
+                        </label>
+                    </div>
+                </div>
+                <!--end of Challenge mode yes/no-->
+
+                <!---Hidden fields--->
+                <input type="hidden" name="currentQuestionId" id="currentQuestionId" value="@Model.questionId" />
+                <input type="hidden" name="userselectedchoiceId" id="userselectedchoiceId" value="@Model.examAttemptAnswerDTO.ChoiceId" />
+                @*<input type="hidden" name="rightchoiceid" id="rightchoiceid" value="@Model.rightChoiceId" />*@
+                <input type="hidden" name="isRightChoiceflag" id="isRightChoiceflag" value="@Model.examAttemptAnswerDTO.IsRight.ToString()" />
+                <input type="hidden" name="userSelectedChoiceflag" id="userSelectedChoiceflag" value="" />
+                <input type="hidden" name="Assnext" id="Assnext" value="@Model.nextId" />
+                <input type="hidden" name="Assprev" id="Assprev" value="@Model.previousId" />
+                <input type="hidden" name="AssExamId" id="AssExamId" value="@Model.examId" />
+                <input type="hidden" name="AsscurrentQuestionId" id="AsscurrentQuestionId" value="@Model.questionId" />
+                <input type="hidden" name="AssExamattemptId" id="AssExamattemptId" value="@Model.examAttemptId" />
+                <input type="hidden" name="AssmarkedStatus" id="AssmarkedStatus" value="@Model.markCheck" />
+                <input type="hidden" name="AssexamMode" id="AssexamMode" value="@Model.examMode" />
+                @{
+                    string nextButtonClassName = string.Empty;
+                }
+                <!---Hidden fields ends-->
+                <div class="clearfix"></div>
+                <div class="col-lg-6 text-left nopadding button-section">
+
+                    @if ((int?)Model.previousId != -1)
+                    {
+                        <button type="button" class="btn btn-primary prev-step prevID" id="prevID"><i class="fa fa-angle-left"></i> Previous</button>
+                    }
+
+                    @if (Model.ExamType == 3)
+                    {
+                        <button type="button" class="btn btn-primary disabled" disabled id="SpacedRepetitionSubmitConfident">Submit Confident</button>
+                        <button type="button" class="btn btn-primary disabled" disabled id="SpacedRepetitionSubmitNotConfident">Submit Not Confident</button>
+                    }
+                    @{
+                        nextButtonClassName = ((Model.ExamType != 3 || Model.LastButtonClicked == 1) ? "visible" : "hidden");
+                    }
+
+                    @if ((int?)Model.nextId != -2)
+                    {
+                        <button type="button" class="btn btn-primary next-step nextID @nextButtonClassName" id="nextID">Next <i class="fa fa-angle-right"></i></button>
+                    }
+                    else
+                    {
+                        if (Model.ExamType != 3)
+                        {
+                            <button type="button" class="btn btn-primary" id="Next-view-progress">Next  <i class="fa fa-angle-right"></i></button>
+                        }
+                    }
+                </div>
+                <div class="col-lg-6 text-right nopadding xs-textleft xs-martop20">
+                    @if (Model.ExamType == 3)
+                    {
+                        @*<button type="button" class="btn btn-secondary" id="view-progress">View Progress</button>*@
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-secondary" id="view-progress">View Progress</button>
+                        <button type="button" class="btn btn-secondary saveAndExit" id="saveAndExit">Save & Exit</button>
+                    }
+                </div>
+            </div>
+            <div class="col-lg-12 nopadding">
+                <hr>
+            </div>
+            <div class="clearfix"></div>
+
+            <!--Explanation Div starts--->
+            <div id="ExplainationDiv" style="display:none">
+                <div class="col-lg-12 nopadding">
+                    <div class="col-lg-8 col-md-7 col-sm-5 view-explanation">
+                        Explanation & Notes
+                    </div>
+                    <!-- Peer Details-->
+                    <!-- Peer Details Part -1 -->
+                    <div class="col-lg-4 col-md-5 flex-sample" id="peerdetailsOnload">
+                        <div class="col-lg-2 padleft0 padright10">
+                            <i class="fa fa-users text-center menu-icons"></i>
+                        </div>
+                        <div class="col-lg-10 peer-comparison font12 nopadding">
+                            @{ string responsetext = string.Empty;
+                                string percentage = string.Empty; }
+
+                            @foreach (var item in Model.PeerDetails)
+                            {
+                                if (Convert.ToInt32(@item.IsRightChoice) == 1)
+                                {
+                                    percentage = @item.ChoicePercentage.ToString("0");
+
+                                }
+                            }
+
+                            @if (Model.PeerDetails[0].UserType == 0)
+                            {
+                                responsetext = "% of peers answered correctly.";
+                            }
+                            else
+                            {
+                                responsetext = "% of respondents answered correctly.";
+                            }
+
+                            <span id="peerstext">@percentage@responsetext</span>
+
+                            <div class="PeerDetails">
+                                <ul style="padding:0;" class="margin0">
+                                    @{var peerdata = Model.PeerDetails
+                                            .Where(s => s.ChoiceId != 0)
+                                            .OrderBy(s => s.ChoiceOption); }
+                                    @foreach (var item in peerdata)
+                                    {
+                                        if (Convert.ToInt32(@item.IsRightChoice) == 1)
+                                        {
+                                            <li id="PeerDetailsLiId@(item.ChoiceId)" class="PeerDetailsClass font-green"> @item.ChoiceOption. @item.ChoicePercentage.ToString("0")%</li>
+                                        }
+                                        else if (@item.ChoiceId == @Model.examAttemptAnswerDTO.ChoiceId)
+                                        {
+                                            <li id="PeerDetailsLiId@(item.ChoiceId)" class="PeerDetailsClass font-red"> @item.ChoiceOption. @item.ChoicePercentage.ToString("0")%</li>
+                                        }
+                                        else
+                                        {
+                                            <li id="PeerDetailsLiId@(item.ChoiceId)" class="PeerDetailsClass"> @item.ChoiceOption. @item.ChoicePercentage.ToString("0")%</li>
+                                        }
+                                    }
+
+
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Peer Details Part -2  -->
+
+                    <div class="col-lg-4 col-md-5 flex-sample" style="display:none" id="peerdetailsOnSelect">
+                        <div class="col-lg-2 padleft0 padright10">
+                            <i class="fa fa-users text-center menu-icons"></i>
+                        </div>
+                        <div class="col-lg-10 peer-comparison font12 nopadding">
+                            <span id="comparisonPercentSpan"></span>
+                            <div class="PeerDetails">
+                                <ul style="padding:0;list-style:none;" id="PeerDetailsDiv" class="margin0"></ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End of Peer Details-->
+                </div>
+                <div id="Contentcontainer" style="display:none">
+                    @Html.Partial("QuestionListIndexContent", Model)
+                </div>
+            </div>
+            <!--Explanation div end---->
+
+            <div class="grey-font font12 content-padding" style="display:flex">
+                <div class="flex-row">
+                    <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                </div>&nbsp;
+                <div class="flex-row">
+                    All content on the Academy's BCSC Self-Assessment Program is protected by copyright law and the <a href="https://www.aao.org/terms-of-service" class="external-link" target="_blank" rel="nofollow noopener" data-feathr-click-track="true" data-feathr-link-aids="5f7208a55f5c3394632f353d">Terms of Service</a>. This content may not be reproduced, copied, or put into any artificial intelligence program, including large language and generative AI models, without <a href="mailto:permissions@aao.org" class="external-link" target="_blank" rel="nofollow noopener" data-feathr-click-track="true" data-feathr-link-aids="5f7208a55f5c3394632f353d">permission</a> from the Academy.
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="clearfix"></div>
+</div>
+
+<!----Create notes dialog-->
+<div id="createNotes" class="modal draggable fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close DialogClose " id="AddNotesCloseIcon" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Create Notes</h4>
+            </div>
+            <div class="modal-body">
+                <span class="Notespan error-text"></span>
+                <textarea class="martop20" rows="6" id="NoteTextArea" style="width:100%;padding:0;"></textarea>
+                <i>* Notes will be deleted if the question is removed.</i>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="CancelNoteBtn">Cancel</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="AddNoteBtn">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!---Create notes dialog end-->
+
+<!----View Progresss-->
+<div id="myNav" class="overlay">
+    <a href="javascript:void(0)" class="closebtn">&times;</a>
+    <div class="overlay-content">
+        <div class="container-fluid">
+            <div class="col-lg-12 xs-nopadding">
+                <h3 class="ViewProgressExamTitle">
+                    @Model.ExamName
+                </h3>
+                <hr>
+                <div class="col-lg-6 col-md-6 col-sm-6 nopadding marbot10">
+                    <div>
+                        <span> Click on a question number to return to that question.</span>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 nopadding text-right">
+                    <i class="fa fa-star-o text-center padright10"></i>Bookmarked
+                    <i class="fa fa-sticky-note-o text-center padleft30 padright10"></i>Notes
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="col-lg-3 col-md-3 xs-nopadding">
+                <div id="table-container">
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3">
+                <div id="SecondTableId"></div>
+            </div>
+            <div class="col-lg-3 col-md-3">
+                <div id="ThirdTableId"></div>
+            </div>
+            <div class="col-lg-3 col-md-3">
+                <div id="FourthTableId"></div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <button type="button" class="btn btn-primary pull-right marbot30" id="submit"> Submit Exam</button>
+    </div>
+
+    <div id="userEmail" style="display:none;">
+        @{ string[] email = (@System.Web.HttpContext.Current.User.Identity.Name.Split('|'));
+            @email[0]
+        }
+    </div>
+    <div id="userName" style="display:none;" class="username pull-right">
+        @{ string[] Name = (@System.Web.HttpContext.Current.User.Identity.Name.Split('|'));
+            @Name[1]
+        }
+    </div>
+
+
+    <div id="VersionInfo" style="display:none;"></div>
+
+</div>
+<!---End of View Progress-->
+
+<!-----Image model--->
+<div id="myModal" class="modal draggable fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">×</span><span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="image-gallery-title"></h4>
+            </div>
+
+            <div class="modal-body">
+                <img class="img-responsive" style="margin:0 auto;" src="" alt="" id="showimg">
+            </div>
+        </div>
+    </div>
+</div>
+<!---End of Image Model---->
+
+<!--FeedBack send confirm dialog-->
+<div class="modal fade" id="sendFeedbackconfirmDialog" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Feedback</h4>
+            </div>
+            <div class="modal-body">
+                <p>Thank you! Your feedback has been submitted to the Academy.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!---Feedback send dialog end--->
+
+<!---send Feedback Error dialog--->
+<div class="modal fade" id="sendFeedbackErrorDialog" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Feedback Error</h4>
+            </div>
+            <div class="modal-body">
+                <p> A problem occurred while sending feedback. Please try again.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!----Send feedback error dialog end-->
+<!--Exam submitted successfully Dialog model---->
+
+<div class="modal fade" id="SubmittedSuccessDialog" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Exam Submitted</h4>
+            </div>
+            <div class="modal-body">
+                <p>Exam submitted successfully.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!----Exam submitted dialog end-->
+
+<div class="modal fade" id="SubmittedErrorDialog" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Exam Submitted</h4>
+            </div>
+            <div class="modal-body">
+                <p>An error occurred while submitting exam. Please try again.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!---Exam submit error dialog--->
+<!---Exam Submit error dialog end--->
+
+<script>
+
+    var AssessmentQuestionViewModel = {
+        next : '@Html.Raw((int?)Model.nextId)',
+        prev : @Html.Raw((int?)Model.previousId),
+        examId :  '@Html.Raw((int?)Model.examId)',
+        currentQuestionId : @Html.Raw((int?)Model.questionId),
+        examAttemptId: @Html.Raw((int?)Model.examAttemptId),
+        markedStatus : (@Html.Raw((bool?)Model.markCheck).ToString().ToLower()),
+        examMode : (@Html.Raw((bool?)Model.examMode).ToString().ToLower()),
+        examAnswerToShow : (@Html.Raw((bool?)Model.examAnswerToShow).ToString().ToLower()),
+        examStatus: @Html.Raw((int?)Model.examStatus),
+        rightChoiceId: 0,
+        choiceList: @(Html.Raw(Json.Encode(@Model.choiceList))),
+        isYourAnswerCorrect:'@Html.Raw((int?)Model.examAttemptAnswerDTO.IsYourAnswer)',
+        examTimeType: (@Html.Raw((bool?)Model.examTimeType).ToString().ToLower()),
+        friendlyId: @Html.Raw((int?)Model.FriendlyId),
+        topicName: '@Html.Raw((string)Model.TopicName)',
+        examType: @Html.Raw((int?)Model.ExamType),
+        choiceId: '@Html.Raw((int?)Model.examAttemptAnswerDTO.ChoiceId)',
+        isRightId:(@Html.Raw((bool?)Model.examAttemptAnswerDTO.IsRight).ToString().ToLower()),
+        PeerUserType: '@Html.Raw((int?)Model.PeerDetails[0].UserType)',
+        assessment_screenNumber: '@Html.Raw((int?)Model.serialNumber)'
+    };
+    $(document).ajaxError(function (xhr, props) {
+        if (props.status === 401) {
+            /**/
+            window.location.href = '/Login/SignOut';
+        }
+    });
+
+    function nospaces(t) {
+        if (t.value.match(/^\s+/g, "")) {
+            t.value = t.value.replace(/\s/g, '');
+        }
+    }
+
+    $(document).ready(function () {
+
+        $('.responsive-tabs').responsiveTabs({
+            accordionOn: ['xs', 'sm']
+        });
+
+        $('a[href^="http://"], a[href^="https://"]').click(function(e){
+            var decodedUri=decodeURI(this.href);
+            decodedUri= decodedUri.replace(/[^\x20-\x7E]/g, '');
+            $(this).attr("href", decodedUri);
+            $(this).attr('target','_blank');
+        });
+        // $('a[href^="http://"], a[href^="https://"]').not('a[href*=gusdecool]').attr('target', '_blank');
+
+        if(parseInt($("input[name='ChoiceAnswer']:checked").val())>0)
+        {
+            $("#nextID").removeClass("hidden");
+            $("#nextID").addClass("visible");
+        }
+    })
+</script>
+
+<script src="@Url.Content("~/Scripts/Assessment/AssessmentQuestion.js") " type="text/javascript"></script>
+

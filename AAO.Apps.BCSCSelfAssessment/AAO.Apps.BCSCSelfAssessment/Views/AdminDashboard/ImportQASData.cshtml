@@ -1,0 +1,84 @@
+﻿
+@{
+    ViewBag.Title = "ImportQASData";
+}
+
+<h2>Import/Sync QAS Data</h2>
+<hr />
+    <div class="col-lg-6 text-left marbot20" id="ImportQuestion">
+        <div class="clearfix"></div>
+        <div style="float:left;color:red" id="message"></div>
+        <b>Import Question from QAS</b>   <input type="submit" value="Import" id="submit" class="btn btn-default btn-primary" />
+</div>
+        <div class="clearfix"></div>
+<hr />
+<div class="col-lg-6 text-left marbot20">
+    <b>Sync DB from QAS data</b>  <input type="submit" value="Update" id="Update" class="btn btn-default btn-primary" />
+</div>
+<div class="clearfix"></div>
+<hr/>
+<div class="col-lg-6 text-left marbot20">
+    <b> Sync DB for Retire Question </b>     <input type="submit" value="Retired" id="Retired" class="btn btn-default btn-primary" />
+</div>
+
+<div class="clearfix"></div>
+
+
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: '@Url.Action("GetQuestionCountFromQAS")',
+            type: 'POST',
+            success: function (result) {
+                if(result>0)
+                {
+                    $("#submit").prop('disabled', true);
+                    $("#submit").hide();
+                    $("#ImportQuestion").hide();
+                    $('hr:first').remove();
+                   // $("#submit").prop('disabled', true);
+                    // $("#message").html("<b>Total No of Question " + result + ", System will not allow to import the further question. </b>");            
+                }
+                else
+                {
+                    $("#submit").prop('disabled', false);
+                    $("#ImportQuestion").show();
+                    $("#submit").show();
+                    //$("#submit").prop('disabled', false);
+                }
+            }
+        });
+
+        $("#submit").bind("click", function () {
+            if (confirm('Are you sure you want to Import question?')) {
+                $.ajax({
+                    url: '@Url.Action("SubmitQASData")',
+                    type: 'POST',
+                    success: function () {
+                    }
+                });
+            }
+        });
+        $("#Update").bind("click", function () {
+            if (confirm('Are you sure you want to update question?')) {
+                $.ajax({
+                    url: '@Url.Action("UpdateQASData")',
+                    type: 'POST',
+                    success: function () {
+                    }
+                });
+            }
+        });
+
+        $("#Retired").bind("click", function () {
+            if (confirm('Are you sure you want to Retire question?')) {
+                $.ajax({
+                    url: '@Url.Action("RetiredQASData")',
+                    type: 'POST',
+                    success: function () {
+                    }
+                });
+            }
+          });        
+    });
+</script>

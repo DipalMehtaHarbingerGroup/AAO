@@ -1,0 +1,162 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+@*<script>jQuery.noConflict(true);</script>
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/scripts/DataTables/jquery.dataTables.js"></script>
+<link href="~/Content/DataTables/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css" />
+<script src="~/scripts/DataTables/dataTables.bootstrap4.js"></script>*@
+<script src="~/Scripts/moment.min.js"></script>
+<script src="~/Scripts/daterangepicker.js"></script>
+<link href="~/Content/admin.css" rel="stylesheet" />
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <ul class="breadcrumb">
+                <li class="active">Question Performance</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="col-lg-12">
+
+    <div class="content-bg">
+        <div class="content-padding relative-position">
+
+            <div class="filter-wrapper custom-filter-wrapper">
+
+                <div class="inline-block filter-btn">
+                    <label class="padright10 filter-label">Filter by</label>
+
+                    <div id="reportrange" class="reportdatepickerrange filter-datepicker">
+                        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+                        <span></span>
+                    </div>
+
+                    <div class="inline-block filter-all">
+                        <select id="PGYear" name="optionsval" class="form-control form-control-sm">
+                            <option value="-1" disabled selected hidden>All</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- Button trigger modal -->
+                <div class="inline-block ex-btn">
+                    <input type="button" value="Export" id="Export" class="btn btn-primary marleft10 btn-export">
+                </div>
+                <div class="inline-block btn-pipeline"></div>
+                <div class="inline-block eq-btn">
+                    <button type="button" id="ExportAll" class="btn btn-primary marleft10 btn-export" data-toggle="modal" data-target="#exampleModalLong">
+                        Raw Data Export
+                    </button>
+                </div>
+
+            </div>
+
+            @*</div>*@
+            <div class="col-lg-12 nopadding table-responsive">
+                <table class="table table-striped" id="QuestionPerformanceReport">
+                    <thead>
+                        <tr>
+                            <td>Question Stem</td>
+                            <td>Question Id</td>
+                            <td>Section</td>
+                            <td>Chapter</td>
+                            <td>Topic</td>
+                            <td># users answered correctly</td>
+                            <td># users answered incorrectly</td>
+                            <td># users repeated at least once in SR mode</td>
+                            <td>% users answered correctly</td>
+                            <td>% users answered incorrectly</td>
+                            <td>Correct answer</td>
+                            <td>Distractor 1</td>
+                            <td># who chose Distractor 1</td>
+                            <td>Distractor 2</td>
+                            <td># who chose Distractor 2</td>
+                            <td>Distractor 3</td>
+                            <td># who chose Distractor 3</td>
+                            <td>Avg # times incorrect before correct</td>
+                            <td># users correct first try</td>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        <div class="clearfix">
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalLong" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="exampleModalLongTitle" data-dismiss="modal">Raw Data Export</h3>
+                <button type="button" class="close" style="position:absolute; right: 20px;
+    top: 20px;" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="form-group row">
+                    <label class="col-sm-12 col-form-label">Select filters to export questions</label>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Date Range</label>
+                    <div class="col-sm-9">
+                        <div id="reportrangeModel" class="pull-left reportdatepickerrange filter-datepicker datepicker">
+                            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="inputPassword" class="col-sm-3 col-form-label">User Year</label>
+
+                    <div class="col-sm-9">
+                        <select id="PGYearModel" name="optionsval" class="w-auto form-control form-control-sm" style="width:210px">
+                            <option value="-1" disabled selected hidden>All</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">With Opt-out Users</label>
+                    <div class="col-sm-9">
+                        <div class="toggle-switch" id="exammode14">
+                            <input class="toggle-switch-checkbox" data-val="true" data-val-required="." id="ExamTimeType" name="ExamTimeType" type="checkbox" value="true">
+
+                            <label class="toggle-switch-label" for="ExamTimeType">
+                                <span class="toggle-switch-inner"></span>
+                                <span class="toggle-switch-switch"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="ExportQuestions" class="btn btn-primary" data-dismiss="modal">Export</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/AdminQuePerformanceReport/AdminQuePerformanceReport.js"></script>
+<script src="~/Scripts/AdminQuePerformanceReport/SAPReport.js"></script>
+
+<style>
+    .table-responsive {
+        min-height: 300px;
+    }
+</style>

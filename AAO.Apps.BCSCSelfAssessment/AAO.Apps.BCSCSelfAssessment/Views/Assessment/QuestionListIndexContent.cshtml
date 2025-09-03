@@ -1,0 +1,2762 @@
+﻿@model AAO.Common.BCSCSelfAssessment.QuestionDetails
+@{
+    Layout = null;
+}
+
+<script src="~/Scripts/jquery-ui.min.js"></script>
+<script src="~/Scripts/jquery.ui.touch-punch.js"></script>
+
+<div class="col-lg-12 tab-section">
+    <ul class="nav nav-tabs responsive-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#discussion" aria-controls="discussion" role="tab" data-toggle="tab">Discussion</a></li>
+        @*<li role="presentation"><a href="#bcsc-excerpt" aria-controls="bcsc-excerpt" role="tab" data-toggle="tab">BCSC Excerpt</a></li>*@
+        <li role="presentation"><a href="#bcsc-excerpt" aria-controls="bcsc-excerpt" role="tab" data-toggle="tab" id="bcsc-excerpt_a">BCSC Excerpt</a></li>
+        <li role="presentation"><a href="#references" aria-controls="references" role="tab" data-toggle="tab">References</a></li>
+        <li role="presentation" id="relatedContents_tab"><a href="#relatedContents" aria-controls="relatedContents" role="tab" data-toggle="tab" id="relatedContents_tab_a">Related Content</a></li>
+        <li role="presentation"><a href="#notes" aria-controls="notes" role="tab" data-toggle="tab">Notes</a></li>
+    </ul>
+    <div class="tab-content" id="TabContentId">
+        <div role="tabpanel" class="tab-pane active padtop20" id="discussion">
+            <div class="col-lg-12">
+                @if (!string.IsNullOrEmpty(@Model.questionDiscussion.discussionText))
+                {
+                    <p>@Html.Raw(@Model.questionDiscussion.discussionText)</p>
+                }
+                @if (@Model.questionDiscussion.discussionImage != null)
+                {
+                    foreach (var image in @Model.questionDiscussion.discussionImage)
+                    {
+                        @*<img src="@Url.Content(image.ImagePath)" alt="Image" style="width:2%!important" />*@
+                        <div class="col-lg-12 nopadding">
+
+                            <div class="col-sm-2 col-xs-6 nopadding mar10">
+                                <a href="@Url.Content(image.ImagePath)" class="thumbnail" data-toggle="modal" data-target="#myModal" data-image="@Url.Content(image.ImagePath)">
+                                    <img src="@Url.Content(image.ImagePath)" id="5525" alt="Image" class="img-responsive img-center img11">
+                                    <div class="zoom-icon-background text-right myDIV">
+                                        <i class="glyphicon glyphicon-zoom-in text-right">
+                                        </i>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        @*<p>&nbsp;</p>*@
+                        <div class="clearfix"></div>
+                    }
+                }
+            </div>
+        </div>
+
+        <div role="tabpanel" class="tab-pane padtop20" id="bcsc-excerpt">
+            <div class="col-lg-12">
+                <div class="panel-group" id="accordion">
+                    @*@foreach (var excerptHeading in @Model.ExcerptHeadings)
+                        {
+                            <div class="panel panel-default notes-panel" excerptid="@(excerptHeading.HeadingId)">
+                                <div class="panel-heading notes-panel-bg" role="tab">
+                                    <div class="panel-title view-title clearfix">
+                                        <a role="button" data-toggle="collapse" class="accordian-tab notes-accordian-tab" data-parent="#accordion" href="#@(excerptHeading.HeadingId + "collapseOne")" aria-expanded="true" aria-controls="@(excerptHeading.HeadingId + "collapseOne")" excerptid="@(excerptHeading.HeadingId)">
+                                            <div id="@("quesText"+excerptHeading.HeadingId)" class="question xs-padleft50 font-bold">
+
+                                                <div id="quesTextDiv@(excerptHeading.HeadingId)">
+                                                    @Html.Raw(excerptHeading.HeadingText)
+
+                                                    <li class="question-number-view-exam-details_Excerpt" style="list-style-type:none;margin-top:-20px;">
+                                                        <i class="fa fa-lg fa-angle-right expand"> <span class="expand">expand</span></i>
+                                                    </li>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="@(excerptHeading.HeadingId + "collapseOne")" class="panel-collapse collapse" aria-labelledby="@(excerptHeading.HeadingId + "headingOne")" aria-expanded="true" excerptid="@(excerptHeading.HeadingId)">
+                                <div class="panel-body">
+                                    <div class="accordion nested-accordion" id="@(excerptHeading.HeadingId + "accordion")">
+                                        <div class="accordion-group">
+                                            <div class="accordion-heading">
+                                                <div id="@(excerptHeading.HeadingId +"ContainerDiv")">
+                                                    @Html.Raw(excerptHeading.Excerpts)
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--  End Of Accordian -->
+                        }*@
+
+                </div>
+                @*<script>
+                            if(@Model.ExcerptHeadings.Count<=1){
+                            $('#1collapseOne').collapse({
+                                toggle: true
+                            });
+                            $("#quesText" + 1 + " .question-number-view-exam-details_Excerpt i").removeClass("fa-angle-right").addClass("fa-angle-up");
+                            }
+                    </script>*@
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane padtop20" id="references">
+            <div class="col-lg-12">
+                @foreach (var reference in @Model.references)
+                {
+                    <p>@Html.Raw(@reference)</p>
+                }
+            </div>
+        </div>
+
+        <div role="tabpanel" class="tab-pane padtop20" id="relatedContents">
+            <div class="col-lg-12">
+                @foreach (var relatedContent in @Model.RelatedContents)
+                {
+                    <p>@Html.Raw(@relatedContent)</p>
+                }
+            </div>
+        </div>
+
+        <div role="tabpanel" class="tab-pane padtop20" id="notes">
+            <div class="col-lg-12">
+                @foreach (string notes in @Model.notes)
+                {
+                    <p>@Html.Raw(@notes)</p>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+@{
+    string nextButtonClassName = string.Empty;
+}
+<div class="col-lg-12 p-lg">
+    <div class="col-lg-6 text-left nopadding button-section">
+
+        @if ((int?)Model.previousId != -1)
+        {
+            <button type="button" class="btn btn-primary prev-step prevID" id="prevID"><i class="fa fa-angle-left"></i> Previous</button>
+        }
+
+        @*@if (Model.ExamType == 3)
+            {
+                <button type="button" class="btn btn-primary disabled" disabled id="SpacedRepetitionSubmitConfident">Submit Confident</button>
+                <button type="button" class="btn btn-primary disabled" disabled id="SpacedRepetitionSubmitNotConfident">Submit Not Confident</button>
+            }*@
+        @{
+            nextButtonClassName = ((Model.ExamType != 3 || Model.LastButtonClicked == 1) ? "visible" : "hidden");
+        }
+
+        @if ((int?)Model.nextId != -2)
+        {
+            <button type="button" class="btn btn-primary next-step nextID visible" id="nextID">Next <i class="fa fa-angle-right"></i></button>
+        }
+        else
+        {
+            if (Model.ExamType != 3)
+            {
+                <button type="button" class="btn btn-primary" id="Next-view-progress">Next  <i class="fa fa-angle-right"></i></button>
+            }
+        }
+    </div>
+    <div class="col-lg-6 text-right nopadding xs-textleft xs-martop20">
+        @if (Model.ExamType == 3)
+        {
+            @*<button type="button" class="btn btn-secondary" id="view-progress">View Progress</button>*@
+        }
+        else
+        {
+            <button type="button" class="btn btn-secondary" id="view-progress">View Progress</button>
+            <button type="button" class="btn btn-secondary saveAndExit" id="saveAndExit">Save & Exit</button>
+        }
+    </div>
+</div>
+<div class="clearfix">
+</div>
+
+@*<script>
+        $(document).ready(function () {
+            $('div._idGenObjectStyleOverride-1 img').addClass('thumbnail');
+            $('img[class^="_idGenObjectAttribute"]').addClass('thumbnail');
+
+            // Append zoom icon to each thumbnail in divs with id starting with "_idContainer"
+            $('div._idGenObjectStyleOverride-1 .thumbnail').each(function () {
+                $(this).after('<div class="zoom_icon"><i class="glyphicon glyphicon-zoom-in text-right"></i></div>');
+            });
+
+            $('img[class^="_idGenObjectAttribute"].thumbnail').each(function () {
+                var zoomIconDiv = $('<div class="zoom_icon"><i class="glyphicon glyphicon-zoom-in text-right"></i></div>');
+                $(this).after(zoomIconDiv);
+            });
+
+            // Event listener for all divs with id starting with "_idContainer"
+            $('div._idGenObjectStyleOverride-1').on('click', function () {
+                var imgElement = $(this).find('img');
+                var lowResImage = imgElement.attr('src');
+                var highResImage = appendSuffix(lowResImage, '_O');
+                showModal(highResImage);
+            });
+
+            $('img[class^="_idGenObjectAttribute"]').on('click', function (event) {
+                var lowResImage = $(this).attr('src');
+                var highResImage = appendSuffix(lowResImage, '_O');
+                showModal(highResImage);
+                event.stopPropagation();
+             });
+
+
+            // Event listener for all zoom icons
+            $('.zoom-icon').on('click', function (event) {
+                var lowResImage = $(this).prev().attr('src');
+                var highResImage = appendSuffix(lowResImage, '_O');
+                showModal(highResImage);
+                event.stopPropagation(); // Prevent triggering the thumbnail click event
+            });
+
+            // Function to append "_O" before the file extension
+            function appendSuffix(imageSrc, suffix) {
+                return imageSrc.replace(/(\.jpg|\.png|\.tif|\.tiff)$/, suffix + '$1');
+            }
+
+            // Function to show the modal with the high-resolution image
+            function showModal(imageSrc) {
+                $('#showimg').attr('src', imageSrc);
+                $('#myModal').modal('show');
+            }
+        });
+    </script>*@
+
+<script>
+$(document).ready(function () {
+    // Use event delegation and ensure the event handler is attached only once
+    $(document).off('click', '#bcsc-excerpt_a').on('click', '#bcsc-excerpt_a', function (event) {
+        event.preventDefault(); // Prevent the default action
+
+        $.ajax({
+            data: {
+                questionId: @(Model.questionId),
+                examId: @(Model.examId),
+                userid: @(Model.userId),
+            },
+            url: '/Assessment/GetExcerpt',
+            async: false,
+            success: function (response) {
+                var $accordion = $('#accordion');
+                var $htmlContent = $('<div></div>');
+
+                // Clear the existing content in the accordion
+                $accordion.empty();
+
+                response.data.ExcerptHeadings.forEach(function (excerptHeading) {
+                    var excerptId = excerptHeading.HeadingId;
+                    var excerptText = excerptHeading.HeadingText;
+                    var excerpts = excerptHeading.Excerpts;
+
+                    var $panel = $('<div class="panel panel-default notes-panel" excerptid="' + excerptId + '"></div>');
+                    var $panelHeading = $('<div class="panel-heading notes-panel-bg" role="tab"></div>');
+                    var $panelTitle = $('<div class="panel-title view-title clearfix"></div>');
+                    var $accordionLink = $('<a role="button" data-toggle="collapse" class="accordian-tab notes-accordian-tab" data-parent="#accordion" href="#' + excerptId + 'collapseOne" aria-expanded="false" aria-controls="' + excerptId + 'collapseOne" excerptid="' + excerptId + '"></a>');
+                    var $questionDiv = $('<div id="quesText' + excerptId + '" class="question xs-padleft50 font-bold"></div>');
+                    var $questionTextDiv = $('<div id="quesTextDiv' + excerptId + '">' + excerptText + '</div>');
+                    var $questionNumber = $('<li class="question-number-view-exam-details_Excerpt" style="list-style-type:none;margin-top:-20px;"><i class="fa fa-lg fa-angle-up expand"><span class="expand"> expand</span></i></li>');
+
+                    $panel.append($panelHeading);
+                    $panelHeading.append($panelTitle);
+                    $panelTitle.append($accordionLink);
+                    $accordionLink.append($questionDiv);
+                    $questionDiv.append($questionTextDiv);
+                    $questionTextDiv.append($questionNumber);
+
+                    var $panelCollapse = $('<div id="' + excerptId + 'collapseOne" class="panel-collapse collapse in" aria-labelledby="' + excerptId + 'headingOne" aria-expanded="false" excerptid="' + excerptId + '"></div>');
+                    var $panelBody = $('<div class="panel-body"></div>');
+                    var $nestedAccordion = $('<div class="accordion nested-accordion" id="' + excerptId + 'accordion"></div>');
+                    var $accordionGroup = $('<div class="accordion-group"></div>');
+                    var $accordionHeading = $('<div class="accordion-heading"></div>');
+                    var $containerDiv = $('<div id="' + excerptId + 'ContainerDiv">' + excerpts + '</div>');
+
+                    $panel.appendTo($htmlContent);
+                    $panelCollapse.appendTo($htmlContent);
+                    $panelCollapse.append($panelBody);
+                    $panelBody.append($nestedAccordion);
+                    $nestedAccordion.append($accordionGroup);
+                    $accordionGroup.append($accordionHeading);
+                    $accordionHeading.append($containerDiv);
+                });
+
+                $accordion.html($htmlContent);
+
+                if (response.data.ExcerptHeadings.length <= 1) {
+                    $(".panel-collapse").each(function () {
+                        $(this).removeClass("in");
+                    });
+                }
+
+                $(document).off('click', '.accordian-tab').on('click', '.accordian-tab', function () {
+                    var $icon = $(this).find('.question-number-view-exam-details_Excerpt i');
+                    var isExpanded = $(this).attr('aria-expanded') === 'true';
+
+                    if (isExpanded) {
+                        if ($icon.hasClass('fa-angle-up')) {
+                            $icon.removeClass('fa-angle-up').addClass('fa-angle-right');
+                        } else if ($icon.hasClass('fa-angle-right')) {
+                            $icon.removeClass('fa-angle-right').addClass('fa-angle-right');
+                        }
+                    } else {
+                        $icon.removeClass('fa-angle-right').addClass('fa-angle-up');
+                    }
+                });
+
+                $('div._idGenObjectStyleOverride-1 img').addClass('thumbnail');
+                $('img[class^="_idGenObjectAttribute"]').addClass('thumbnail');
+
+                $('div._idGenObjectStyleOverride-1 .thumbnail').each(function () {
+                    $(this).after('<div class="zoom_icon"><i class="glyphicon glyphicon-zoom-in text-right"></i></div>');
+                });
+
+                $('img[class^="_idGenObjectAttribute"].thumbnail').each(function () {
+                    var zoomIconDiv = $('<div class="zoom_icon"><i class="glyphicon glyphicon-zoom-in text-right"></i></div>');
+                    $(this).after(zoomIconDiv);
+                });
+
+                $('div._idGenObjectStyleOverride-1').on('click', function () {
+                    var imgElement = $(this).find('img');
+                    var lowResImage = imgElement.attr('src');
+                    var highResImage = appendSuffix(lowResImage, '_O');
+                    showModal(highResImage);
+                });
+
+                $('img[class^="_idGenObjectAttribute"]').on('click', function (event) {
+                    var lowResImage = $(this).attr('src');
+                    var highResImage = appendSuffix(lowResImage, '_O');
+                    showModal(highResImage);
+                    event.stopPropagation();
+                });
+
+                $('.zoom-icon').on('click', function (event) {
+                    var lowResImage = $(this).prev().attr('src');
+                    var highResImage = appendSuffix(lowResImage, '_O');
+                    showModal(highResImage);
+                    event.stopPropagation();
+                });
+
+                function appendSuffix(imageSrc, suffix) {
+                    return imageSrc.replace(/(\.jpg|\.png|\.tif|\.tiff)$/, suffix + '$1');
+                }
+
+                function showModal(imageSrc) {
+                    $('#showimg').attr('src', imageSrc);
+                    $('#myModal').modal('show');
+                }
+
+                $('.accordian-tab').trigger('click');
+
+                // Manually switch the tab after AJAX success
+                $('#bcsc-excerpt_a').tab('show');
+            }
+        });
+    });
+});
+</script>
+
+<script>
+    var AssessmentQuestionViewModel = {
+        next : '@Html.Raw((int?)Model.nextId)',
+        prev : @Html.Raw((int?)Model.previousId),
+        examId :  '@Html.Raw((int?)Model.examId)',
+        currentQuestionId : @Html.Raw((int?)Model.questionId),
+        examAttemptId: @Html.Raw((int?)Model.examAttemptId),
+        markedStatus : (@Html.Raw((bool?)Model.markCheck).ToString().ToLower()),
+        examMode : (@Html.Raw((bool?)Model.examMode).ToString().ToLower()),
+        examAnswerToShow : (@Html.Raw((bool?)Model.examAnswerToShow).ToString().ToLower()),
+        examStatus: @Html.Raw((int?)Model.examStatus),
+        rightChoiceId: 0,
+        choiceList: @(Html.Raw(Json.Encode(@Model.choiceList))),
+        isYourAnswerCorrect:'@Html.Raw((int?)Model.examAttemptAnswerDTO.IsYourAnswer)',
+        examTimeType: (@Html.Raw((bool?)Model.examTimeType).ToString().ToLower()),
+        friendlyId: @Html.Raw((int?)Model.FriendlyId),
+        topicName: '@Html.Raw((string)Model.TopicName)',
+        examType: @Html.Raw((int?)Model.ExamType),
+        choiceId: '@Html.Raw((int?)Model.examAttemptAnswerDTO.ChoiceId)',
+        isRightId:(@Html.Raw((bool?)Model.examAttemptAnswerDTO.IsRight).ToString().ToLower()),
+        PeerUserType:'@Html.Raw((int?)Model.PeerDetails[0].UserType)',
+    };
+    $(document).ajaxError(function (xhr, props) {
+        if (props.status === 401) {
+            /**/
+            window.location.href = '/Login/SignOut';
+        }
+    });
+    $(document).ready(function () {
+
+        $('.responsive-tabs').responsiveTabs({
+            accordionOn: ['xs', 'sm']
+        });
+
+        $('a[href^="http://"], a[href^="https://"]').click(function(e){
+            var decodedUri=decodeURI(this.href);
+            decodedUri= decodedUri.replace(/[^\x20-\x7E]/g, '');
+            $(this).attr("href", decodedUri);
+            $(this).attr('target','_blank');
+        });
+        // $('a[href^="http://"], a[href^="https://"]').not('a[href*=gusdecool]').attr('target', '_blank');
+
+        if(parseInt($("input[name='ChoiceAnswer']:checked").val()) > 0) {
+            $("#nextID").removeClass("hidden");
+            $("#nextID").addClass("visible");
+        }
+    });
+
+    var relatedContentsValue = @Html.Raw(Json.Encode(Model.RelatedContents));
+    $(document).ready(function () {
+        if (relatedContentsValue == null || relatedContentsValue == "")
+        {
+            $('#relatedContents_tab, #relatedContents_tab_a').hide();
+        }
+    });
+
+</script>
+@*<script src="@Url.Content("~/Scripts/Assessment/AssessmentQuestion.min.js") " type="text/javascript"></script>*@
+<style>
+
+    /* 6Nov2024 - CSS adding Start */
+    span.sidebar_blue {
+        color: #6b9bd2;
+        font-family: "Univers LT Std 67 Bold Condensed", sans-serif;
+        font-style: normal;
+        font-weight: normal;
+    }
+
+    span.box-text_superscript {
+        font-family: "Minion Pro", serif;
+        font-style: normal;
+        font-weight: normal;
+        vertical-align: super;
+    }
+
+    span.bul1 {
+        @*font-family: "ITC Zapf Dingbats Std Medium", sans-serif;
+        *@ font-size: 8px;
+        @*font-style: normal;
+        font-weight: normal;
+        *@
+    }
+
+    span.sidebar2-head {
+        color: #6b9bd2;
+        font-family: "Univers LT Std 67 Bold Condensed", sans-serif;
+        font-style: normal;
+        font-weight: normal;
+    }
+
+    span.ClinicalTrial_heading {
+        color: white;
+        background-color: #6b9bd2;
+        padding: 2px;
+    }
+
+    span.sb-h2 {
+        color: #6b9bd2;
+        font-family: "Univers LT Std 65 Bold", sans-serif;
+        font-size: 9px;
+        font-style: normal;
+        font-weight: normal;
+    }
+
+    span.bullet-list-last_italic {
+        font-family: "Minion Pro", serif;
+        font-style: italic;
+        font-weight: normal;
+    }
+
+    span.table-body_symbol_underline-text {
+        font-family: "Symbol Std Medium", sans-serif;
+        font-style: normal;
+        font-weight: normal;
+        text-decoration: underline;
+    }
+
+    p.numbered-list-CustomCSS {
+        color: #000000;
+        font-family: "Minion Pro", serif;
+        @*font-size: 11px;
+        *@ font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.238;
+        margin-bottom: 0;
+        margin-left: 31px;
+        margin-right: 0;
+        margin-top: 7px;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: -13px;
+        text-transform: none;
+        widows: 2;
+    }
+
+    p.numbered-list-CustomCSS1 {
+        color: #000000;
+        font-family: "Minion Pro", serif;
+        @*font-size: 11px;
+        *@ font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.238;
+        margin-bottom: 0;
+        margin-left: 31px;
+        margin-right: 0;
+        margin-top: 7px;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: -13px;
+        text-transform: none;
+        widows: 2;
+    }
+    /* 6Nov2024 - CSS adding End */
+
+    /* 14Oct2024 - CSS adding Start */
+    p.sidebar-h1 {
+        -epub-hyphens: none;
+        color: #6b9bd2;
+        font-family: "Univers LT Std 65 Bold", sans-serif;
+        font-size: 10px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.316;
+        margin-bottom: 3px;
+        margin-left: 24px;
+        margin-right: 21px;
+        margin-top: 0;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 2;
+    }
+
+    p.sidebar-title_1 {
+        -epub-hyphens: none;
+        /*color: #ffffff;*/
+        color: #6b9bd2;
+        font-family: "Univers LT Std 57 Condensed", sans-serif;
+        font-size: 11px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.273;
+        margin-bottom: 8px;
+        /*margin-left: 28px;*/
+        margin-right: 0;
+        margin-top: 20px;
+        orphans: 2;
+        page-break-after: avoid;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: uppercase;
+        widows: 2;
+    }
+
+    p.checklist-number-list {
+        color: #000000;
+        font-family: "Univers LT Std 55 Roman", sans-serif;
+        font-size: 10px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.316;
+        margin-bottom: 0;
+        margin-left: 55px;
+        margin-right: 24px;
+        margin-top: 0;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: -12px;
+        text-transform: none;
+        widows: 2;
+    }
+
+    p.checklist-number-sub-list {
+        color: #000000;
+        font-family: "Univers LT Std 55 Roman", sans-serif;
+        font-size: 10px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.316;
+        margin-bottom: 0;
+        margin-left: 67px;
+        margin-right: 21px;
+        margin-top: 0;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: -12px;
+        text-transform: none;
+        widows: 2;
+    }
+
+    p.box-text-head {
+        color: #6b9bd2;
+        margin-bottom: 0;
+        margin-top: 23px;
+        /*font-family: "Univers LT Std 65 Bold", sans-serif;
+        font-size: 11px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.045;
+        margin-bottom: 0;
+        margin-left: 9px;
+        margin-right: 0;
+        margin-top: 23px;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 2;*/
+    }
+
+    span.box-text--no-indent-_italic {
+        font-style: oblique;
+        font-weight: normal;
+    }
+
+    span.QR-code-number {
+        color: #6b9bd2;
+        font-family: "Univers LT Std 65 Bold", sans-serif;
+        /*font-size: 9px;*/
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        text-transform: uppercase;
+    }
+
+    span.keypoint_underline {
+        text-decoration: underline;
+    }
+
+    p.ParaOverride-22 {
+        background-color: #f4f6fb;
+        margin-left: 10px;
+        margin-top: 25px;
+    }
+
+    p.checklist-number-sub-sub-list {
+        color: #000000;
+        font-family: "Univers LT Std 55 Roman", sans-serif;
+        font-size: 10px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.316;
+        margin-bottom: 0;
+        margin-left: 79px;
+        margin-right: 21px;
+        margin-top: 0;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: -12px;
+        text-transform: none;
+        widows: 2;
+    }
+
+    span.table-body_italic {
+        @*font-family: "Univers LT Std 55 Oblique", sans-serif;
+        font-style: normal;
+        font-weight: normal; /*@
+        font-style: italic;
+    }
+	span.table-footnote_italic {
+        font-style: italic;
+    }
+	span.sidebar-text_bold {
+        color: #6b9bd2;
+        font-family: "Univers LT Std 67 Bold Condensed", sans-serif;
+        font-style: normal;
+        font-weight: normal;
+    }	
+    /* 14Oct2024 - CSS adding End */
+
+    img.thumbnail
+    {
+        border: 1px solid #ddd !important;
+        cursor: pointer;
+    }
+
+    .zoom_icon {
+        background-color: #f2f2f2;
+        padding: 5px;
+        position: absolute;
+        margin-left: 182px;
+        margin-top: -54px;
+        cursor: pointer;
+    }
+
+    /* Start - Added css for italic. date=14Sep2023 */
+    span.bullet-list_italic {
+        font-family: "Minion Pro", serif;
+        font-style: italic;
+        font-weight: normal;
+    }
+
+    span.sidebar-bullet-list_italic {
+        font-style: italic;
+        font-weight: normal;
+    }
+
+    span.bullet-list-first_italic {
+        font-style: italic;
+        font-weight: normal;
+    }
+
+    span.bullet-sublist_italic {
+        font-style: italic;
+        font-weight: normal;
+    }
+
+    span.bullet-list-mid_italic {
+        font-style: italic;
+        font-weight: normal;
+    }
+
+    span.bullet-list_greek_italic {
+        font-family: "Times New Roman", serif;
+        font-style: italic;
+        font-weight: normal;
+    }
+
+    span.video-list_Hyperlink {
+        font-style: italic;
+        font-weight: normal;
+    }
+
+    span.video-list_video-list_italic {
+        font-style: italic;
+        font-weight: normal;
+    }
+
+    /* Added CSS for Activity text italic */
+    span.activity-intro_italic {
+        font-style: italic;
+        font-weight: normal;
+    }
+
+    span.CharOverride-2 {
+        font-style: italic;
+        font-weight: normal;
+    }
+
+    span.video-list_italic {
+        font-style: italic;
+        font-weight: normal;
+    }
+
+    span.Hyperlink_italic {
+        font-family: "Minion Pro", serif;
+        font-style: italic;
+        font-weight: normal;
+    }
+
+    span.video-list_Hyperlink_italic {
+        font-family: "Minion Pro", serif;
+        font-style: italic;
+        font-weight: normal;
+    }
+
+    p.numbered-list-first {
+        color: #000000;
+        font-family: "Minion Pro", serif;
+        font-size: 11px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.238;
+        margin-bottom: 0;
+        margin-left: 31px;
+        margin-right: 0;
+        margin-top: 7px;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: -13px;
+        text-transform: none;
+        widows: 2;
+    }
+
+    p.numbered-list-mid {
+        color: #000000;
+        font-family: "Minion Pro", serif;
+        font-size: 11px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.238;
+        margin-bottom: 0;
+        margin-left: 31px;
+        margin-right: 0;
+        margin-top: 0;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: -13px;
+        text-transform: none;
+        widows: 2;
+    }
+
+    p.numbered-list-last {
+        color: #000000;
+        font-family: "Minion Pro", serif;
+        font-size: 11px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.238;
+        margin-bottom: 7px;
+        margin-left: 31px;
+        margin-right: 0;
+        margin-top: 0;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: -13px;
+        text-transform: none;
+        widows: 2;
+    }
+
+    /* Clinical Pearl Table */
+    table.Commentary {
+        border-collapse: collapse;
+        border-color: #9acc5b;
+        border-style: solid;
+        border-width: 1px;
+        margin-bottom: 7px;
+        margin-top: 15px;
+    }
+
+    td.Commentary {
+        border-left-width: 1px;
+        border-left-style: solid;
+        border-left-color: #000000;
+        border-top-width: 1px;
+        border-top-style: solid;
+        border-top-color: #000000;
+        border-right-width: 1px;
+        border-right-style: solid;
+        border-right-color: #000000;
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+        border-bottom-color: #000000;
+        padding-top: 4px;
+        padding-bottom: 4px;
+        padding-left: 4px;
+        padding-right: 4px;
+        vertical-align: top;
+    }
+
+    td.Commentary-Cell {
+        border-bottom-color: #9acc5b;
+        border-bottom-style: solid;
+        border-bottom-width: 1px;
+        border-left-color: #9acc5b;
+        border-left-style: solid;
+        border-left-width: 1px;
+        border-right-color: #9acc5b;
+        border-right-style: solid;
+        border-right-width: 1px;
+        border-top-color: #9acc5b;
+        border-top-style: solid;
+        border-top-width: 1px;
+        padding-bottom: 9px;
+        padding-left: 9px;
+        padding-right: 9px;
+        padding-top: 9px;
+    }
+
+    td.CellOverride-14 {
+        border-bottom-color: #8fc3c2;
+        border-left-color: #8fc3c2;
+        border-right-color: #8fc3c2;
+        border-top-color: #8fc3c2;
+    }
+
+    table.TableOverride-1 {
+        border-collapse: collapse;
+        margin-bottom: 11px;
+        margin-top: 17px;
+    }
+
+    td.CellOverride-1 {
+        border-bottom-color: #8fc3c2;
+        border-left-color: #8fc3c2;
+        border-right-color: #8fc3c2;
+        border-top-color: #8fc3c2;
+    }
+
+    /* Images & clinical pearl Responsive*/
+    img._idGenObjectAttribute-4 {
+        max-width: 95% !important;
+    }
+
+    img._idGenObjectAttribute-5 {
+        max-width: 95% !important;
+    }
+
+    img._idGenObjectAttribute-6 {
+        max-width: 95% !important;
+    }
+
+    img._idGenObjectAttribute-7 {
+        max-width: 95% !important;
+    }
+
+    img._idGenObjectAttribute-8 {
+        max-width: 95% !important;
+    }
+
+    img._idGenObjectAttribute-9 {
+        max-width: 95% !important;
+    }
+
+    img._idGenObjectAttribute-10 {
+        max-width: 95% !important;
+    }
+
+    img._idGenObjectAttribute-11 {
+        max-width: 95% !important;
+    }
+
+    img._idGenObjectAttribute-12 {
+        max-width: 95% !important;
+    }
+
+    span.CharOverride-1 {
+        font-size: 65%;
+    }
+
+    span.superscript {
+        font-style: normal;
+        font-weight: normal;
+        vertical-align: super;
+    }
+
+    span.CharOverride-1 {
+        font-size: 65%;
+    }
+
+    span.subscript {
+        vertical-align: sub;
+    }
+
+    span.bullet-list_superscript {
+        font-style: normal;
+        font-weight: normal;
+        vertical-align: super;
+    }
+
+    span.box-text-no-indent_bold {
+        font-family: "Univers LT Std 65 Bold", sans-serif;
+        font-style: normal;
+        font-weight: normal;
+    }
+
+    /* footnote */
+    p.footnote {
+        color: #000000;
+        font-family: "Minion Pro", serif;
+        font-size: 9px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.222;
+        margin-bottom: 0;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 0;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 2;
+    }
+
+    span.fn_tx {
+        font-style: normal;
+        font-weight: normal;
+    }
+
+    span.footnote_bold {
+        font-family: "Minion Pro", serif;
+        font-style: normal;
+        font-weight: bold;
+    }
+
+    span.CharOverride-2 {
+        font-size: 65%;
+        vertical-align: super;
+    }
+
+    /* Blue table added */
+    td.CellOverride-19 {
+        background-color: #e5f0ef;
+        border-bottom-color: #e5f0ef;
+        border-left-color: #e5f0ef;
+        border-right-color: #e5f0ef;
+        border-top-color: #e5f0ef;
+        padding-bottom: 22px;
+    }
+
+    table.Directions {
+        border-collapse: collapse;
+        border-color: #9acc5b;
+        border-style: solid;
+        border-width: 1px;
+        margin-bottom: 12px;
+        margin-top: 15px;
+    }
+
+    td.CellOverride-20 {
+        background-color: #e5f0ef;
+        border-bottom-color: #e5f0ef;
+        border-left-color: #e5f0ef;
+        border-right-color: #e5f0ef;
+        border-top-color: #e5f0ef;
+        padding-top: 23px;
+    }
+
+    span.CharOverride-5 {
+        font-family: "ITC Zapf Dingbats Std Medium", sans-serif;
+        font-size: 3px;
+        font-style: normal;
+        font-weight: normal;
+    }
+
+    /* friendlyid = 36915 date=12Oct2023 */
+    span.h3_italic {
+        font-style: oblique;
+        font-weight: bold;
+    }
+
+    /* friendlyid = 35721*/
+    p.sidebar-title {
+        -epub-hyphens: none;
+        color: #000000;
+        font-family: "Univers LT Std 57 Condensed", sans-serif;
+        font-size: 11px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.273;
+        margin-bottom: 8px;
+        margin-left: 3px;
+        margin-right: 0;
+        margin-top: 20px;
+        orphans: 2;
+        page-break-after: avoid;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: uppercase;
+        widows: 2;
+    }
+
+    p.sidebar-h2 {
+        color: #000000;
+        font-family: "Univers LT Std 55 Roman", sans-serif;
+        font-size: 10px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.316;
+        margin-bottom: 0;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 6px;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 2;
+    }
+
+    span.sidebar-h2 {
+        color: #6b9bd2;
+        font-family: "Univers LT Std 65 Bold", sans-serif;
+        font-style: normal;
+        font-weight: normal;
+    }
+
+    p.sidebar-bullet-list-first {
+        color: #000000;
+        font-family: "Univers LT Std 55 Roman", sans-serif;
+        font-size: 10px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.316;
+        list-style-position: outside;
+        list-style-type: disc;
+        margin-bottom: 0;
+        margin-left: 28px;
+        margin-right: 0;
+        margin-top: 7px;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 2;
+    }
+
+    p.sidebar-bullet-list-mid {
+        color: #000000;
+        font-family: "Univers LT Std 55 Roman", sans-serif;
+        font-size: 10px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.316;
+        list-style-position: outside;
+        list-style-type: disc;
+        margin-bottom: 0;
+        margin-left: 28px;
+        margin-right: 0;
+        margin-top: 0;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 2;
+    }
+
+    /* friendlyid = 37495  */
+    p.numbered-list-sub-lettered-list-first {
+        color: #000000;
+        font-family: "Minion Pro", serif;
+        font-size: 11px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.238;
+        margin-bottom: 0;
+        margin-left: 44px;
+        margin-right: 0;
+        margin-top: 5px;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: -13px;
+        text-transform: none;
+        widows: 2;
+    }
+
+    p.numbered-list-sub-lettered-list-mid {
+        color: #000000;
+        font-family: "Minion Pro", serif;
+        font-size: 11px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.238;
+        margin-bottom: 0;
+        margin-left: 44px;
+        margin-right: 0;
+        margin-top: 0;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: -13px;
+        text-transform: none;
+        widows: 2;
+    }
+
+    p.numbered-list-sub-lettered-list-last {
+        color: #000000;
+        font-family: "Minion Pro", serif;
+        font-size: 11px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.238;
+        margin-bottom: 5px;
+        margin-left: 44px;
+        margin-right: 0;
+        margin-top: 0;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: -13px;
+        text-transform: none;
+        widows: 2;
+    }
+
+    p.box-title {
+        color: #6b9bd2;
+        font-family: "Univers LT Std 65 Bold", sans-serif;
+        font-size: 11px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.273;
+        margin-bottom: 6px;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 20px;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: uppercase;
+        widows: 2;
+    }
+
+    p.box-list {
+        color: #000000;
+        font-family: "Univers LT Std 55 Roman", sans-serif;
+        font-size: 9px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.278;
+        margin-bottom: 0;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 0;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 2;
+    }
+
+    p.sidebar-h1 {
+        -epub-hyphens: none;
+        color: #6b9bd2;
+        font-family: "Univers LT Std 65 Bold", sans-serif;
+        font-size: 10px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.316;
+        margin-bottom: 3px;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 0;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 2;
+    }
+
+    p.sidebar-text {
+        color: #000000;
+        font-family: "Univers LT Std 55 Roman", sans-serif;
+        font-size: 10px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.316;
+        margin-bottom: 0;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 0;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: 18px;
+        text-transform: none;
+        widows: 2;
+    }
+
+    p.sidebar-reference-first {
+        -epub-hyphens: none;
+        color: #000000;
+        font-family: "Univers LT Std 55 Roman", sans-serif;
+        font-size: 9px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.353;
+        margin-bottom: 0;
+        margin-left: 27px;
+        margin-right: 18px;
+        margin-top: 6px;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: left;
+        text-decoration: none;
+        text-indent: -9px;
+        text-transform: none;
+        widows: 2;
+    }
+
+    p.sidebar--text-no-indent- {
+        color: #000000;
+        font-family: "Univers LT Std 55 Roman", sans-serif;
+        font-size: 10px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.316;
+        margin-bottom: 0;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 0;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 2;
+    }
+
+    p.sidebar-equation {
+        -epub-hyphens: none;
+        color: #000000;
+        font-family: "Univers LT Std 55 Roman", sans-serif;
+        font-size: 10px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.316;
+        margin-bottom: 7px;
+        margin-left: 18px;
+        margin-right: 0;
+        margin-top: 7px;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 2;
+    }
+
+    span.sidebar-text--no-indent-_italic_bold {
+        color: #6b9bd2;
+        font-family: "Univers LT Std 65 Bold Oblique", sans-serif;
+        font-style: normal;
+        font-weight: normal;
+    }
+
+    span.sidebar-text--no-indent-_bold {
+        color: #6b9bd2;
+        font-family: "Univers LT Std 65 Bold", sans-serif;
+        font-style: normal;
+        font-weight: normal;
+    }
+
+    span.sidebar-h2_bold {
+        color: #6b9bd2;
+        font-family: "Univers LT Std 65 Bold", sans-serif;
+        font-style: normal;
+        font-weight: normal;
+    }
+
+    li.sidebar-bullet-list-first {
+        color: #000000;
+        font-family: "Univers LT Std 55 Roman", sans-serif;
+        font-size: 10px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.316;
+        list-style-position: outside;
+        list-style-type: disc;
+        margin-bottom: 0;
+        margin-left: 28px;
+        margin-right: 0;
+        margin-top: 7px;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 2;
+    }
+
+    li.sidebar-bullet-list-mid {
+        color: #000000;
+        font-family: "Univers LT Std 55 Roman", sans-serif;
+        font-size: 10px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.316;
+        list-style-position: outside;
+        list-style-type: disc;
+        margin-bottom: 0;
+        margin-left: 28px;
+        margin-right: 0;
+        margin-top: 0;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 2;
+    }
+
+    li.sidebar-bullet-list-last {
+        color: #000000;
+        font-family: "Univers LT Std 55 Roman", sans-serif;
+        font-size: 10px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.316;
+        list-style-position: outside;
+        list-style-type: disc;
+        margin-bottom: 7px;
+        margin-left: 28px;
+        margin-right: 0;
+        margin-top: 0;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 2;
+    }
+
+    p.sidebar-reference-last {
+        -epub-hyphens: none;
+        color: #000000;
+        font-family: "Univers LT Std 55 Roman", sans-serif;
+        font-size: 9px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.353;
+        margin-bottom: 0;
+        margin-left: 27px;
+        margin-right: 18px;
+        margin-top: 0;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: -9px;
+        text-transform: none;
+        widows: 2;
+    }
+
+    li.sidebar-numbered-list-first {
+        color: #000000;
+        font-family: "Univers LT Std 55 Roman", sans-serif;
+        font-size: 10px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.316;
+        list-style-position: outside;
+        list-style-type: decimal;
+        margin-bottom: 0;
+        margin-left: 30px;
+        margin-right: 0;
+        margin-top: 7px;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 2;
+    }
+
+    li.sidebar-numbered-list-mid {
+        color: #000000;
+        font-family: "Univers LT Std 55 Roman", sans-serif;
+        font-size: 10px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.316;
+        list-style-position: outside;
+        list-style-type: decimal;
+        margin-bottom: 0;
+        margin-left: 30px;
+        margin-right: 0;
+        margin-top: 0;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 2;
+    }
+
+    li.sidebar-numbered-list-last {
+        color: #000000;
+        font-family: "Univers LT Std 55 Roman", sans-serif;
+        font-size: 10px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.316;
+        list-style-position: outside;
+        list-style-type: decimal;
+        margin-bottom: 7px;
+        margin-left: 30px;
+        margin-right: 0;
+        margin-top: 0;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 2;
+    }
+
+    p.sidebar-footnote {
+        color: #000000;
+        font-family: "Univers LT Std 55 Roman", sans-serif;
+        font-size: 10px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.316;
+        margin-bottom: 0;
+        margin-left: 18px;
+        margin-right: 0;
+        margin-top: 0;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 2;
+    }
+
+    /* Section1 format - 21277*/
+    span.h4-text_subscript {
+        font-family: "Minion Pro", serif;
+        font-style: normal;
+        font-weight: normal;
+        vertical-align: sub;
+    }
+
+    span.h3_greek {
+        font-family: "Times New Roman", serif;
+        font-style: normal;
+        font-weight: bold;
+    }
+
+    p.sidebar-reference {
+        -epub-hyphens: none;
+        color: #000000;
+        font-family: "Univers LT Std 55 Roman", sans-serif;
+        font-size: 9px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.353;
+        margin-bottom: 0;
+        margin-left: 27px;
+        margin-right: 18px;
+        margin-top: 0;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: left;
+        text-decoration: none;
+        text-indent: -9px;
+        text-transform: none;
+        widows: 2;
+    }
+
+    /* End - Added css for italic. date=14Sep2023 */
+
+    .fa-lg {
+        font-size: 1.33333333em;
+        line-height: 0.75em;
+        vertical-align: -126%;
+    }
+    /*#bcsc-excerpt li {
+                    padding-left: 0px !important;
+                    list-style:none;
+                }*/
+    .bcsc-excerpt-custom-content {
+        padding-left: 0px;
+        background-color: sandybrown;
+    }
+
+    .bcsc-excerpt-custom-ul {
+        padding-left: 4px;
+    }
+
+
+    #bcsc-excerpt li {
+        padding-left: 0px !important;
+        list-style-type: disc;
+    }
+
+    #bcsc-excerpt .bcsc-excerpt-custom-ul li {
+        padding-left: 0px !important;
+        list-style-type: none;
+    }
+
+    .question-number-view-exam-details_Excerpt {
+        margin-left: 0px !important;
+    }
+
+    .expand {
+        font-size: 14px;
+        font-weight: bold;
+        color: #337ab7;
+    }
+
+    p.h2 {
+        -epub-hyphens: none;
+        color: #000000;
+        /*font-family:"Univers LT Std 67 Bold Condensed", sans-serif;*/
+        font-size: 14px !important;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: bold;
+        line-height: 1.455;
+        margin-bottom: 3px;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 13px;
+        orphans: 99;
+        page-break-after: avoid;
+        page-break-before: auto;
+        text-align: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 1;
+    }
+
+    p.h2-h1 {
+        -epub-hyphens: none;
+        color: #000000;
+        /*font-family:"Univers LT Std 67 Bold Condensed", sans-serif;*/
+        font-size: 14px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: bold;
+        line-height: 2.100;
+        margin-bottom: 3px;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 5px;
+        orphans: 99;
+        page-break-after: avoid;
+        page-break-before: auto;
+        text-align: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 1;
+    }
+
+    p.fm-only_fm-h2 {
+        -epub-hyphens: none;
+        color: #000000;
+        /*font-family:"Univers 67 Bold Condensed", sans-serif;*/
+        font-size: 14px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: bold;
+        line-height: 1.364;
+        margin-bottom: 3px;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 8px;
+        orphans: 1;
+        page-break-after: avoid;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 1;
+    }
+
+    p.h3 {
+        -epub-hyphens: none;
+        color: #000000;
+        /*font-family:"Univers LT Std 67 Bold Condensed Oblique", sans-serif;*/
+        font-size: 14px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: bold;
+        line-height: 2.100;
+        margin-bottom: 1px;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 10px;
+        orphans: 99;
+        page-break-after: avoid;
+        page-break-before: auto;
+        text-align: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 1;
+    }
+
+    p.h3-h2 {
+        -epub-hyphens: none;
+        color: #000000;
+        /*font-family:"Univers LT Std 67 Bold Condensed Oblique", sans-serif;*/
+        font-size: 14px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: bold;
+        line-height: 2.100;
+        margin-bottom: 1px;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 6px;
+        orphans: 99;
+        page-break-after: avoid;
+        page-break-before: auto;
+        text-align: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 1;
+    }
+
+
+    span.h4-head {
+        /*font-family:"Univers LT Std 67 Bold Condensed", sans-serif;*/
+        font-size: 14px;
+        font-style: normal;
+        font-weight: bold;
+    }
+
+    span.h4-head_greek {
+        /*font-family:"Times NR Dual Greek MT Bold", sans-serif;*/
+        font-style: normal;
+        font-weight: normal;
+    }
+
+    span.h4-text_accent {
+        font-style: normal;
+        font-weight: normal;
+    }
+
+    span.h4-head_subscript {
+        /*font-family:"Univers LT Std 67 Bold Condensed", sans-serif;*/
+        font-style: normal;
+        font-weight: normal;
+        vertical-align: sub;
+    }
+
+    span.h4-text_italic {
+        font-style: italic;
+        font-weight: normal;
+    }
+
+    span.italic {
+        font-style: italic;
+        font-weight: normal;
+    }
+
+    p.ParaOverride-1 {
+        margin-top: 0px;
+    }
+
+    li.ParaOverride-2 {
+        margin-top: 0px;
+        text-indent: 0px;
+    }
+
+    li.ParaOverride-3 {
+        margin-bottom: 0px;
+        text-indent: 0px;
+    }
+
+    p.ParaOverride-4 {
+        margin-top: 9px;
+    }
+
+    p.ParaOverride-5 {
+        margin-top: 11px;
+    }
+
+    li.ParaOverride-6 {
+        margin-top: 7px;
+        text-indent: 0px;
+    }
+
+    p.ParaOverride-7 {
+        margin-bottom: 0px;
+    }
+
+    p.ParaOverride-8 {
+        margin-top: 15px;
+    }
+
+    p.ParaOverride-9 {
+        margin-top: 8px;
+    }
+
+    p.ParaOverride-10 {
+        margin-top: 14px;
+    }
+
+    p.ParaOverride-11 {
+        margin-top: 13px;
+    }
+
+    p.ParaOverride-12 {
+        margin-top: 10px;
+    }
+
+    p.ParaOverride-13 {
+        margin-top: 7px;
+    }
+
+    li.ParaOverride-14 {
+        margin-top: 6px;
+        text-indent: 0px;
+    }
+
+    li.ParaOverride-15 {
+        margin-bottom: 6px;
+        text-indent: 0px;
+    }
+
+    li.ParaOverride-16 {
+        margin-bottom: 11px;
+        text-indent: 0px;
+    }
+
+    li.ParaOverride-17 {
+        margin-top: 11px;
+        text-indent: 0px;
+    }
+
+    p.ParaOverride-18 {
+        margin-left: 0px;
+        text-indent: 0px;
+    }
+
+    img._idGenObjectAttribute-1 {
+        max-width: 90% !important;
+    }
+
+    img._idGenObjectAttribute-2 {
+        max-width: 90% !important;
+    }
+
+    div._idGenObjectStyleOverride-1 {
+        border-width: 0px;
+    }
+
+    p.h3 {
+        -epub-hyphens: none;
+        color: #000000;
+        /*font-family:"Univers LT Std 67 Bold Condensed Oblique", sans-serif;*/
+        font-size: 14px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: bold;
+        line-height: 2.100;
+        margin-bottom: 1px;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 10px;
+        orphans: 99;
+        page-break-after: avoid;
+        page-break-before: auto;
+        text-align: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 1;
+    }
+
+    p.h3-h2 {
+        -epub-hyphens: none;
+        color: #000000;
+        /*font-family:"Univers LT Std 67 Bold Condensed Oblique", sans-serif;*/
+        font-size: 14px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: bold;
+        line-height: 2.100;
+        margin-bottom: 1px;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 6px;
+        orphans: 99;
+        page-break-after: avoid;
+        page-break-before: auto;
+        text-align: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 1;
+    }
+
+    p.h4 {
+        font-size: 14px !important;
+        color: #000000;
+        /*font-family:"Minion Pro", serif;*/
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.238;
+        margin-bottom: 0;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 0;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: 18px;
+        text-transform: none;
+        widows: 2;
+    }
+
+    p.h4-text {
+        color: #000000;
+        /*font-family:"Minion Pro", serif;*/
+        font-size: 14px !important;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.42857143;
+        margin-bottom: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        margin-top: 8px !important;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        /*text-align: justify;*/
+        text-align: left;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 2;
+    }
+
+    p.body-text {
+        color: #000000;
+        /*font-family:"Minion Pro", serif;*/
+        font-size: 14px !important;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.42857143;
+        margin-bottom: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        margin-top: 8px !important;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        /*text-align: justify;*/
+        text-align: left;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 2;
+    }
+
+    p.body-text--no-indent- {
+        color: #000000;
+        /*font-style:normal;
+        font-variant:normal;
+       font-weight: normal;
+            line-height: 1.42857143;
+            margin-bottom: 0 !important;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+            margin-top: 8px !important;
+            orphans: 2;
+            page-break-after: auto;
+            page-break-before: auto;
+            text-align: justify;
+            text-align-last: left;
+            text-decoration: none;
+            text-indent: 0;
+            text-transform: none;
+            widows: 2;*/
+    }
+
+    span.figure-caption_italic {
+        font-style: oblique;
+        font-weight: normal;
+    }
+
+    span.figure-caption_bold {
+        font-style: normal;
+        font-weight: bold;
+    }
+
+    span.numbered-list_italic {
+        font-style: italic;
+        font-weight: normal;
+    }
+
+   /* p.ParaOverride-19 {
+        margin-left: 92px !important;
+    }*/
+
+    td.TBF_SHADE {
+        background-color: #a7bfe4;
+        border-bottom-width: 0px;
+        border-left-width: 0px;
+        border-right-width: 0px;
+        padding-bottom: 3px;
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-top: 5px;
+    }
+
+    td.TB_SHADE {
+        background-color: #faac75;
+        border-bottom-width: 0px;
+        border-left-width: 0px;
+        border-right-width: 0px;
+        padding-bottom: 3px;
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-top: 2px;
+    }
+
+    td.TB_SHADE1 {
+        background-color: #fdd1ae;
+        border-bottom-width: 0px;
+        border-left-width: 0px;
+        border-right-width: 0px;
+        padding-bottom: 3px;
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-top: 2px;
+    }
+
+    td.TB_SHADE2 {
+        background-color: #c5dddc;
+        border-bottom-width: 0px;
+        border-left-width: 0px;
+        border-right-width: 0px;
+        padding-bottom: 3px;
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-top: 2px;
+    }
+    /*body{
+            color:#000000;
+        }*/
+    span.h4 {
+        /*font-family:"Univers LT Std 67 Bold Condensed", sans-serif;*/
+        font-size: 14px;
+        font-style: normal;
+        font-weight: normal;
+    }
+
+    span.h4_italic {
+        font-style: italic;
+        font-weight: normal;
+    }
+
+    .Basic-Text-Frame {
+        /*overflow-x:auto;*/
+        /*overflow: scroll;*/
+        /*overflow-x: hidden;*/
+    }
+
+
+
+        .Basic-Text-Frame::-webkit-scrollbar {
+            display: none;
+        }
+
+
+
+    table.Basic-Table {
+        border-collapse: collapse;
+        border-color: #000000;
+        border-style: solid;
+        border-width: 1px;
+        margin-bottom: -4px;
+        margin-top: 4px;
+        width: 60%;
+    }
+
+    td.Basic-Table {
+        /*border-left-width:1px;*/
+        /*border-left-style:solid;*/
+        border-left-color: #000000;
+        border-top-width: 1px;
+        border-top-style: solid;
+        border-top-color: #000000;
+        /*border-right-width:1px;*/
+        /*border-right-style:solid;*/
+        border-right-color: #000000;
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+        border-bottom-color: #000000;
+        padding-top: 4px;
+        padding-bottom: 4px;
+        padding-left: 4px;
+        padding-right: 4px;
+        vertical-align: top;
+    }
+
+    @@media only screen and (max-width: 1024px) {
+        td.Basic-Table {
+            display: block;
+            border-top-width: 0px;
+            border-top-style: none;
+            border-bottom-width: 0.5px;
+            border-bottom-style: solid;
+        }
+    }
+
+    table.No-Table-Style {
+        border-collapse: collapse;
+        border-color: #000000;
+        border-style: solid;
+        border-width: 1px;
+        margin-bottom: -4px;
+        margin-top: 4px;
+    }
+
+    td.No-Table-Style {
+        /*border-left-width:1px;*/
+        /*border-left-style:solid;*/
+        border-left-color: #000000;
+        border-top-width: 1px;
+        border-top-style: solid;
+        border-top-color: #000000;
+        /*border-right-width:1px !important;*/
+        /*border-right-style:solid;*/
+        border-right-color: #000000;
+        border-bottom-width: 1px !important;
+        border-bottom-style: solid;
+        border-bottom-color: #000000;
+        padding-top: 4px !important;
+        padding-bottom: 4px !important;
+        padding-left: 4px !important;
+        padding-right: 4px !important;
+        vertical-align: top !important;
+    }
+
+    td.TB {
+        border-bottom-width: 0px !important;
+        border-left-width: 0px !important;
+        border-right-width: 0px !important;
+        padding-bottom: 2px;
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-top: 4px;
+        vertical-align: top;
+    }
+
+    td.TBF {
+        border-bottom-width: 0px;
+        border-left-width: 0px;
+        border-right-width: 0px;
+        padding-bottom: 2px;
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-top: 5px;
+        vertical-align: top;
+    }
+
+    td.TBL {
+        border-bottom-width: 1px;
+        border-left-width: 0px;
+        border-right-width: 0px;
+        padding-bottom: 9px;
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-top: 4px;
+        vertical-align: top;
+    }
+
+    td.TCH {
+        border-bottom-color: #bcbec0;
+        border-bottom-width: 2px;
+        border-left-width: 0px;
+        border-right-width: 0px;
+        padding-bottom: 5px;
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-top: 5px;
+        vertical-align: bottom;
+    }
+
+    td.TT {
+        border-bottom-color: #bcbec0;
+        border-bottom-width: 2px;
+        border-left-width: 0px;
+        border-right-width: 0px;
+        border-top-color: #000000;
+        border-top-width: 1px;
+        padding-bottom: 5px;
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-top: 4px;
+    }
+
+    p.Basic-Paragraph {
+        color: #000000;
+        /*font-family:"Minion Pro", serif;*/
+        font-size: 11px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.238;
+        margin-bottom: 0;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 0;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 2;
+    }
+
+
+
+    p.table-body {
+        -epub-hyphens: none;
+        color: #000000;
+        /*font-family:"Univers LT Std 55 Roman", sans-serif;*/
+        font-size: 10px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.25 !important;
+        margin-bottom: 0 !important;
+        margin-left: 9px !important;
+        margin-right: 0 !important;
+        margin-top: 0;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: left;
+        text-decoration: none;
+        text-indent: -9px;
+        text-transform: none;
+        widows: 2;
+    }
+
+    p.table-column-head {
+        -epub-hyphens: none;
+        color: #000000;
+        /*font-family:"Univers LT Std 67 Bold Condensed", sans-serif;*/
+        font-size: 10px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.25;
+        margin-bottom: 0;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 0;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 2;
+    }
+
+    p.table-head {
+        -epub-hyphens: none;
+        color: #000000;
+        /*font-family:"Univers LT Std 65 Bold", sans-serif;*/
+        font-size: 12px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.25;
+        margin-bottom: 0 !important;
+        margin-left: 9px !important;
+        margin-right: 0 !important;
+        margin-top: 0 !important;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: left;
+        text-decoration: none;
+        text-indent: -9px;
+        text-transform: none;
+        widows: 2;
+    }
+
+    p.table-indent-1 {
+        -epub-hyphens: none;
+        color: #000000;
+        /*font-family:"Univers LT Std 55 Roman", sans-serif;*/
+        font-size: 10px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.25;
+        margin-bottom: 0 !important;
+        margin-left: 17px !important;
+        margin-right: 0 !important;
+        margin-top: 0 !important;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: left;
+        text-decoration: none;
+        text-indent: -9px;
+        text-transform: none;
+        widows: 2;
+    }
+
+    p.table-indent-2 {
+        -epub-hyphens: none;
+        color: #000000;
+        /*font-family:"Univers LT Std 55 Roman", sans-serif;*/
+        font-size: 10px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.25 !important;
+        margin-bottom: 0 !important;
+        margin-left: 25px !important;
+        margin-right: 0 !important;
+        margin-top: 0 !important;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: left;
+        text-decoration: none;
+        text-indent: -9px;
+        text-transform: none;
+        widows: 2;
+    }
+
+    p.table-title {
+        -epub-hyphens: none;
+        color: #000000;
+        /*font-family:"Univers LT Std 65 Bold", sans-serif;*/
+        font-size: 10px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.158;
+        margin-bottom: 6px !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        margin-top: 0 !important;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: left;
+        text-decoration: none;
+        text-indent: 18px;
+        text-transform: none;
+        widows: 2;
+    }
+
+    p.TT {
+        -epub-hyphens: none;
+        color: #000000;
+        /*font-family:"Univers LT Std 65 Bold", sans-serif;*/
+        font-size: 10px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.158;
+        margin-bottom: 6px !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        margin-top: 0 !important;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 2;
+    }
+
+    /*New styles added*/
+
+    img._idGenObjectAttribute-1 {
+        max-width: 90% !important;
+    }
+
+    img._idGenObjectAttribute-2 {
+        max-width: 90% !important;
+    }
+
+    td.Basic-Table {
+        /*border-left-width:1px;*/
+        /*border-left-style:solid;*/
+        border-left-color: #000000;
+        border-top-width: 1px;
+        border-top-style: solid;
+        border-top-color: #000000;
+        /*border-right-width:1px;*/
+        /*border-right-style:solid;*/
+        border-right-color: #000000;
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+        border-bottom-color: #000000;
+        padding-top: 4px;
+        padding-bottom: 4px;
+        padding-left: 4px;
+        padding-right: 4px;
+        vertical-align: top;
+    }
+
+    table.Basic-Table {
+        border-collapse: collapse;
+        border-color: #000000;
+        border-style: solid;
+        border-width: 1px;
+        margin-bottom: -4px;
+        margin-top: 4px;
+        width: 60%;
+    }
+
+    span.equation_italic {
+        font-style: italic;
+        font-weight: normal;
+    }
+
+    span.equation_subscript {
+        vertical-align: sub;
+    }
+
+    span.equation_symbol {
+        font-family: "Symbol Std Medium", sans-serif;
+        font-style: normal;
+        font-weight: normal;
+    }
+
+    span.equation_symbol_italic {
+        font-family: "Symbol Std Medium", sans-serif;
+        font-style: normal;
+        font-weight: normal;
+    }
+
+    p.equation-single {
+        color: #000000;
+        font-family: "Minion Pro", serif;
+        font-size: 14px !important;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.238;
+        margin-bottom: 13px;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 13px;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 2;
+    }
+
+    span.h5 {
+        /*font-family:"Univers LT Std 65 Bold", sans-serif;*/
+        font-size: 14px !important;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        text-transform: uppercase;
+    }
+
+    span.h4 {
+        /*font-family:"Univers LT Std 67 Bold Condensed", sans-serif;*/
+        font-size: 14px !important;
+        font-style: normal;
+        font-weight: normal;
+    }
+
+
+
+
+    span.greek {
+        font-family: "Times NR Dual Greek MT Regular", sans-serif;
+        font-style: normal;
+        font-weight: normal;
+    }
+
+    span.greek_italic {
+        font-family: "Times NR Dual Greek MT Inclined", sans-serif;
+        font-style: normal;
+        font-weight: normal;
+    }
+
+    span.greek_subscript {
+        font-family: "Times NR Dual Greek MT Regular", sans-serif;
+        font-style: normal;
+        font-weight: normal;
+        vertical-align: sub;
+    }
+
+    span.h2-h1_greek {
+        font-family: "Times NR Dual Greek MT Bold", sans-serif;
+        font-style: normal;
+        font-weight: normal;
+    }
+
+    span.h3_greek_BI {
+        font-family: "Times NR Dual Greek MT Bold Incl", sans-serif;
+        font-style: normal;
+    }
+
+    span.h4-text_greek {
+        font-family: "Times NR Dual Greek MT Regular", sans-serif;
+        font-style: normal;
+        font-weight: normal;
+    }
+
+    span.table-body_greek {
+        font-family: "Times NR Dual Greek MT Regular", sans-serif;
+        font-style: normal;
+        font-weight: normal;
+    }
+
+    span.table-head_greek {
+        font-family: "Times NR Dual Greek MT Bold", sans-serif;
+        font-style: normal;
+        font-weight: normal;
+    }
+
+    span.figure-caption_greek {
+        font-family: "Times NR Dual Greek MT Regular", sans-serif;
+        font-style: normal;
+        font-weight: normal;
+    }
+
+    span.keypoint {
+        text-decoration: underline;
+    }
+
+    span.key-point {
+        text-decoration: underline;
+    }
+
+
+    p.table-body-last {
+        color: #000000;
+        font-family: "Univers LT Std 55", sans-serif;
+        font-size: 8px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.25;
+        margin-bottom: 0;
+        margin-left: 9px;
+        margin-right: 0;
+        margin-top: 0;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: left;
+        text-decoration: none;
+        text-indent: -9px;
+        text-transform: none;
+        widows: 2;
+    }
+
+    superscript {
+        vertical-align: super;
+    }
+
+    span.superscript {
+        vertical-align: super;
+    }
+
+    span.subscript {
+        vertical-align: sub;
+    }
+
+    span.figure-caption_subscript {
+        vertical-align: sub;
+    }
+
+    @*span.CharOverride-1 {
+        font-size: 65%;
+    }*@
+
+    span.symbol_superscript {
+        font-family: "Symbol Std", sans-serif;
+        font-style: normal;
+        font-weight: 500;
+        vertical-align: super;
+    }
+
+    span.table-body_superscript {
+        vertical-align: super;
+    }
+
+    span.table-footnote_superscript {
+        vertical-align: super;
+    }
+
+    span.figure-caption_italic {
+        font-style: oblique;
+        font-weight: normal;
+    }
+
+    span._idGenCharOverride-1 {
+        font-size: 65%;
+    }
+
+    span.figure-caption_subscript_italic {
+        font-style: oblique;
+        font-weight: normal;
+        vertical-align: sub;
+    }
+
+    @*span.CharOverride-1 {
+        font-size: 65%;
+    }*@
+
+    span.CharOverride-1 {
+        font-style: normal;
+        font-weight: normal;
+    }
+    span.CharOverride-1-12-1 {
+        font-style: normal;
+        font-weight: normal;
+    }
+
+    /*Clinical pearl */
+    img._idGenObjectAttribute-3 {
+        max-width: 90% !important
+    }
+
+@@media only screen and (max-width: 1200px) {
+    #excerpt_thumbnail_image {
+        display: block;
+        overflow: hidden;
+    }
+}
+</style>

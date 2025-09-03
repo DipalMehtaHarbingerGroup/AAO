@@ -1,0 +1,1702 @@
+﻿@using AAO.Apps.BCSCSelfAssessment.CustomeHelper
+@model  AAO.Common.BCSCSelfAssessment.ExamStatusCountSRVM
+@{
+    ViewBag.Title = "SRLanding";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/Content/SRLandingStyle.css" rel="stylesheet" />
+
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="~/Scripts/Dashboard/jquery.slimscroll.js"></script>
+
+<div class="space-page relative-position space-repit">
+    <div class="col-lg-8 col-md-12 col-xs-12 xs-marbot30 marbot-30 xs-nopadding">
+        <div class="widget-exams-in-progress widget-space-repetition">
+            <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 nopadding  xs-textcenter  first-block">
+                <h4 class="widget-title textalign">What is spaced repetition?</h4>
+                <p class="textalign">
+                    <span class="collapsed">
+                        Spaced Repetition presents questions at random and repeats questions at spaced intervals based on the correctness of your answers and your confidence in your answer choices.
+                        <a href="" onclick="javascript: void (0)">Learn more...</a>
+                    </span>
+
+                    <span class="expanded">
+                        Spaced Repetition presents questions at random and repeats questions at spaced intervals based on the correctness of your answers and your confidence in your answer choices. This functionality is named for and based on the evidence-based learning technique known as spaced repetition which has been proven to increase the rate of learning and is used by software programs such as Anki, Duolingo, Picmonic and Pimsleur Language Programs. As you answer questions in this mode, choose whether you are confident in your answer (Submit Confident) or not confident in your answer (Submit Not Confident). <a href="javascript:void(0)">...Less</a>
+                    </span>
+                </p>
+            </div>
+            <div id="SpacedRepetition1">
+                @using (Html.BeginForm("SpacedRepetition", "ExamManager", FormMethod.Post, new { id = "SpacedRepetition", @class = "form-inline build-exam" }))
+                {
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 text-right xs-textcenter md-nopadding padtop20 txt-md-left">
+                        <button class="btn btn-cta" id="SpacedRepetitionbutton">Start Spaced Repetition</button>
+                    </div>
+
+                    <hr class="visible-xs col-xs-12 nopadding" />
+                    <div class="col-lg-12 col-sm-12 nopadding questionSection">
+                        <div class="col-lg-3 col-md-3 col-sm-6 que-block ">
+                            <div class="small">
+                                <h2><span class="QuestionAnsweredSR"></span></h2>
+                                <p>Questions Answered</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-6 que-block">
+                            <div class="small">
+                                <h2><span class="TopicsCoveredSR"></span></h2>
+                                <p>Topics Covered</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-6 que-block">
+                            <div class="small">
+                                <h2><span class="IncorrectAnswersSR"></span></h2>
+                                <p>Incorrect Answers</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-6 que-block">
+                            <div class="small">
+                                <h2><span class="CorrectAnswersSR"></span></h2>
+                                <p>Correct Answers</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    @*HG-459 Start - Filter to select Section*@
+                    <hr class="marbot0" style=" margin-bottom: 20px;">
+
+                    <div id="quick">
+                        <div class="col-lg-12 xs-nopadding">
+                            <div class="pull-left selectsection">
+                                Select BCSC Section(s) <span class="font-red"> * </span>
+                            </div>
+                            <div class="pull-left martop2">
+                                <label class="container-checkbox">
+                                    <input value="" type="checkbox" id='selectall' class="TypeofCategoryList">
+                                    Select all
+                                    <span class='checkmark'></span>
+                                </label>
+                            </div>
+                            <div class="pull-left col-lg-12 xs-nopadding small marl14 marbot20" id="min2secs">
+                                <i>At least two (2) sections must be selected</i>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="form-group rt width100percent">
+                            @Html.CheckBoxList((List<SelectListItem>)ViewBag.CategoryTypelist, "TypeofCategoryList", (String[])ViewBag.QuestionTypeListCount)
+                        </div>
+                        <div class="col-lg-12 text-left xs-nopadding">
+                            <input type="button" value="Clear" id="Clear" class="btn btn-default" />
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    @*HG-459 End*@
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-8 col-md-12 col-xs-12 xs-marbot30 xs-nopadding marbot-30">
+        <div class="widget-exams-in-progress performance-block">
+            <h4 class="widget-title">Performance Overview</h4>
+            <ul class="breadcrumb-block">
+                <li id="SectionButton" value="SectionButton"><span class="breadcrumb-arrow fa fa-angle-left"></span><a id="SButton" href="#!" onclick="">Sections</a></li>
+                <li id="ChapterButton" value="ChapterButton"><span class="breadcrumb-arrow fa fa-angle-left"></span><a id="CButton" href="#!" onclick=" ">Chapters</a></li>
+            </ul>
+            <figure>
+                <ul class="legend unanswer">
+                    <li>Correct, Confident</li>
+                    <li>Correct, Unconfident</li>
+                    <li>Incorrect, Confident</li>
+                    <li>Incorrect, Unconfident</li>
+                    <li>Unanswered</li>
+                </ul>
+
+                <div id="graphic" class="graphic">
+                    <div id="divbody">
+                    </div>
+                    <div id="Chapterbody">
+                    </div>
+                    <div id="Topicsbody">
+                    </div>
+                </div>
+            </figure>
+        </div>
+    </div>
+
+    <div class="col-lg-4 col-md-12 col-xs-12 xs-nopadding absolute-position recommended-topics-block" id="">
+        <div class="widget-exam-status">
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 nopadding">
+
+                <h3 class="widget-title recommended-topic" style="margin-top:4px">
+                    Top Ten Recommended Topics
+                </h3>
+                <a data-target="#ModalCenterInfo" data-toggle="modal" href="#ModalCenterInfo">
+                    <span> <img id="info" onmouseover="hover(this);" onmouseout="unhover(this);" src="\Content\img\info.svg"></span>
+                </a>
+
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 text-right nopadding padtop20">
+                <button class="btn btn-cta" value="ExportRecommendedTopics" id="ExportRecommendedTopics">Export</button>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-lg-12 nopadding table-responsive">
+                <table class="table table-striped fixed_header" id="ResidentReport" style="overflow-x:hidden; ">
+                    <thead>
+                        <tr>
+                            <th>Section</th>
+                            <th>Chapter</th>
+                            <th>Topic</th>
+                            <th width="50px">&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody id="trbody">
+                    </tbody>
+                </table>
+            </div>
+            <div class="clearfix">
+            </div>
+        </div>
+    </div>
+</div>
+@*<div class="modal fade" id="ModalCenter">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+
+                <div class="modal-body" id="Modalbody">
+
+
+                </div>
+            </div>
+        </div>
+    </div>*@
+<div id="popupdiv"></div>
+<div class="modal fade" id="ModalCenterInfo">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+
+                <button type="button" class="close" data-dismiss="modal" style="margin-right: -20px;">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                The list of top recommended topics is based on questions you have answered incorrectly and changes dynamically as you answer more questions
+                in Spaced Repetition.
+                The list is intended to help you focus on BCSC topics you may need to study.
+                Topics for questions answered incorrectly with confidence are prioritized over those answered without confidence.
+                Topics with multiple incorrectly answered questions are prioritized over those with fewer incorrectly answered questions.
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteButton" role="dialog">
+    <div class="modal-dialog" style="width:40%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                <h3 class="modal-title">Delete Recommended Topic</h3>
+
+            </div>
+            <div class="modal-body">
+                <div class="small martop10">Are you sure you want to delete this recommended topic? Once you delete a topic, it will not appear here again unless future answers qualify it for recommendation.</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary deleted" data-dismiss="modal">Delete</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<script type="text/javascript">
+    google.charts.load({ packages: ["corechart", "gauge", "table", "timeline", "bar"] });
+    google.charts.setOnLoadCallback(drawChart);
+
+    var ExcerptArray = [];
+    $('.value').each(function () {
+        var text = $(this).text();
+        $(this).parent().css('width', text);
+    });
+    $("#spaceImg").src = '/Content/img/spaceRepition.svg';
+    $('.block').tooltip();
+
+    $('#myModal').on('shown.bs.modal', function () {
+        $('#myInput').trigger('focus')
+    })
+    $(".expanded").hide();
+
+    $(".first-block .expanded a,.first-block .collapsed a").click(function (eve) {
+        eve.preventDefault();
+        $(".first-block .expanded, .first-block .collapsed").toggle();
+
+    });
+
+    //hover recomended topic
+    function hover(element) {
+        element.setAttribute('src', '/Content/img/infowhite.svg');
+    }
+
+    function unhover(element) {
+        element.setAttribute('src', '/Content/img/info.svg');
+    }
+    //SR Landing Page code
+    $.ajax({
+        type: 'Post',
+        dataType: "JSON",
+        url: '/SpacedRepetition/GetExamStatusCountSR',
+        success: function (result1) {
+            var responseTextObject = JSON.parse(result1);
+            $(".QuestionAnsweredSR").append(responseTextObject.TotalAnsweredQuestions);
+            $(".TopicsCoveredSR").append(responseTextObject.TopicCount);
+            $(".CorrectAnswersSR").append(responseTextObject.AnsweredCorrectly);
+            $(".IncorrectAnswersSR").append(responseTextObject.AnsweredInCorrectly);
+        }
+    });
+
+    $.ajax({
+        type: 'Post',
+        dataType: "JSON",
+        url: '/SpacedRepetition/SRRecommendedTopics',
+        success: function (result) {
+            var data = '';
+            var excerpt = '';
+            var j = 0;
+            result = $.parseJSON(result);
+            $.each(result, function (i, item) {
+                data += "<tr><td> " + item.SectionName + "</td><td>" + item.ChapterName + "</td> <td> <a href='' onclick='javascript:excerpt_popup(" + j + ");'  data-toggle='modal' data-target='#ModalCenter'>" + item.TopicName + "</a></td><td> <a href='#' ExamId=" + item.ExamId + " class='editAsset' id='delete';><i class='fa fa-trash-o text-center'></i></a></td></tr>";
+                ExcerptArray[j] = item.Excerpt;
+                j++;
+            });
+            $('#trbody').append(data);
+        }
+    });
+
+    $("#ExportRecommendedTopics").on('click', function (event) {
+        window.location.href = '/SpacedRepetition/ExportToExcel';
+    });
+    var sButton = document.getElementById("SectionButton");
+    sButton.style.display = "none";
+    var cButton = document.getElementById("ChapterButton");
+    cButton.style.display = "none";
+
+    function drawChart() {
+        $.ajax({
+            type: 'POST',
+            dataType: "JSON",
+            url: '/SpacedRepetition/SRPerformanceOverview',
+            success: function (result) {
+                result = $.parseJSON(result);
+                $('#divbody').empty();
+                $('.loader_main').fadeOut(100);
+
+                var data = new google.visualization.DataTable();
+                data.addColumn({ type: 'string', label: 'SectionTitle' });
+                data.addColumn('number', 'Correct, Confident');
+                data.addColumn('number', 'Correct, Unconfident');
+                data.addColumn('number', 'Incorrect, Confident');
+                data.addColumn('number', 'Incorrect, Unconfident');
+                data.addColumn('number', 'Unanswered');
+                data.addColumn({ name: 'QuestionCount', type: 'string', role: 'annotation' });
+
+                var links = []; // Store links and IDs to be used in the event listener
+
+                $.each(result, function (j, item) {
+                    @*
+                    var SubSpecialityName = "Section " + item.SectionNumber + ": " + item.SectionTitle;
+                    var subspecialityId = item.SubspecialtyId; // Getting the ID for later use
+
+                    // Construct the link using the SubspecialtyId
+                    var link = 'https://www.google.com/' + subspecialityId;
+
+                    // Store the link for later use in the event handler
+                    links.push({ rowIndex: j, id: subspecialityId, link: link });
+                    *@
+
+                    // Add data to the row without using HTML inside the table
+                    data.addRow([
+                        item.SectionTitle, // Display plain text here
+                        item.CorrectConfident,
+                        item.CorrectNotconfident,
+                        item.IncorrectConfident,
+                        item.IncorrectNotconfident,
+                        item.UnAnswered,
+                        ''
+                    ]);
+                });
+
+                var view = new google.visualization.DataView(data);
+                view.setColumns([
+                    0,
+                    1, {
+                        calc: function (dt, row) {
+                            return dt.getValue(row, 1);
+                        },
+                        type: "number",
+                        role: "annotation"
+                    },
+                    2, {
+                        calc: function (dt, row) {
+                            return dt.getValue(row, 2);
+                        },
+                        type: "number",
+                        role: "annotation"
+                    },
+                    3, {
+                        calc: function (dt, row) {
+                            return dt.getValue(row, 3);
+                        },
+                        type: "number",
+                        role: "annotation"
+                    },
+                    4, {
+                        calc: function (dt, row) {
+                            return dt.getValue(row, 4);
+                        },
+                        type: "number",
+                        role: "annotation"
+                    },
+                    5, {
+                        calc: function (dt, row) {
+                            return dt.getValue(row, 5);
+                        },
+                        type: "number",
+                        role: "annotation"
+                    }
+                ]);
+
+                var options = {
+                    animation: {
+                        duration: 0,
+                        easing: 'out',
+                        startup: true
+                    },
+                    chartArea: {
+                        left: 120,  // Increase space for the 1st column
+                        right: 15,
+                        width: '60%', // Adjust the chart's width
+                        height: '85%'
+                    },
+                    backgroundColor: 'transparent',
+                    hAxis: {
+                        title: "Total Questions",
+                        titleTextStyle: { italic: false },
+                        //gridlines: { count: 0 }
+                    },
+                    colors: ['#A9C23F', '#FFDE58', '#D97B79', '#F69339', '#ddddde' @*'#919191'*@],
+                    backgroundColor: { fill: '#ffffff' },
+                    height: 700,
+                    width: '100%',
+                    legend: { position: 'none' },
+                    bar: { groupWidth: '60%', groupHeight: '60%' },
+                    fontSize: 12,
+                    isStacked: true,
+                    //tooltip: { isHtml: true },
+                };
+
+                var chart = new google.visualization.BarChart(document.getElementById('divbody'));
+                chart.draw(view, options);
+
+                // Add click event listener to handle row clicks
+                @*google.visualization.events.addListener(chart, 'select', function () {
+                    var selectedItem = chart.getSelection()[0];
+                    if (selectedItem) {
+                        var rowIndex = selectedItem.row;
+                        var subspecialityId = links.find(l => l.rowIndex === rowIndex).id;
+                        //alert('subspecialityId = '+subspecialityId);
+                        //var link = links.find(l => l.rowIndex === rowIndex).link;
+                        ChapterData(subspecialityId);
+                        // Redirect to the link
+                        //window.open(link, '_blank');
+                    }
+                });*@
+            }
+        });
+    }
+
+    @*$.ajax({
+    type: 'Post',
+    dataType: "JSON",
+    url: '/SpacedRepetition/SRPerformanceOverview',
+    success: function (result) {
+        var data = '';
+        var SubspecialityId = '';
+        var j = 0;
+        result = $.parseJSON(result);
+        $.each(result, function (i, item) {
+            j++;
+            data += "<input type='hidden' id='Subspeciality" + j + "' value='" + item.SubspecialtyId + "'/><div class='row d-flex padbot10'><h6><a href='#!' onclick='javascript:ChapterData(" + j + ");'>" + "Section " + item.SectionNumber + ": " + item.SectionTitle + "</a></h6><div class='chart'><span class='block' title style='width :" + item.CorrectConfidentPercent + "%' data-original-title='Correct, Confident'><span class='value'>" + item.CorrectConfidentPercent + "%</span></span><span class='block' title style='width :" + item.CorrectNotconfidentPercent + "%' data-original-title='Correct, Unconfident'><span class='value'>" + item.CorrectNotconfidentPercent + "%</span></span><span class='block' title style='width :" + item.IncorrectConfidentPercent + "%' data-original-title='Incorrect, Confident'><span class='value'>" + item.IncorrectConfidentPercent + "%</span></span><span class='block' title style='width :" + item.IncorrectNotconfidentPercent + "%' data-original-title='Incorrect, Unconfident'><span class='value'>" + item.IncorrectNotconfidentPercent + "%</span></span><span class='block' title style='width :" + item.UnAnsweredPercent + "%' data-original-title='Unanswered'><span class='value'>" + item.UnAnsweredPercent + "%</span></span></div></div>";
+        });
+            $('#divbody').append(data);
+        }
+    });*@   
+
+    function excerpt_popup(j) {
+        var htmlbody = '<div class="modal fade" id="ModalCenter">' +
+            '<div class="modal-dialog modal-dialog-centered">' +
+            '<div class="modal-content">' +
+            '<div class="modal-header">' +
+            '<h5 class="modal-title"></h5>' +
+            '<button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
+            '<span aria-hidden="true">&times;</span>' +
+            '</button>' +
+            '</div>' +
+
+
+            '<div class="modal-body" id="Modalbody">' + ExcerptArray[j] +
+
+
+            '</div>' +
+            '</div>' +
+            '</div>' +
+            '</div>';
+        //alert(j);
+        //$('#ModalCenter').scrollTop(0);
+        $('#popupdiv').html(htmlbody);
+    }
+
+    function ChapterData(j) {
+        sButton.style.display = "inline";
+        //var myValue = $("#Subspeciality" + j).val();
+        var myValue = j;
+        $.ajax({
+            type: 'post',
+            dataType: 'JSON',
+            data: { subspecialityId: myValue },
+            url: '/SpacedRepetition/SRPerformanceOverviewChapter',
+            success: function (response) {
+                var ChapterNumber = '';
+                response = JSON.parse(response);
+                var DivBody = document.getElementById("divbody");
+                DivBody.style.display = "none";
+                var data = '';
+                var z = 0;
+                $.each(response, function (i, item) {
+                    z++;
+                    data += "<input type='hidden' id='SubspecialityID" + z + "' value='" + item.SubspecialtyId + "'/><input type='hidden' id='ChapterNumber" + z + "' value='" + item.ChapterNumber + "'/><input type='hidden' id='ChapterName" + z + "' value='" + item.ChapterName + "'/><div class='row d-flex padbot10'><h6><a href='#!' onclick='javascript:TopicsData(" + z + ")'>" + item.ChapterNumber + ": " + item.ChapterName + "</a></h6><div class='chart'><span class='block' title style='width :" + item.CorrectConfidentPercent + "%' data-original-title='Correct, Confident'><span class='value'>" + item.CorrectConfidentPercent + "%</span></span><span class='block' title style='width :" + item.CorrectNotconfidentPercent + "%' data-original-title='Correct, Unconfident'><span class='value'>" + item.CorrectNotconfidentPercent + "%</span></span><span class='block' title style='width :" + item.IncorrectConfidentPercent + "%' data-original-title='Incorrect, Confident'><span class='value'>" + item.IncorrectConfidentPercent + "%</span></span><span class='block' title style='width :" + item.IncorrectNotconfidentPercent + "%' data-original-title='Incorrect, Unconfident'><span class='value'>" + item.IncorrectNotconfidentPercent + "%</span></span><span class='block' title style='width :" + item.UnAnsweredPercent + "%' data-original-title='Unanswered'><span class='value'>" + item.UnAnsweredPercent + "%</span></span></div></div>";
+                });
+                $('#Chapterbody').empty();
+                $('#Chapterbody').append(data);
+                var Chapterbody = document.getElementById("Chapterbody");
+                Chapterbody.style.display = "block";
+            }
+        });
+    }
+
+    function TopicsData(z) {
+        cButton.style.display = "inline";
+        var myValue = $("#ChapterName" + z).val();
+        var ChapterValue = $("#ChapterNumber" + z).val();
+        var Subspeciality = $("#SubspecialityID" + z).val();
+        $.ajax({
+            type: 'post',
+            dataType: 'JSON',
+            data: { ChapterNumber: ChapterValue, ChapterName: myValue, SubspecialityId: Subspeciality },
+            url: '/SpacedRepetition/SRPerformanceOverviewTopics',
+            success: function (response) {
+                response = JSON.parse(response);
+                var DivBody = document.getElementById("divbody");
+                var Chapterbody = document.getElementById("Chapterbody");
+                DivBody.style.display = "none";
+                Chapterbody.style.display = "none";
+                var data = '';
+                $.each(response, function (i, item) {
+                    data += "<div class='row d-flex padbot10'><h6>" + item.TopicName + "</a></h6><div class='chart'><span class='block' title style='width :" + item.CorrectConfidentPercent + "%' data-original-title='Correct, Confident'><span class='value'>" + item.CorrectConfidentPercent + "%</span></span><span class='block' title style='width :" + item.CorrectNotconfidentPercent + "%' data-original-title='Correct, Unconfident'><span class='value'>" + item.CorrectNotconfidentPercent + "%</span></span><span class='block' title style='width :" + item.IncorrectConfidentPercent + "%' data-original-title='Incorrect, Confident'><span class='value'>" + item.IncorrectConfidentPercent + "%</span></span><span class='block' title style='width :" + item.IncorrectNotconfidentPercent + "%' data-original-title='Incorrect, Unconfident'><span class='value'>" + item.IncorrectNotconfidentPercent + "%</span></span><span class='block' title style='width :" + item.UnAnsweredPercent + "%' data-original-title='Unanswered'><span class='value'>" + item.UnAnsweredPercent + "%</span></span></div></div>";
+                });
+                $('#Topicsbody').empty();
+                $('#Topicsbody').append(data);
+                var Topicbody = document.getElementById("Topicsbody");
+                Topicbody.style.display = "block";
+            }
+        });
+    }
+
+    $("#SButton").on('click', function (event) {
+        var sButton = document.getElementById("SectionButton");
+        sButton.style.display = "none";
+        var cButton = document.getElementById("ChapterButton");
+        cButton.style.display = "none";
+        var Chapterbody = document.getElementById("Chapterbody");
+        Chapterbody.style.display = "none";
+        var Topicsbody = document.getElementById("Topicsbody");
+        Topicsbody.style.display = "none";
+        var DivBody = document.getElementById("divbody");
+        DivBody.style.display = "block";
+    });
+    $("#CButton").on('click', function (event) {
+        var cButton = document.getElementById("ChapterButton");
+        cButton.style.display = "none";
+        var Chapterbody = document.getElementById("divbody");
+        Chapterbody.style.display = "none";
+        var Topicsbody = document.getElementById("Topicsbody");
+        Topicsbody.style.display = "none";
+        var DivBody = document.getElementById("Chapterbody");
+        DivBody.style.display = "block";
+    });
+    $('#ResidentReport tbody').on('click', '#delete', function () {
+        var ExamId = $(this).attr('examId');
+        var x = $(this).parent('td').parent('tr').children('td')[2].innerText;
+        var dataValue =
+        {
+            ExamId: ExamId,
+            SectionName: $(this).parent('td').parent('tr').children('td')[0].innerText,
+            ChapterName: $(this).parent('td').parent('tr').children('td')[1].innerText,
+            TopicName: $(this).parent('td').parent('tr').children('td')[2].innerText
+        }
+        getConfirmation();
+        function getConfirmation() {
+            var retVal = $("#deleteButton").modal("show");
+            $(".deleted").click(function () {
+                $.ajax({
+                    type: 'post',
+                    dataType: 'JSON',
+                    data: dataValue,
+                    url: '/SpacedRepetition/DeleteTopic',
+                    success: function (response) {
+                        var ChapterNumber = '';
+                        response = JSON.parse(response);
+                    }
+                });
+
+                $.ajax({
+                    type: 'Post',
+                    dataType: "JSON",
+                    url: '/SpacedRepetition/SRRecommendedTopics',
+                    success: function (result) {
+                        var data = '';
+                        var excerpt = '';
+                        var j = 0;
+                        result = $.parseJSON(result);
+                        $.each(result, function (i, item) {
+                            data += "<tr><td> " + item.SectionName + "</td><td>" + item.ChapterName + "</td> <td> <a href='' onclick='javascript:excerpt_popup(" + j + ");'  data-toggle='modal' data-target='#ModalCenter'>" + item.TopicName + "</a></td><td> <a href='#' ExamId=" + item.ExamId + " class='editAsset' id='delete';><i class='fa fa-trash-o text-center'></i></a></td></tr>";
+                            ExcerptArray[j] = item.Excerpt;
+                            j++;
+                        });
+                        $('#trbody').empty();
+                        $('#trbody').append(data);
+                    }
+                });
+
+
+            });
+        }
+    });
+
+    //HG-459 start
+    //Select all and section checkbox checked
+    $('#selectall').prop('checked', true);
+    $('.TypeofCategoryList').attr('checked', true);
+    document.getElementById('min2secs').style.color = "";
+
+    //checked 2 section selected
+    $("#SpacedRepetition1").click(function () {
+        //Section selecion checked
+        if ($('#quick:visible').length != 0) {
+            if ($('.rt [name=TypeofCategoryList]:checkBox:checked').length <= 1) {
+                document.getElementById('min2secs').style.color = "red";
+            }
+            else {
+                document.getElementById('min2secs').style.color = "";
+            }
+        }
+    });
+
+    //'Start Spaced Repetition' button click
+    $("#SpacedRepetitionbutton").click(function () {
+        var flag = true;
+        if ($('.rt [name=TypeofCategoryList]:checkBox:checked').length <= 1) {
+            $('#selectall').focus();
+            document.getElementById('min2secs').style.color = "red";
+            flag = false;
+            return false;
+        }
+        else {
+            if (flag == true) {
+                $("SpacedRepetitionbutton").prop('disabled', true);
+            }
+            document.getElementById('min2secs').style.color = "";
+        }
+    });
+
+    //"select all" change
+    $("#selectall").change(function () {
+        $(".TypeofCategoryList").prop('checked', $("#selectall").prop("checked")); //change all ".checkbox" checked status
+        if ($('.rt [name=TypeofCategoryList]:checkBox:checked').length <= 1) {
+            document.getElementById('min2secs').style.color = "red";
+        }
+        else {
+            document.getElementById('min2secs').style.color = "";
+        }
+    });
+
+    //"Section checked" select all unchecked
+    $('.TypeofCategoryList').change(function () {
+        //uncheck "select all", if one of the listed checkbox item is unchecked
+        if (false == $(this).prop("checked")) { //if this item is unchecked
+            $("#selectall").prop('checked', false); //change "select all" checked status to false
+        }
+        //check "select all" if all checkbox items are checked
+        if ($('.rt .TypeofCategoryList:checked').length == $('.rt .TypeofCategoryList').length) {
+            $("#selectall").prop('checked', true);
+        }
+    });
+
+    //clear all checked after clicked on Clear button
+    $("#Clear").on('click', function () {
+        document.getElementById('min2secs').style.color = "red";
+        $('#selectall').attr('checked', false);
+        $('.TypeofCategoryList').attr('checked', false);
+    });
+    //HG-459 End
+</script>
+
+<style>
+
+    #Clear {
+        outline: none;
+    }
+
+    .fa-lg {
+        font-size: 1.33333333em;
+        line-height: 0.75em;
+        vertical-align: -126%;
+    }
+    /*#bcsc-excerpt li {
+                    padding-left: 0px !important;
+                    list-style:none;
+                }*/
+    .bcsc-excerpt-custom-content {
+        padding-left: 0px;
+        background-color: sandybrown;
+    }
+
+    .bcsc-excerpt-custom-ul {
+        padding-left: 4px;
+    }
+
+
+    #bcsc-excerpt li {
+        padding-left: 0px !important;
+        list-style-type: disc;
+    }
+
+    #bcsc-excerpt .bcsc-excerpt-custom-ul li {
+        padding-left: 0px !important;
+        list-style-type: none;
+    }
+
+    .question-number-view-exam-details_Excerpt {
+        margin-left: 0px !important;
+    }
+
+    .expand {
+        font-size: 14px;
+        font-weight: bold;
+        color: #337ab7;
+    }
+
+    p.h2 {
+        -epub-hyphens: none;
+        color: #000000;
+        /*font-family:"Univers LT Std 67 Bold Condensed", sans-serif;*/
+        font-size: 14px !important;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: bold;
+        line-height: 1.455;
+        margin-bottom: 3px;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 13px;
+        orphans: 99;
+        page-break-after: avoid;
+        page-break-before: auto;
+        text-align: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 1;
+    }
+
+    p.h2-h1 {
+        -epub-hyphens: none;
+        color: #000000;
+        /*font-family:"Univers LT Std 67 Bold Condensed", sans-serif;*/
+        font-size: 14px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: bold;
+        line-height: 2.100;
+        margin-bottom: 3px;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 5px;
+        orphans: 99;
+        page-break-after: avoid;
+        page-break-before: auto;
+        text-align: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 1;
+    }
+
+    p.fm-only_fm-h2 {
+        -epub-hyphens: none;
+        color: #000000;
+        /*font-family:"Univers 67 Bold Condensed", sans-serif;*/
+        font-size: 14px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: bold;
+        line-height: 1.364;
+        margin-bottom: 3px;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 8px;
+        orphans: 1;
+        page-break-after: avoid;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 1;
+    }
+
+    p.h3 {
+        -epub-hyphens: none;
+        color: #000000;
+        /*font-family:"Univers LT Std 67 Bold Condensed Oblique", sans-serif;*/
+        font-size: 14px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: bold;
+        line-height: 2.100;
+        margin-bottom: 1px;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 10px;
+        orphans: 99;
+        page-break-after: avoid;
+        page-break-before: auto;
+        text-align: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 1;
+    }
+
+    p.h3-h2 {
+        -epub-hyphens: none;
+        color: #000000;
+        /*font-family:"Univers LT Std 67 Bold Condensed Oblique", sans-serif;*/
+        font-size: 14px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: bold;
+        line-height: 2.100;
+        margin-bottom: 1px;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 6px;
+        orphans: 99;
+        page-break-after: avoid;
+        page-break-before: auto;
+        text-align: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 1;
+    }
+
+
+    span.h4-head {
+        /*font-family:"Univers LT Std 67 Bold Condensed", sans-serif;*/
+        font-size: 14px;
+        font-style: normal;
+        font-weight: bold;
+    }
+
+    span.h4-head_greek {
+        /*font-family:"Times NR Dual Greek MT Bold", sans-serif;*/
+        font-style: normal;
+        font-weight: normal;
+    }
+
+    span.h4-text_accent {
+        font-style: normal;
+        font-weight: normal;
+    }
+
+    span.h4-head_subscript {
+        /*font-family:"Univers LT Std 67 Bold Condensed", sans-serif;*/
+        font-style: normal;
+        font-weight: normal;
+        vertical-align: sub;
+    }
+
+    span.h4-text_italic {
+        font-style: italic;
+        font-weight: normal;
+    }
+
+    span.italic {
+        font-style: italic;
+        font-weight: normal;
+    }
+
+    p.ParaOverride-1 {
+        margin-top: 0px;
+    }
+
+    li.ParaOverride-2 {
+        margin-top: 0px;
+        text-indent: 0px;
+    }
+
+    li.ParaOverride-3 {
+        margin-bottom: 0px;
+        text-indent: 0px;
+    }
+
+    p.ParaOverride-4 {
+        margin-top: 9px;
+    }
+
+    p.ParaOverride-5 {
+        margin-top: 11px;
+    }
+
+    li.ParaOverride-6 {
+        margin-top: 7px;
+        text-indent: 0px;
+    }
+
+    p.ParaOverride-7 {
+        margin-bottom: 0px;
+    }
+
+    p.ParaOverride-8 {
+        margin-top: 15px;
+    }
+
+    p.ParaOverride-9 {
+        margin-top: 8px;
+    }
+
+    p.ParaOverride-10 {
+        margin-top: 14px;
+    }
+
+    p.ParaOverride-11 {
+        margin-top: 13px;
+    }
+
+    p.ParaOverride-12 {
+        margin-top: 10px;
+    }
+
+    p.ParaOverride-13 {
+        margin-top: 7px;
+    }
+
+    li.ParaOverride-14 {
+        margin-top: 6px;
+        text-indent: 0px;
+    }
+
+    li.ParaOverride-15 {
+        margin-bottom: 6px;
+        text-indent: 0px;
+    }
+
+    li.ParaOverride-16 {
+        margin-bottom: 11px;
+        text-indent: 0px;
+    }
+
+    li.ParaOverride-17 {
+        margin-top: 11px;
+        text-indent: 0px;
+    }
+
+    p.ParaOverride-18 {
+        margin-left: 0px;
+        text-indent: 0px;
+    }
+
+    img._idGenObjectAttribute-1 {
+        max-width: 90% !important;
+    }
+
+    img._idGenObjectAttribute-2 {
+        max-width: 90% !important;
+    }
+
+    div._idGenObjectStyleOverride-1 {
+        border-width: 0px;
+    }
+
+    p.h3 {
+        -epub-hyphens: none;
+        color: #000000;
+        /*font-family:"Univers LT Std 67 Bold Condensed Oblique", sans-serif;*/
+        font-size: 14px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: bold;
+        line-height: 2.100;
+        margin-bottom: 1px;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 10px;
+        orphans: 99;
+        page-break-after: avoid;
+        page-break-before: auto;
+        text-align: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 1;
+    }
+
+    p.h3-h2 {
+        -epub-hyphens: none;
+        color: #000000;
+        /*font-family:"Univers LT Std 67 Bold Condensed Oblique", sans-serif;*/
+        font-size: 14px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: bold;
+        line-height: 2.100;
+        margin-bottom: 1px;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 6px;
+        orphans: 99;
+        page-break-after: avoid;
+        page-break-before: auto;
+        text-align: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 1;
+    }
+
+    p.h4 {
+        font-size: 14px !important;
+        color: #000000;
+        /*font-family:"Minion Pro", serif;*/
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.238;
+        margin-bottom: 0;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 0;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: 18px;
+        text-transform: none;
+        widows: 2;
+    }
+
+    p.h4-text {
+        color: #000000;
+        /*font-family:"Minion Pro", serif;*/
+        font-size: 14px !important;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.42857143;
+        margin-bottom: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        margin-top: 8px !important;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        /*text-align: justify;*/
+        text-align: left;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 2;
+    }
+
+    p.body-text {
+        color: #000000;
+        /*font-family:"Minion Pro", serif;*/
+        font-size: 14px !important;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.42857143;
+        margin-bottom: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        margin-top: 8px !important;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        /*text-align: justify;*/
+        text-align: left;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 2;
+    }
+
+    p.body-text--no-indent- {
+        color: #000000;
+        /*font-style:normal;
+        font-variant:normal;
+        font-weight:normal;
+        line-height:1.238;
+        margin-bottom:0 !important;
+        margin-left:0 !important;
+        margin-right:0 !important;
+        margin-top:0 !important;
+        orphans:2;
+        page-break-after:auto;
+        page-break-before:auto;
+        text-align:justify;
+        text-align-last:left;
+        text-decoration:none;
+        text-indent:0;
+        text-transform:none;
+        widows:2;*/
+    }
+
+    span.figure-caption_italic {
+        font-style: oblique;
+        font-weight: normal;
+    }
+
+    span.figure-caption_bold {
+        font-style: normal;
+        font-weight: bold;
+    }
+
+    span.numbered-list_italic {
+        font-style: italic;
+        font-weight: normal;
+    }
+
+    p.ParaOverride-19 {
+        margin-left: 92px !important;
+    }
+
+    td.TBF_SHADE {
+        background-color: #a7bfe4;
+        border-bottom-width: 0px;
+        border-left-width: 0px;
+        border-right-width: 0px;
+        padding-bottom: 3px;
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-top: 5px;
+    }
+
+    td.TB_SHADE {
+        background-color: #faac75;
+        border-bottom-width: 0px;
+        border-left-width: 0px;
+        border-right-width: 0px;
+        padding-bottom: 3px;
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-top: 2px;
+    }
+
+    td.TB_SHADE1 {
+        background-color: #fdd1ae;
+        border-bottom-width: 0px;
+        border-left-width: 0px;
+        border-right-width: 0px;
+        padding-bottom: 3px;
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-top: 2px;
+    }
+
+    td.TB_SHADE2 {
+        background-color: #c5dddc;
+        border-bottom-width: 0px;
+        border-left-width: 0px;
+        border-right-width: 0px;
+        padding-bottom: 3px;
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-top: 2px;
+    }
+    /*body{
+            color:#000000;
+        }*/
+
+
+
+    span.h4 {
+        /*font-family:"Univers LT Std 67 Bold Condensed", sans-serif;*/
+        font-size: 14px;
+        font-style: normal;
+        font-weight: normal;
+    }
+
+    span.h4_italic {
+        font-style: italic;
+        font-weight: normal;
+    }
+
+    .Basic-Text-Frame {
+        /*overflow-x:auto;*/
+        /*overflow: scroll;*/
+        /*overflow-x: hidden;*/
+    }
+
+
+
+        .Basic-Text-Frame::-webkit-scrollbar {
+            display: none;
+        }
+
+
+
+    table.Basic-Table {
+        border-collapse: collapse;
+        border-color: #000000;
+        border-style: solid;
+        border-width: 1px;
+        margin-bottom: -4px;
+        margin-top: 4px;
+        width: 60%;
+    }
+
+    td.Basic-Table {
+        /*border-left-width:1px;*/
+        /*border-left-style:solid;*/
+        border-left-color: #000000;
+        border-top-width: 1px;
+        border-top-style: solid;
+        border-top-color: #000000;
+        /*border-right-width:1px;*/
+        /*border-right-style:solid;*/
+        border-right-color: #000000;
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+        border-bottom-color: #000000;
+        padding-top: 4px;
+        padding-bottom: 4px;
+        padding-left: 4px;
+        padding-right: 4px;
+        vertical-align: top;
+    }
+
+    @@media only screen and (max-width: 1024px) {
+        td.Basic-Table {
+            display: block;
+            border-top-width: 0px;
+            border-top-style: none;
+            border-bottom-width: 0.5px;
+            border-bottom-style: solid;
+        }
+    }
+
+    table.No-Table-Style {
+        border-collapse: collapse;
+        border-color: #000000;
+        border-style: solid;
+        border-width: 1px;
+        margin-bottom: -4px;
+        margin-top: 4px;
+    }
+
+    td.No-Table-Style {
+        /*border-left-width:1px;*/
+        /*border-left-style:solid;*/
+        border-left-color: #000000;
+        border-top-width: 1px;
+        border-top-style: solid;
+        border-top-color: #000000;
+        /*border-right-width:1px !important;*/
+        /*border-right-style:solid;*/
+        border-right-color: #000000;
+        border-bottom-width: 1px !important;
+        border-bottom-style: solid;
+        border-bottom-color: #000000;
+        padding-top: 4px !important;
+        padding-bottom: 4px !important;
+        padding-left: 4px !important;
+        padding-right: 4px !important;
+        vertical-align: top !important;
+    }
+
+    td.TB {
+        border-bottom-width: 0px !important;
+        border-left-width: 0px !important;
+        border-right-width: 0px !important;
+        padding-bottom: 2px;
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-top: 4px;
+        vertical-align: top;
+    }
+
+    td.TBF {
+        border-bottom-width: 0px;
+        border-left-width: 0px;
+        border-right-width: 0px;
+        padding-bottom: 2px;
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-top: 5px;
+        vertical-align: top;
+    }
+
+    td.TBL {
+        border-bottom-width: 1px;
+        border-left-width: 0px;
+        border-right-width: 0px;
+        padding-bottom: 9px;
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-top: 4px;
+        vertical-align: top;
+    }
+
+    td.TCH {
+        border-bottom-color: #bcbec0;
+        border-bottom-width: 2px;
+        border-left-width: 0px;
+        border-right-width: 0px;
+        padding-bottom: 5px;
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-top: 5px;
+        vertical-align: bottom;
+    }
+
+    td.TT {
+        border-bottom-color: #bcbec0;
+        border-bottom-width: 2px;
+        border-left-width: 0px;
+        border-right-width: 0px;
+        border-top-color: #000000;
+        border-top-width: 1px;
+        padding-bottom: 5px;
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-top: 4px;
+    }
+
+    p.Basic-Paragraph {
+        color: #000000;
+        /*font-family:"Minion Pro", serif;*/
+        font-size: 11px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.238;
+        margin-bottom: 0;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 0;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 2;
+    }
+
+
+
+    p.table-body {
+        -epub-hyphens: none;
+        color: #000000;
+        /*font-family:"Univers LT Std 55 Roman", sans-serif;*/
+        font-size: 10px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.25 !important;
+        margin-bottom: 0 !important;
+        margin-left: 9px !important;
+        margin-right: 0 !important;
+        margin-top: 0;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: left;
+        text-decoration: none;
+        text-indent: -9px;
+        text-transform: none;
+        widows: 2;
+    }
+
+    p.table-column-head {
+        -epub-hyphens: none;
+        color: #000000;
+        /*font-family:"Univers LT Std 67 Bold Condensed", sans-serif;*/
+        font-size: 10px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.25;
+        margin-bottom: 0;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 0;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 2;
+    }
+
+    p.table-head {
+        -epub-hyphens: none;
+        color: #000000;
+        /*font-family:"Univers LT Std 65 Bold", sans-serif;*/
+        font-size: 12px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.25;
+        margin-bottom: 0 !important;
+        margin-left: 9px !important;
+        margin-right: 0 !important;
+        margin-top: 0 !important;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: left;
+        text-decoration: none;
+        text-indent: -9px;
+        text-transform: none;
+        widows: 2;
+    }
+
+    p.table-indent-1 {
+        -epub-hyphens: none;
+        color: #000000;
+        /*font-family:"Univers LT Std 55 Roman", sans-serif;*/
+        font-size: 10px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.25;
+        margin-bottom: 0 !important;
+        margin-left: 17px !important;
+        margin-right: 0 !important;
+        margin-top: 0 !important;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: left;
+        text-decoration: none;
+        text-indent: -9px;
+        text-transform: none;
+        widows: 2;
+    }
+
+    p.table-indent-2 {
+        -epub-hyphens: none;
+        color: #000000;
+        /*font-family:"Univers LT Std 55 Roman", sans-serif;*/
+        font-size: 10px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.25 !important;
+        margin-bottom: 0 !important;
+        margin-left: 25px !important;
+        margin-right: 0 !important;
+        margin-top: 0 !important;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: left;
+        text-decoration: none;
+        text-indent: -9px;
+        text-transform: none;
+        widows: 2;
+    }
+
+    p.table-title {
+        -epub-hyphens: none;
+        color: #000000;
+        /*font-family:"Univers LT Std 65 Bold", sans-serif;*/
+        font-size: 10px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.158;
+        margin-bottom: 6px !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        margin-top: 0 !important;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: left;
+        text-decoration: none;
+        text-indent: 18px;
+        text-transform: none;
+        widows: 2;
+    }
+
+    p.TT {
+        -epub-hyphens: none;
+        color: #000000;
+        /*font-family:"Univers LT Std 65 Bold", sans-serif;*/
+        font-size: 10px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.158;
+        margin-bottom: 6px !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        margin-top: 0 !important;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 2;
+    }
+
+    /*New styles added*/
+
+    img._idGenObjectAttribute-1 {
+        max-width: 90% !important;
+    }
+
+    img._idGenObjectAttribute-2 {
+        max-width: 90% !important;
+    }
+
+    td.Basic-Table {
+        /*border-left-width:1px;*/
+        /*border-left-style:solid;*/
+        border-left-color: #000000;
+        border-top-width: 1px;
+        border-top-style: solid;
+        border-top-color: #000000;
+        /*border-right-width:1px;*/
+        /*border-right-style:solid;*/
+        border-right-color: #000000;
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+        border-bottom-color: #000000;
+        padding-top: 4px;
+        padding-bottom: 4px;
+        padding-left: 4px;
+        padding-right: 4px;
+        vertical-align: top;
+    }
+
+    table.Basic-Table {
+        border-collapse: collapse;
+        border-color: #000000;
+        border-style: solid;
+        border-width: 1px;
+        margin-bottom: -4px;
+        margin-top: 4px;
+        width: 60%;
+    }
+
+    span.equation_italic {
+        font-style: italic;
+        font-weight: normal;
+    }
+
+    span.equation_subscript {
+        vertical-align: sub;
+    }
+
+    span.equation_symbol {
+        font-family: "Symbol Std Medium", sans-serif;
+        font-style: normal;
+        font-weight: normal;
+    }
+
+    span.equation_symbol_italic {
+        font-family: "Symbol Std Medium", sans-serif;
+        font-style: normal;
+        font-weight: normal;
+    }
+
+    p.equation-single {
+        color: #000000;
+        font-family: "Minion Pro", serif;
+        font-size: 14px !important;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.238;
+        margin-bottom: 13px;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 13px;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 2;
+    }
+
+    span.h5 {
+        /*font-family:"Univers LT Std 65 Bold", sans-serif;*/
+        font-size: 14px !important;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        text-transform: uppercase;
+    }
+
+    span.h4 {
+        /*font-family:"Univers LT Std 67 Bold Condensed", sans-serif;*/
+        font-size: 14px !important;
+        font-style: normal;
+        font-weight: normal;
+    }
+
+
+
+
+    span.greek {
+        font-family: "Times NR Dual Greek MT Regular", sans-serif;
+        font-style: normal;
+        font-weight: normal;
+    }
+
+    span.greek_italic {
+        font-family: "Times NR Dual Greek MT Inclined", sans-serif;
+        font-style: normal;
+        font-weight: normal;
+    }
+
+    span.greek_subscript {
+        font-family: "Times NR Dual Greek MT Regular", sans-serif;
+        font-style: normal;
+        font-weight: normal;
+        vertical-align: sub;
+    }
+
+    span.h2-h1_greek {
+        font-family: "Times NR Dual Greek MT Bold", sans-serif;
+        font-style: normal;
+        font-weight: normal;
+    }
+
+    span.h3_greek_BI {
+        font-family: "Times NR Dual Greek MT Bold Incl", sans-serif;
+        font-style: normal;
+    }
+
+    span.h4-text_greek {
+        font-family: "Times NR Dual Greek MT Regular", sans-serif;
+        font-style: normal;
+        font-weight: normal;
+    }
+
+    span.table-body_greek {
+        font-family: "Times NR Dual Greek MT Regular", sans-serif;
+        font-style: normal;
+        font-weight: normal;
+    }
+
+    span.table-head_greek {
+        font-family: "Times NR Dual Greek MT Bold", sans-serif;
+        font-style: normal;
+        font-weight: normal;
+    }
+
+    span.figure-caption_greek {
+        font-family: "Times NR Dual Greek MT Regular", sans-serif;
+        font-style: normal;
+        font-weight: normal;
+    }
+
+    img#spaceImg {
+        content: url('/Content/img/spaceRepition.svg');
+    }
+
+    img#info {
+        width: 25px;
+        height: 25px;
+        color: #8679a3;
+        margin-bottom: 0px;
+        margin-left: 235px;
+        margin-top: -60px;
+    }
+
+    recommended-topic {
+        margin-top: 4px;
+    }
+
+    span._idGenCharOverride-1 {
+        font-size: 65%;
+    }
+
+    span.figure-caption_subscript_italic {
+        font-style: oblique;
+        font-weight: normal;
+        vertical-align: sub;
+    }
+
+    span.CharOverride-1 {
+        font-style: normal;
+        font-weight: normal;
+    }
+
+    span.CharOverride-1-12-1 {
+        font-style: normal;
+        font-weight: normal;
+    }
+
+    /*Clinical pearl */
+    img._idGenObjectAttribute-3 {
+        max-width: 90% !important
+    }
+</style>

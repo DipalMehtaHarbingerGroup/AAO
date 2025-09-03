@@ -1,0 +1,90 @@
+﻿@model AAO.Common.BCSCSelfAssessment.QuestionDetails
+@{
+    ViewBag.Title = "Index";
+}
+@if (TempData["Msg"] != null)
+{
+    <div class="alert alert-dismissable alert-info">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        @TempData["Msg"].ToString()
+    </div>
+}
+
+@if (TempData["MsgError"] != null)
+{
+    <div class="alert alert-dismissable alert-danger">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        @TempData["MsgError"].ToString()
+    </div>
+}
+
+<div class="search-wrapper col-lg-12 nopadding" id="searchByQuestion">
+    <div class="col-lg-11 col-md-10 col-sm-10 padbot10">
+        <div class="input-group add-on">
+            <input class="form-control" placeholder="Search by question ID" name="srch-term" id="search" value="@ViewBag.QuestionId" >
+            <div class="input-group-btn">
+                <button id="searchOnIDTitle" class="btn btn-primary" type="submit">
+                    <i class="glyphicon glyphicon-search"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-1 col-md-2 col-sm-2 nopadding p-sm">
+        <button id="resetQuestions" class="btn btn-default martop2" type="submit">Reset</button>
+    </div>
+    <div class="clearfix"></div>
+</div>
+
+@if (Model != null)
+{
+    <div id="container">
+        @Html.Partial("AdminUserView", Model)
+    </div>
+}
+<div class="Cmodal"><!-- Place at bottom of page --></div>
+
+<script>
+@*var QuestionViewModel = {
+        remainningtime : '@ViewBag.RemTime',
+        examStatus :  @Convert.ToInt32(@Model.examStatus),
+        examTimeType: @Convert.ToInt32(@Model.examTimeType),
+        examId: '@Model.examId',
+        ExamattemptId: '@Model.examAttemptId',
+        url: '@Url.Action("SubmitExam")'
+    };*@
+</script>
+
+<script src="~/Scripts/UserView/UserViewIndex.js"></script>
+<script src="~/Scripts/moment.min.js"></script>
+
+<style>
+    .Cmodal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background: rgba( 128,128,128, .8 ) url('/Content/img/Processing.gif') 50% 50% no-repeat;
+    }
+
+    /* When the body has the loading class, we turn
+        the scrollbar off with overflow:hidden */
+    body.loading {
+        overflow: hidden;
+        position: fixed;
+        z-index: 1000;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background: rgba( 128,128,128, .8 ) url('/Content/img/Processing.gif') 50% 50% no-repeat;
+    }
+
+        /* Anytime the body has the loading class, our
+        modal element will be visible */
+        body.loading .Cmodal {
+            display: block;
+        }
+</style>

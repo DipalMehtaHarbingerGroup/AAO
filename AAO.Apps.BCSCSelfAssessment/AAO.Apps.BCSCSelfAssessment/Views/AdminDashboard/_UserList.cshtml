@@ -1,0 +1,72 @@
+﻿@{
+    Layout = null;
+}
+<script>
+    $.noConflict();    
+</script>
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+<link href="~/Content/DataTables/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/DataTables/css/responsive.bootstrap.css" rel="stylesheet" />
+<script src="~/scripts/DataTables/jquery.dataTables.min.js"></script>
+<script src="~/scripts/DataTables/dataTables.bootstrap4.js"></script>
+<style>
+    .dataTables_filter {
+        /*display: none;*/
+    }
+</style>
+<script>    
+        $(document).ready(function () {
+            $.support.cors = true;
+        });
+       $("#example2").DataTable(
+        {
+            "columnDefs": [
+                { "width": "5%", "targets": [0] },
+                { "width": "10%", "searchable": false, "orderable": false, "targets": [7] },
+                { "className": "text-center custom-middle-align", "targets": [0, 1, 2, 3, 4, 5, 6, 7] },
+            ],
+            "language":
+                {
+                    "processing": "<div class='overlay custom-loader-background'><i class='fa fa-cog fa-spin custom-loader-color'></i></div>"
+                },
+            "processing": true,
+            "serverSide": true,
+            "responsive": true,
+            "ajax":
+                {
+                    "url": "/AdminDashboard/GetUserListView",
+                    "type": "POST",
+                    "dataType": "JSON"
+                },
+            "columns": [
+                { "data": "UserEmail" },
+                { "data": "UserName" },
+                { "data": "UserName" },
+                { "data": "UserName" },
+                { "data": "UserName" },
+                { "data": "UserName" },
+                { "data": "UserName" },
+                { "data": "UserName" },
+                { "data": "UserName" }
+            ],
+            //"pageLength" : "5",
+        });
+</script>
+<div>
+     <table id="example2" class="table table-striped table-bordered table-hover" width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Office</th>
+                <th>Age</th>
+                <th>Start date</th>
+                <th>Salary</th>
+                <th>Salary</th>
+                <th>Salary</th>
+                <th>Salary</th>
+            </tr>
+        </thead>     
+        </table>
+</div>

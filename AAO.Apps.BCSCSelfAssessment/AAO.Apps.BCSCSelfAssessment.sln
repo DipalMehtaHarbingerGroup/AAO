@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AAO.Apps.BCSCSelfAssessment", "AAO.Apps.BCSCSelfAssessment\AAO.Apps.BCSCSelfAssessment.csproj", "{AE9943FE-DB38-4488-9931-B837B985218C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D85A4B7A-0536-443A-A103-A9A7773B234F} = {D85A4B7A-0536-443A-A103-A9A7773B234F}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AAO.Common.BCSCSelfAssessment", "..\AAO.WebAPI.BCSCSelfAssessment\AAO.Common.BCSCSelfAssessment\AAO.Common.BCSCSelfAssessment.csproj", "{D85A4B7A-0536-443A-A103-A9A7773B234F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AAO.DTO.BCSCSelfAssessment", "..\AAO.WebAPI.BCSCSelfAssessment\AAO.DTO.BCSCSelfAssessment\AAO.DTO.BCSCSelfAssessment.csproj", "{777F6F49-B48E-4C5C-B5CE-4A168DC4859D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AE9943FE-DB38-4488-9931-B837B985218C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE9943FE-DB38-4488-9931-B837B985218C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE9943FE-DB38-4488-9931-B837B985218C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE9943FE-DB38-4488-9931-B837B985218C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D85A4B7A-0536-443A-A103-A9A7773B234F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D85A4B7A-0536-443A-A103-A9A7773B234F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D85A4B7A-0536-443A-A103-A9A7773B234F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D85A4B7A-0536-443A-A103-A9A7773B234F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{777F6F49-B48E-4C5C-B5CE-4A168DC4859D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{777F6F49-B48E-4C5C-B5CE-4A168DC4859D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{777F6F49-B48E-4C5C-B5CE-4A168DC4859D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{777F6F49-B48E-4C5C-B5CE-4A168DC4859D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E9185D55-7CA5-4FFB-866C-6F3CBA6B7242}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 4
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://aaotfsvr:8080/tfs/dotnetnuke
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = AAO.Apps.BCSCSelfAssessment\\AAO.Apps.BCSCSelfAssessment.csproj
+		SccProjectName1 = AAO.Apps.BCSCSelfAssessment
+		SccLocalPath1 = AAO.Apps.BCSCSelfAssessment
+		SccProjectUniqueName2 = ..\\AAO.WebAPI.BCSCSelfAssessment\\AAO.Common.BCSCSelfAssessment\\AAO.Common.BCSCSelfAssessment.csproj
+		SccProjectName2 = ../AAO.WebAPI.BCSCSelfAssessment/AAO.Common.BCSCSelfAssessment
+		SccLocalPath2 = ..\\AAO.WebAPI.BCSCSelfAssessment\\AAO.Common.BCSCSelfAssessment
+		SccProjectUniqueName3 = ..\\AAO.WebAPI.BCSCSelfAssessment\\AAO.DTO.BCSCSelfAssessment\\AAO.DTO.BCSCSelfAssessment.csproj
+		SccProjectName3 = ../AAO.WebAPI.BCSCSelfAssessment/AAO.DTO.BCSCSelfAssessment
+		SccLocalPath3 = ..\\AAO.WebAPI.BCSCSelfAssessment\\AAO.DTO.BCSCSelfAssessment
+	EndGlobalSection
+EndGlobal

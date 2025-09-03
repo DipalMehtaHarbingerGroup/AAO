@@ -1,0 +1,81 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/moment.min.js"></script>
+<link href="~/Content/admin.css" rel="stylesheet" />
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <ul class="breadcrumb"><li class="active">Utilization Reports</li></ul>
+        </div>
+    </div>
+</div>
+<div class="col-lg-12">
+    <div class="content-bg">
+        <div class="content-padding">
+            <div class="col-lg-6 col-sm-5 xs-textcenter nopadding">
+                <label class="active">Admin Application Utilization Reports</label>
+            </div>
+            <div class="col-lg-6 dropdown grey-font font18 pull-right text-right nopadding xs-textcenter">
+                <div class="inline-block">
+                    <label class="padright10 filter-label">Filter by</label>
+                    <div id="reportrange" class="pull-right reportdatepickerrange">
+                        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+                        <span></span>
+                    </div>
+                </div>
+                <div class="inline-block">
+                    <select id="Year" name="optionsval" class="form-control form-control-sm" style="padding-top: 0px;">
+                        <option value="-1" disabled selected hidden>All</option>
+                    </select>
+                </div>
+                <div class="inline-block">
+                    <input type="button" value="Export" id="Export" class="btn btn-primary marleft10 btn-export">
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-lg-12 nopadding table-responsive">
+                <table border="0" width="100%">
+                    <tr>
+                        <td style="width:63%">
+                            <table class="table table-striped" id="AdminReport" style="overflow-x:hidden; border:1px solid #000 ">
+                                <thead>
+                                    <tr>
+                                        <td>User Name</td>
+                                        <td>Customer ID</td>
+                                        <td>#Question Answered</td>
+                                        <td>#Questions Custom</td>
+                                        <td>#Questions Simulated</td>
+                                        <td>#Questions Quick</td>
+                                        <td>#Questions Challenged</td>
+                                        <td>#Questions Shared</td>
+                                        <td>#Questions Spaced Repetition</td>
+                                    </tr>
+                                </thead>
+                            </table>
+
+                        </td>
+                        <td style="width:2%"></td>
+                        <td style="width:35%;padding-top:10px;" valign="top">
+                            <table border="0" width="100%">
+                                <tr><td colspan="2" style="font-size:18px"><b>At a glance</b></td></tr>
+                                <tr>
+                                    <td width="20%" style="border-top:1px solid #000">Total User: </td>
+                                    <td style="border-top:1px solid #000" id="TotalUserCount"></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+        <div class="clearfix">
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/daterangepicker.js"></script>
+<script src="@Url.Content("~/scripts/utilizationreports/utilizationreports.js")"></script>

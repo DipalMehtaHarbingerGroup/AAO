@@ -1,0 +1,198 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+@if (TempData["Msg"] != null)
+{
+    <div class="alert alert-dismissable alert-info">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        @TempData["Msg"].ToString()
+    </div>
+}
+@if (TempData["OptMessage"] != null)
+{
+    <div class="alert alert-dismissable alert-success">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        @TempData["OptMessage"].ToString()
+    </div>
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12 xs-nopadding">
+            @*<button type="button" class="ResetBtn" id="Reset">Reset</button>*@
+            <ul class="breadcrumb">
+                <li class="active">My Exams</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="exam-history">
+    <div class="col-lg-12 xs-nopadding">
+        <div class="content-bg">
+            <div class="content-padding">
+                <div class="ExamHistoryHeadingDiv">
+                    @*@if (ViewBag.optInStatus == "N" || ViewBag.optInStatus == "0")
+                        {
+                            <div style="display:inline-block" class="marright20"><button class="btn btn-primary" id="SharedOpenUpdate"> Share data</button></div>
+                        }*@
+                    <div style="display:inline-block" class="marright20"><i class="fa fa-clock-o"></i> Timed</div>
+                    <div style="display:inline-block"><i class="fa fa-flag-checkered"></i> Challenge Mode</div>&nbsp;&nbsp;
+                    <input type='button' value='Notebook' class="ResetBtn btn btn-primary" onClick="location.href = '/NoteBook/GetQuestions?subSpecialtyId=0&chapterName=0&noOfRecords=5&pageNo=1'" />
+                    <div style="display:inline-block"><button type="button" class="SearchBtn btn btn-primary" id="Search" onclick="@("location.href='"+ Url.Action("Index","SearchByExam")+ "'")">Search</button></div>
+                    <div style="display:inline-block"><button type="button" class="ResetBtn btn btn-primary" id="Reset">Reset Program</button></div>
+                    @*<div style="display:inline-block"><button type="button" class="ResetBtn btn btn-primary" id="NoteBook">NoteBook</button></div>*@
+                </div>
+                <div class="grey-font font18 Examhistorystatusdiv">
+                    <select id="Status" name="optionsval" class="form-control form-control-sm">
+                        <option value="0">All</option>
+                        <option value="1">In Progress</option>
+                        <option value="2">Completed</option>
+                    </select>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped" id="ExamHistoryTable">
+                        <thead>
+                            <tr>
+                                <td>Exam Title</td>
+                                <td>Exam Type</td>
+                                <td style="width:120px;">Progress</td>
+                                <td>Score</td>
+                                <td>Start Date</td>
+                                <td>Completion/End Date</td>
+                                @*<td id="es" width="73px">Actions</td>*@
+                                <td id="es" width="120px">Actions</td>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <div class="clearfix">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteButton" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                <h3 class="modal-title">Delete Exam</h3>
+
+            </div>
+            <div class="modal-body">
+                <div class="small martop10">All information from this exam will be deleted from your reports and cumulative performance, including notes and bookmarks.<br/><br/>Are you sure you want to permanently delete this exam record?</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary deleted" data-dismiss="modal">Delete</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="location.reload()">Cancel</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade" id="DescModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                <h3 class="modal-title">Share Exam Results</h3>
+
+            </div>
+            <div class="modal-body">
+
+                <textarea rows="3" name="about" id="email" class="form-control" style="width:100%;height:60px;"></textarea>
+                <div class="small martop10">Please enter email addresses, separated by a comma.</div>
+                <input type="hidden"  name="feedbackexamId" id="feedbackexamId"/>
+                <div id="error" style="color:red;font-size:12px;display:none">Invalid email address.</div>
+                <div id="error1" style="color:red;font-size:12px;display:none">Please enter email address.</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary sharefeedback" data-dismiss="modal">Submit</button>
+
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade" id="shareResultconfirmDialog" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Share Result</h4>
+            </div>
+            <div class="modal-body">
+                <p>Thank you! Your result has been shared.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="shareResultErrorDialog" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Share Result Error</h4>
+            </div>
+            <div class="modal-body">
+                <p> A problem occurred while sharing the result. Please try again.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="resetExam" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                <h3 class="modal-title">Reset Program</h3>
+
+            </div>
+            <div class="modal-body">
+                <div class="small martop10">All exam information will be deleted from your reports and cumulative performance, including notes and bookmarks.<br /><br />Are you sure you want to permanently delete All exam records?</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary deleted" data-dismiss="modal">Reset</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="location.reload()">Cancel</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!--OptIn Model Start-->
+@*@Html.Partial("_OptInPartial")*@
+<!--OptIn Model End-->
+
+<div id="loader_resetExam" style="display: none;">
+    <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 9999;">
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: white;">
+            <img src="~/Content/img/Processing.gif" alt="Processing..." />
+            <p>Please wait...</p>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/Scripts/ExamHistory/ExamHistory.js")" type="text/javascript"></script>
+<script src="~/Scripts/moment.min.js"></script>
+
+

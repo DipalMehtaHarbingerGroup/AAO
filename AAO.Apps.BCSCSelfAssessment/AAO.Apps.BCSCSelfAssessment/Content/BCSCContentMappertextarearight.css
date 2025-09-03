@@ -1,0 +1,292 @@
+﻿.textarearight
+
+img._idGenObjectAttribute-1 {
+    height: 40.00%;
+    min-width: 40%;
+    width: 40%;
+}
+
+img._idGenObjectAttribute-2 {
+    height: 29px;
+    width: 28px;
+}
+
+div._idGenObjectStyleOverride-1 {
+    border-width: 0px;
+}
+
+/*div.Basic-Text-Frame {
+	border-style:solid;
+}
+div.cap {
+	border-style:solid;
+}
+*/
+table.Basic-Table {
+    border-collapse: collapse;
+    border-color: #000000;
+    border-style: solid;
+    border-width: 1px;
+    margin-bottom: -4px;
+    margin-top: 4px;
+}
+
+td.Basic-Table {
+    border-left-width: 1px;
+    border-left-style: solid;
+    border-left-color: #000000;
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: #000000;
+    border-right-width: 1px;
+    border-right-style: solid;
+    border-right-color: #000000;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: #000000;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-left: 4px;
+    padding-right: 4px;
+    vertical-align: top;
+}
+
+table.No-Table-Style {
+    border-collapse: collapse;
+    border-color: #000000;
+    border-style: solid;
+    border-width: 1px;
+    margin-bottom: -4px;
+    margin-top: 4px;
+}
+
+td.No-Table-Style {
+    border-left-width: 1px;
+    border-left-style: solid;
+    border-left-color: #000000;
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: #000000;
+    border-right-width: 1px;
+    border-right-style: solid;
+    border-right-color: #000000;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: #000000;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-left: 4px;
+    padding-right: 4px;
+    vertical-align: top;
+}
+
+td.TB {
+    border-bottom-width: 0px;
+    border-left-width: 0px;
+    border-right-width: 0px;
+    padding-bottom: 3px;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 2px;
+}
+
+td.TBF {
+    border-bottom-width: 0px;
+    border-left-width: 0px;
+    border-right-width: 0px;
+    padding-bottom: 3px;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 5px;
+}
+
+td.TBF_SHADE {
+    background-color: #a7bfe4;
+    border-bottom-width: 0px;
+    border-left-width: 0px;
+    border-right-width: 0px;
+    padding-bottom: 3px;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 5px;
+}
+
+td.TBL {
+    border-bottom-width: 1px;
+    border-left-width: 0px;
+    border-right-width: 0px;
+    padding-bottom: 9px;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 2px;
+}
+
+td.TB_SHADE {
+    background-color: #faac75;
+    border-bottom-width: 0px;
+    border-left-width: 0px;
+    border-right-width: 0px;
+    padding-bottom: 3px;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 2px;
+}
+
+td.TB_SHADE1 {
+    background-color: #fdd1ae;
+    border-bottom-width: 0px;
+    border-left-width: 0px;
+    border-right-width: 0px;
+    padding-bottom: 3px;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 2px;
+}
+
+td.TB_SHADE2 {
+    background-color: #c5dddc;
+    border-bottom-width: 0px;
+    border-left-width: 0px;
+    border-right-width: 0px;
+    padding-bottom: 3px;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 2px;
+}
+
+td.TCH {
+    border-bottom-color: #bcbec0;
+    border-bottom-width: 2px;
+    border-left-width: 0px;
+    border-right-width: 0px;
+    padding-bottom: 5px;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 5px;
+    vertical-align: bottom;
+}
+
+td.TFN {
+    border-bottom-width: 0px;
+    border-left-width: 0px;
+    border-right-width: 0px;
+    border-top-width: 1px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 6px;
+}
+
+td.TT {
+    border-bottom-color: #bcbec0;
+    border-bottom-width: 2px;
+    border-left-width: 0px;
+    border-right-width: 0px;
+    border-top-color: #000000;
+    border-top-width: 1px;
+    padding-bottom: 5px;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 4px;
+}
+
+p.QR-code-caption-first {
+    color: #000000;
+    font-family: "Univers LT Std 45 Light", sans-serif;
+    font-size: 9px;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    line-height: 1.111;
+    margin-bottom: 0;
+    margin-left: 36px;
+    margin-right: 0;
+    margin-top: 9px;
+    orphans: 2;
+    page-break-after: auto;
+    page-break-before: auto;
+    text-align: left;
+    text-decoration: none;
+    text-indent: 0;
+    text-transform: none;
+    widows: 2;
+}
+
+p.QR-code-source {
+    color: #000000;
+    font-family: "Univers LT Std 45 Light Oblique", sans-serif;
+    font-size: 7px;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    line-height: 1.429;
+    margin-bottom: 0;
+    margin-left: 36px;
+    margin-right: 0;
+    margin-top: 0;
+    orphans: 2;
+    page-break-after: auto;
+    page-break-before: auto;
+    text-align: justify;
+    text-align-last: left;
+    text-decoration: none;
+    text-indent: 0;
+    text-transform: none;
+    widows: 2;
+}
+
+p.QR-code-text-last {
+    color: #000000;
+    font-family: "Univers LT Std 45 Light", sans-serif;
+    font-size: 9px;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    line-height: 1.111;
+    margin-bottom: 6px;
+    margin-left: 36px;
+    margin-right: 0;
+    margin-top: 1px;
+    orphans: 2;
+    page-break-after: auto;
+    page-break-before: auto;
+    text-align: left;
+    text-decoration: none;
+    text-indent: 0;
+    text-transform: none;
+    widows: 2;
+}
+
+span.figure-caption_italic {
+    font-style: oblique;
+    font-weight: normal;
+}
+
+span._idGenCharOverride-1 {
+    font-size: 65%;
+}
+
+span.figure-caption_subscript_italic {
+    font-style: oblique;
+    font-weight: normal;
+    vertical-align: sub;
+}
+
+/*span.CharOverride-1 {
+    font-size: 65%;
+}*/
+
+span.CharOverride-1 {
+    font-style: normal;
+    font-weight: normal;
+}
+
+span.CharOverride-1-12-1 {
+    font-style: normal;
+    font-weight: normal;
+}
+
+/*Clinical pearl */ 
+img._idGenObjectAttribute-3 {
+    max-width: 90% !important
+}

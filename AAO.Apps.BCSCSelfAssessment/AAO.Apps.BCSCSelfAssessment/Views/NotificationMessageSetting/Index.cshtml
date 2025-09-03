@@ -1,0 +1,71 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/Content/admin.css" rel="stylesheet" />
+<div id="loadPage"></div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <ul class="breadcrumb">
+                <li class="active">Message Settings</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="col-lg-12">
+    <div class="content-bg">
+        <div class="content-padding relative-position">
+            <div class="filter-wrapper custom-filter-wrapper">
+                <!-- Button trigger modal -->
+                <div class="inline-block eq-btn">
+                    <button type="button" id="ExportAll" class="btn btn-primary marleft10 btn-export" onclick="openMessageSettingForm(0)" data-toggle="modal">
+                        Add New Message Setting
+                    </button>
+                </div>
+            </div>
+            <div class="col-lg-12 nopadding table-responsive">
+                <table class="table table-striped" id="NotificationMessageSettingTable">
+                    <thead>
+                        <tr>
+                            <td>Message</td>
+                            <td>No Of Time</td>
+                            @*<td>Screen Hold Time </td>*@
+                            <td>Enable</td>
+                            <td>Action</td>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        <div class="clearfix">
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="MessageSettingModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content message-modal-content">
+            <div class="modal-header message-modal-header ">
+                <button type="button" class="close message-close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Message Setting</h4>
+            </div>
+            <div id="MessageSettingBody">
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<script src="~/Scripts/NotificationMessageSetting/NotificationMessageSetting.js"></script>
+<style>
+    .table-responsive {
+        min-height: 300px;
+    }
+</style>

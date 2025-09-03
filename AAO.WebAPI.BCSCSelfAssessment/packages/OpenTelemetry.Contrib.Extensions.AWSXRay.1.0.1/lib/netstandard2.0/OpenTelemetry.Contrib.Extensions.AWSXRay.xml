@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>OpenTelemetry.Contrib.Extensions.AWSXRay</name>
+    </assembly>
+    <members>
+        <member name="M:OpenTelemetry.Contrib.Extensions.AWSXRay.AWSXRayEventSource.ToInvariantString(System.Exception)">
+            <summary>
+            Returns a culture-independent string representation of the given <paramref name="exception"/> object,
+            appropriate for diagnostics tracing.
+            </summary>
+        </member>
+        <member name="T:OpenTelemetry.Contrib.Extensions.AWSXRay.AWSXRayIdGenerator">
+            <summary>
+            Generate AWS X-Ray compatible trace id and replace the trace id of root activity.
+            See https://docs.aws.amazon.com/xray/latest/devguide/xray-api-sendingdata.html#xray-api-traceids.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Contrib.Extensions.AWSXRay.AWSXRayIdGenerator.ToUnixTimeSeconds(System.DateTime)">
+            <summary>
+            Convert a given time to Unix time which is the number of seconds since 1st January 1970, 00:00:00 UTC.
+            </summary>
+            <param name="date">.Net representation of time.</param>
+            <returns>The number of seconds elapsed since 1970-01-01 00:00:00 UTC. The value is expressed in whole and fractional seconds with resolution of microsecond.</returns>
+        </member>
+        <member name="M:OpenTelemetry.Contrib.Extensions.AWSXRay.AWSXRayIdGenerator.GenerateHexNumber(System.Int32)">
+            <summary>
+            Generate a random 24-digit hex number.
+            </summary>
+            <param name="digits">Digits of the hex number.</param>
+            <returns>The generated hex number.</returns>
+        </member>
+        <member name="M:OpenTelemetry.Contrib.Extensions.AWSXRay.AWSXRayIdGenerator.NextBytes(System.Byte[])">
+            <summary>
+            Fills the elements of a specified array of bytes with random numbers.
+            </summary>
+            <param name="buffer">An array of bytes to contain random numbers.</param>
+        </member>
+        <member name="M:OpenTelemetry.Contrib.Extensions.AWSXRay.AWSXRayIdGenerator.Next(System.Int32)">
+            <summary>
+            Returns a non-negative random integer that is less than the specified maximum.
+            </summary>
+            <param name="maxValue">Max value of the random integer.</param>
+            <returns>A 32-bit signed integer that is greater than or equal to 0, and less than maxValue.</returns>
+        </member>
+        <member name="T:OpenTelemetry.Contrib.Extensions.AWSXRay.Trace.AWSXRayPropagator">
+            <summary>
+            Propagator for AWS X-Ray. See https://docs.aws.amazon.com/xray/latest/devguide/xray-concepts.html#xray-concepts-tracingheader.
+            </summary>
+        </member>
+        <member name="P:OpenTelemetry.Contrib.Extensions.AWSXRay.Trace.AWSXRayPropagator.Fields">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenTelemetry.Contrib.Extensions.AWSXRay.Trace.AWSXRayPropagator.Extract``1(OpenTelemetry.Context.Propagation.PropagationContext,``0,System.Func{``0,System.String,System.Collections.Generic.IEnumerable{System.String}})">
+            <inheritdoc/>
+        </member>
+        <member name="M:OpenTelemetry.Contrib.Extensions.AWSXRay.Trace.AWSXRayPropagator.Inject``1(OpenTelemetry.Context.Propagation.PropagationContext,``0,System.Action{``0,System.String,System.String})">
+            <inheritdoc/>
+        </member>
+        <member name="T:OpenTelemetry.Trace.TracerProviderBuilderExtensions">
+            <summary>
+            Extension method to generate AWS X-Ray compatible trace id and replace the trace id of root activity.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Trace.TracerProviderBuilderExtensions.AddXRayTraceId(OpenTelemetry.Trace.TracerProviderBuilder)">
+            <summary>
+            Replace the trace id of root activity.
+            </summary>
+            <param name="builder"><see cref="T:OpenTelemetry.Trace.TracerProviderBuilder"/> being configured.</param>
+            <returns>The instance of <see cref="T:OpenTelemetry.Trace.TracerProviderBuilder"/>.</returns>
+        </member>
+        <member name="M:OpenTelemetry.Trace.TracerProviderBuilderExtensions.AddXRayTraceIdWithSampler(OpenTelemetry.Trace.TracerProviderBuilder,OpenTelemetry.Trace.Sampler)">
+            <summary>
+            1. Replace the trace id of root activity.
+            2. Update the sampling decision for root activity when it's created through ActivitySource.StartActivity().
+            </summary>
+            <param name="builder"><see cref="T:OpenTelemetry.Trace.TracerProviderBuilder"/> being configured.</param>
+            <param name="sampler"><see cref="T:OpenTelemetry.Trace.Sampler"/> being used.</param>
+            <returns>The instance of <see cref="T:OpenTelemetry.Trace.TracerProviderBuilder"/>.</returns>
+        </member>
+    </members>
+</doc>

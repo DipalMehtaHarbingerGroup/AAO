@@ -1,0 +1,11 @@
+D:\AAO-Azure\Branches\Main\AAO.WebAPI.BCSCSelfAssessment\AAO.Common.BCSCSelfAssessment\bin\Release\AAO.Common.BCSCSelfAssessment.dll
+D:\AAO-Azure\Branches\Main\AAO.WebAPI.BCSCSelfAssessment\AAO.Common.BCSCSelfAssessment\bin\Release\AAO.Common.BCSCSelfAssessment.pdb
+D:\AAO-Azure\Branches\Main\AAO.WebAPI.BCSCSelfAssessment\AAO.Common.BCSCSelfAssessment\bin\Release\AAO.DTO.BCSCSelfAssessment.dll
+D:\AAO-Azure\Branches\Main\AAO.WebAPI.BCSCSelfAssessment\AAO.Common.BCSCSelfAssessment\bin\Release\Newtonsoft.Json.dll
+D:\AAO-Azure\Branches\Main\AAO.WebAPI.BCSCSelfAssessment\AAO.Common.BCSCSelfAssessment\bin\Release\AAO.DTO.BCSCSelfAssessment.pdb
+D:\AAO-Azure\Branches\Main\AAO.WebAPI.BCSCSelfAssessment\AAO.Common.BCSCSelfAssessment\bin\Release\Newtonsoft.Json.xml
+D:\AAO-Azure\Branches\Main\AAO.WebAPI.BCSCSelfAssessment\AAO.Common.BCSCSelfAssessment\obj\Release\AAO.Common.BCSCSelfAssessment.csproj.AssemblyReference.cache
+D:\AAO-Azure\Branches\Main\AAO.WebAPI.BCSCSelfAssessment\AAO.Common.BCSCSelfAssessment\obj\Release\AAO.Common.BCSCSelfAssessment.csproj.CoreCompileInputs.cache
+D:\AAO-Azure\Branches\Main\AAO.WebAPI.BCSCSelfAssessment\AAO.Common.BCSCSelfAssessment\obj\Release\AAO.Common.BCSCSelfAssessment.csproj.CopyComplete
+D:\AAO-Azure\Branches\Main\AAO.WebAPI.BCSCSelfAssessment\AAO.Common.BCSCSelfAssessment\obj\Release\AAO.Common.BCSCSelfAssessment.dll
+D:\AAO-Azure\Branches\Main\AAO.WebAPI.BCSCSelfAssessment\AAO.Common.BCSCSelfAssessment\obj\Release\AAO.Common.BCSCSelfAssessment.pdb

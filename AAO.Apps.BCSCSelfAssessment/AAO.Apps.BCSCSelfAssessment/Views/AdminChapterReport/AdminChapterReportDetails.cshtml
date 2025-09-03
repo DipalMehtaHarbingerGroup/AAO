@@ -1,0 +1,110 @@
+﻿
+@{
+    ViewBag.Title = "AdminChapterReportDetails";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <ul class="breadcrumb">
+                <li>
+                <a href="@Url.Content("~/AggregateUserPerformance/Index")">Reports </a>
+            
+                </li>
+                <span>/ Section</span>
+                <span>
+                    @ViewBag.SectionNumber:
+                </span>
+                <span>@ViewBag.Section</span>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="col-lg-12">
+    <div class="content-bg">
+        <div class="content-padding">
+            <div class="col-lg-6 col-sm-4 xs-textcenter nopadding">
+
+                @*<span>Section</span>
+                <span>
+                    @ViewBag.SectionNumber:
+                </span>
+                <span>@ViewBag.Section</span>*@
+             </div>
+            <div class="col-lg-6 dropdown grey-font font18 pull-right xs-textcenter text-right nopadding">
+                <div class="inline-block">
+                    <label class="padright10 filter-label">Filter by</label>
+                    <div id="reportrange" class="pull-right reportdatepickerrange">
+                        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+                        <span></span>
+                    </div>
+                </div>
+                <div class="inline-block">
+                    <select id="pgyYear" name="optionsval" class="form-control form-control-sm" style="padding-top: 2px!important;">
+                        <option value="-1" disabled selected hidden>All</option>
+                    </select>
+                </div>
+                <div class="inline-block">
+                    <input type="button" value="Export" id="Export" class="btn btn-primary marleft10 btn-export">
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <hr class="nopadding" style="margin-top: 10px;margin-bottom: 10px;">
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-lg-12 nopadding">
+                <div class="col-lg-6 col-sm-6 col-xs- xs-font12 pull-right text-right nopadding">
+                    <span class="legend correct-bg"></span><span class="padright10">Correct(%)</span>
+                    <span class="legend incorrect-bg"></span><span class="padright10">Incorrect(%)</span>
+                    <span class="legend unanswered-bg"></span><span>Remaining</span>
+                </div>
+                <div class="clearfix">
+                </div>
+                <div id="AdminSectionChapter_chart" style="width:100%!important">
+                    <div class="loader_main" style="text-align:center;">
+                        <br /><br />
+                        <img src="~/Content/img/Processing.gif" />
+                    </div>
+                </div>
+              
+            </div>
+            <div class="col-lg-6 col-sm-4 xs-textcenter text-center nopadding marbot10" style="width:100%">
+                    <span class="legend correct-bg"></span><span class="padright10">Correct percentage</span>
+                    <span class="legend incorrect-bg"></span><span class="padright10">Incorrect percentage</span>
+                    <span class="legend unanswered-bg"></span><span>Remaining number of question</span>
+            </div>
+        </div>
+        <div class="clearfix">
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/moment.min.js"></script>
+<script src="~/Scripts/daterangepicker.js"></script>
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="@Url.Content("~/scripts/Adminchapterreport/Adminchapterreport.js")" type="text/javascript"></script>
+<script>
+    var AdminGoogleChart = {
+        url: '@Url.Action("AdminChapterReportDetails")',
+    };
+    var Id = {
+        SubSpecialityId: '@ViewBag.SubSpecialityId',
+
+    };
+    var ExamStartDate = {
+        ExamStartDate:'@ViewBag.StartDate ',
+
+    };
+    var ExamCompletedDate = {
+        ExamCompletedDate: '@ViewBag.CompletedDate',
+
+
+    };
+    var Year = {
+        Year: '@ViewBag.Year',
+
+
+    };
+
+</script>
+

@@ -1,0 +1,421 @@
+﻿@model AAO.DTO.BCSCSelfAssessment.QuestionContentDTO
+@{
+    ViewBag.Title = "Questions";
+}
+<script src="~/Scripts/tinymce/js/tinymce/tinymce.min.js"></script>
+<script src="~/Scripts/tinymce/js/tinymce/jquery.tinymce.min.js"></script>
+
+
+<link href="~/Content/admin.css" rel="stylesheet" />
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <ul class="breadcrumb">
+                <li class="active">BCSC Content Mapping</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div id="loadPage"></div>
+<div class="bcsc-self-assessment">
+    <div class="container-fluid bcsc-self-assessment">
+        <div class="col-lg-12">
+            <div class="content-bg">
+                <div class="content-padding">
+                    <div class="col-lg-12 xs-martop30 tab-section sm-martop20">
+                        <!-- Nav tabs -->
+                        <ul id="topPanel" class="nav nav-tabs responsive-tabs" role="tablist">
+                            <li id="SearchByIdTitle" role="presentation" class="active">
+                                <a id="searchByQuest" href="#byQuestion" aria-controls="by-question" role="tab" data-toggle="tab">Search by Question</a>
+                            </li>
+                            <li id="SearchByTopli" role="presentation">
+                                <a id="SearchByTop" href="#byProgram" aria-controls="by-program" role="tab" data-toggle="tab">Search by Program / Subprogram / Subspecialty / Topic</a>
+                            </li>
+                        </ul>
+                        <div class="flex-unit MapperquestionView">
+                            <div class="pull-left padright15 xs-width sm-width padtop5">Questions view</div>
+                            <div class="pull-left">
+                                <select id="QuestViewPerPage" class="form-control">
+                                    <option value="25">25 per page</option>
+                                    <option value="50">50 per page</option>
+                                    <option value="75">75 per page</option>
+                                    <option value="100">100 per page</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <!--Tab one conent start-->
+                            <div role="tabpanel" class="tab-pane active" id="byQuestion">
+                                <div id="searchByQuestion" class="col-lg-12 nopadding martop10">
+                                    <div class="search-wrapper">
+                                        <div class="radio-inline">
+                                            <label>
+                                                <input type="radio" name="question" id="questionTitle" value="Title" checked="">
+                                                By question title
+                                            </label>
+                                        </div>
+                                        <div class="radio-inline">
+                                            <label>
+                                                <input type="radio" name="question" id="questionId" value="ID">
+                                                By question ID
+                                            </label>
+                                        </div>
+                                        <div class="col-lg-11 col-md-10 col-sm-10">
+                                            <div class="input-group add-on padtop20">
+                                                <input class="form-control" placeholder="Search the question to map the BCSC content" name="srch-term" id="search">
+                                                <div class="input-group-btn">
+                                                    <button id="searchOnIDTitle" class="btn btn-primary" type="submit">
+                                                        <i class="glyphicon glyphicon-search"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-1 col-md-2 col-sm-2">
+                                            <button id="resetQuestions" class="btn btn-default martop20" type="submit">Reset</button>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Tab one conent end-->
+                            <!--Tab two conent start -->
+                            <div role="tabpanel" class="tab-pane" id="byProgram">
+                                <div id="searchBySecChaptTop" class="col-lg-12 nopadding martop10">
+                                    <div class="search-wrapper">
+                                        <div class="pull-left eq-wth">
+                                            <select id="ProgramBox" class="form-control">
+                                                <option value="" disabled selected hidden>Select Program</option>
+                                            </select>
+                                        </div>
+                                        <div class="pull-left marleft20 eq-wth">
+                                            <select id="SubProgramBox" class="form-control" disabled>
+                                                <option value="" disabled selected hidden>Select Subprogram</option>
+                                            </select>
+                                        </div>
+                                        <div class="pull-left marleft20 eq-wth">
+                                            <select id="SubSpecialityBox" class="form-control" disabled>
+                                                <option value="" disabled selected hidden>Select Subspecialty</option>
+                                            </select>
+                                        </div>
+                                        <div class="pull-left marleft20 eq-wth">
+                                            <select id="TopicBox" class="form-control" disabled>
+                                                <option value="" disabled selected hidden>Select Topic</option>
+
+                                            </select>
+                                        </div>
+                                        <div class="pull-left marleft20">
+                                            <button id="SearchQuestions" class="btn btn-primary" type="submit" disabled>
+                                                <i class="glyphicon glyphicon-search"></i>
+                                            </button>
+                                        </div>
+                                        <div class="pull-left marleft20">
+                                            <button id="resetQuest" class="btn btn-default" type="submit">Reset</button>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Tab two conent end-->
+                        </div>
+                        <div class="clearfix"></div>
+                        <!--common content area-->
+                        <div>
+                            @if (ViewBag.Questions.Count > 0)
+                            {
+                                <div id="QuestionList">
+                                    @{ var count = 1;
+
+                                        <div id="accordion" class="panel-group">
+                                            @foreach (var item in ViewBag.Questions)
+                                            {
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading">
+                                                        <h4 class="panel-title">
+                                                            <a data-toggle="collapse" data-parent="#accordion" href="#@(item.QuestionId + "collapseOne")" value="@item.QuestionId" class="element">
+                                                                @item.RowNumber. @Html.Raw(@item.Stem) (Question ID: @item.FriendlyId)
+                                                            </a>
+                                                        </h4>
+                                                    </div>
+                                                    @{count = count + 1;}
+
+                                                    <div id="@(item.QuestionId + "collapseOne")" class="panel-collapse collapse" aria-labelledby="@(item.QuestionId + "headingOne")">
+                                                        <div class="panel-body">
+                                                            <!-- Nested accordion -->
+                                                            <div class="accordion nested-accordion" id="@(item.QuestionId + "accordion")">
+                                                                <div class="accordion-group">
+                                                                    <div class="accordion-heading">
+                                                                        <div id="@(item.QuestionId +"ContainerDiv")"></div>
+                                                                    </div>
+
+                                                                    <div id="@(item.QuestionId +"collapseInnerOne")" class="panel-collapse collapse">
+                                                                        <div id="@(item.QuestionId +"bcscMapper")" class="accordion-inner">
+                                                                            <div id="@(item.QuestionId + "BCSCChoice")">
+                                                                                <ul class="list-items" id="@(item.QuestionId + "listData")"></ul>
+                                                                            </div>
+                                                                            <div class="padtop20">
+                                                                                <ul class="nav nav-tabs responsive-tabs" role="tablist">
+                                                                                    <li role="presentation" class="active">
+                                                                                        <a href="#@(item.QuestionId + "discussion")" class="tab" aria-controls="@(item.QuestionId + "discussion")" role="tab" data-toggle="tab">Discussion</a>
+                                                                                    </li>
+                                                                                    <li role="presentation">
+                                                                                        <a href="#@(item.QuestionId+"references")" aria-controls="references" role="tab" data-toggle="tab">References</a>
+                                                                                    </li>
+                                                                                    <li role="presentation">
+                                                                                        <a href="#@(item.QuestionId+"relatedContents")" aria-controls="relatedContents" role="tab" data-toggle="tab">Related Content</a>
+                                                                                    </li>
+                                                                                </ul>
+                                                                                <div class="tab-content">
+                                                                                    <div role="tabpanel" class="tab-pane padtop20 active" id="@(item.QuestionId + "discussion")">
+                                                                                        <div class="col-lg-12">
+                                                                                            <p id="@(item.QuestionId + "discussionPara")" class="discussion tab-pane"></p>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                    <div role="tabpanel" class="tab-pane padtop20" id="@(item.QuestionId + "references")">
+                                                                                        <div class="col-lg-12">
+                                                                                            <p id="@(item.QuestionId + "referencesPara")" class="references"></p>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                    <div role="tabpanel" class="tab-pane padtop20" id="@(item.QuestionId+"relatedContents")">
+                                                                                        <div class="col-lg-12">
+                                                                                            <p id="@(item.QuestionId + "relatedContentsPara")" class="relatedContents"></p>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                </div>
+                                                                                <div class="clearfix"></div>
+                                                                                <hr class="martop10">
+                                                                                <h2 class="sub-title">Map BCSC Content <span>(Select section & chapter to view the BCSC content)</span></h2>
+
+
+                                                                                <div class="pull-left">
+                                                                                    <select id="@(item.QuestionId + "SubSpecName")" class="form-control">
+                                                                                        <option>Select Section name</option>
+                                                                                    </select>
+                                                                                </div>
+                                                                                <div class="pull-left marleft20">
+                                                                                    <select id="@(item.QuestionId + "ChapterName")" class="form-control">
+
+                                                                                        <option value="" disabled selected hidden>Select Chapter name</option>
+
+                                                                                    </select>
+                                                                                </div>
+                                                                                <div class="clearfix"></div>
+                                                                                <h2 class="sub-title">BCSC Content</h2> @*<br /><br />*@
+                                                                                
+                                                                                <!--fetching dates-->
+                                                                                <div id="container1">
+                                                                                    <div id="sidebyside" class="col-lg-5">
+                                                                                        <p>Manual Updated: <span class="datecolor_span" id="@(item.QuestionId + "LastUpdateOn_IsUpdated")"></span> </p>
+                                                                                        <p>Programmatic Updated: <span class="datecolor_span" id="@(item.QuestionId + "LastUpdateOn_BookUpdateAPI")"> </span> </p>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <!-- Textarea for BCSC html content -->
+                                                                                <div id="DisplayData">
+                                                                                    <div class="row row-eq-col">
+                                                                                        <div class="col-lg-5">
+                                                                                            <textarea readonly id="@(item.QuestionId + "descriptionArea")" name="descriptionArea" rows="40" cols="100" class="form-control txt-description textarealeft"></textarea>
+                                                                                        </div>
+                                                                                        <div class="col-lg-1 text-center">
+                                                                                            <input class="btn btn-primary btn-transfer copyTinyMCEToclip'" type="button" id="@(item.QuestionId + "Transfer")" value=">>" />
+                                                                                        </div>
+                                                                                        <div class="col-lg-5">
+                                                                                            <textarea id="@(item.QuestionId + "descriptionArea1")" name="descriptionArea1" rows="40" cols="100" class="form-control txt-description textarearight"></textarea>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-lg-11 text-right martop20 marbot10 nopadding">
+                                                                                        <div id="@(item.QuestionId + "alertMessage")" class="alertmessage">
+                                                                                            <span class="font-green">Data saved successfully.</span>
+                                                                                        </div>
+                                                                                        <input type="button" id="@(item.QuestionId + "SaveText")" value="Save" class="btn btn-primary" />
+                                                                                        <input type="button" id="@(item.QuestionId + "ClearText")" value="Cancel" class="btn btn-default" />
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            }
+                                        </div>
+
+                                    }
+
+                                </div>
+                            }
+                            else
+                            {
+
+                                <div class="text-center padtop20 marbot10">No records found.</div>
+
+                            }
+
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <div class="text-center paginationclass">
+                        <nav id="PageNavigation" aria-label="Page navigation example">
+                            <ul class="pagination margin0">
+                                <li id="Firstpage"><a class="page-link" href="#">First</a></li>
+                                <li id="Previouspage"><a class="page-link" href="#">Prev</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<a href="javascript:void(0)" class="list-group-item active" style="display:none"></a>
+
+
+<style>
+    .Row {
+        display: table;
+        width: 90%; /*Optional*/
+        table-layout: fixed; /*Optional*/
+        border-spacing: 10px; /*Optional*/
+        border: 1px solid red;
+    }
+
+    .Column {
+        display: table-cell;
+        /*v-align: top;*/
+        background-color: purple; /*Optional*/
+    }
+</style>
+
+<script>
+
+    $(document).on('show', '.accordion.nested-accordion', function (e) {
+        $(e.target).prev('.accordion-heading').addClass('accordion-opened');
+    });
+    $(document).on('hide', '.accordion.nested-accordion', function (e) {
+        $(this).find('.accordion-heading').not($(e.target)).removeClass('accordion-opened');
+    });
+
+</script>
+<script>
+
+                    var BcscMapperViewModel = {
+                        ProgramId: '@ViewBag.ProgramId',
+                        SubprogramId: '@ViewBag.SubprogramId',
+                        SubSpecialityId: '@ViewBag.SubSpeciality',
+                        TopicId: '@ViewBag.TopicId',
+                        questionCount: '@ViewBag.questionCount',
+                        noOfRecords: '@ViewBag.noOfRecords',
+                        PageNo: '@ViewBag.pageIndex',
+                        RadioButtonState: '@ViewBag.radioButtonState',
+                        QuestionText: '@ViewBag.questionText',
+                        QuestionId: '@ViewBag.questionId',
+                        FriendlyId: '@ViewBag.FriendlyId',
+                    };
+
+
+
+                    //Responsive tabs / accordion
+                    $('.responsive-tabs').responsiveTabs({
+                        accordionOn: ['xs', 'sm']
+                    });
+</script>
+<iframe id="form_target" name="form_target" style="display:none;"></iframe>
+<form id="my_form" action="/BCSCMapper/upload" target="form_target" method="post" enctype="multipart/form-data" style="width:0;height:0;overflow:hidden">
+    <input name="file" type="file" onchange="$('#my_form').submit();this.value='';">
+</form>
+<script>
+        $(document).ready(function () {
+            tinymce.init({
+                selector: '.textarearight',
+                menubar: true,
+                branding: false,
+                //entity_encoding : "raw",
+                height: 200,
+                file_picker_types: 'file image media',
+                content_css: '/Content/BCSCContentMappertextarearight.css',
+                @*content_css: "/BCSC Book/GenericCSS/idGeneratedStyles_generic.css",*@
+                image_class_list: [
+                    { title: 'Custom Image', value: 'custom-uploaded-image' },
+                ],
+                automatic_uploads: true,
+                file_picker_callback: function (callback, value, meta) {
+                    // Provide file and text for the link dialog
+                    if (meta.filetype == 'file') {
+                        callback('mypage.html', { text: 'My text' });
+                    }
+
+                    // Provide image and alt text for the image dialog
+                    if (meta.filetype == 'image') {
+                        $('#my_form input').click();
+                        callback('', { alt: '', height: '200', width: '200' });
+                    }
+
+                    // Provide alternative source and posted for the media dialog
+                    if (meta.filetype == 'media') {
+                        //callback('movie.mp4', {source2: 'alt.ogg', poster: 'image.jpg'});
+                    }
+                },
+                // readonly : 1,
+
+                plugins: [
+                    'advlist autolink lists charmap print preview anchor textcolor',
+                    'searchreplace visualblocks code fullscreen',
+                    'insertdatetime media image table link contextmenu paste code'
+                ],
+                default_link_target: '_blank',
+                toolbar: 'undo redo | insert | styleselect | bold italic backcolor forecolor | alignleft aligncenter alignright alignjustify |  bullist numlist outdent indent | removeformat | link | code'
+
+            });
+
+            tinymce.init({
+                selector: '.textarealeft',
+                menubar: true,
+                branding: false,
+                height: 200,
+                file_picker_types: 'file image media',
+                automatic_uploads: true,
+                content_css: '/Content/BCSCContentMappertextarealeft.css',
+                @*content_css: "/BCSC Book/GenericCSS/idGeneratedStyles_generic.css",*@
+                file_picker_callback: function (callback, value, meta) {
+                    // Provide file and text for the link dialog
+                    if (meta.filetype == 'file') {
+                        //callback('mypage.html', {text: 'My text'});
+                    }
+
+                    // Provide image and alt text for the image dialog
+                    if (meta.filetype == 'image') {
+                        //callback('myimage.jpg', {alt: 'My alt text'});
+                    }
+
+                    // Provide alternative source and posted for the media dialog
+                    if (meta.filetype == 'media') {
+                        //callback('movie.mp4', {source2: 'alt.ogg', poster: 'image.jpg'});
+                    }
+                },
+                //readonly : 1,
+                plugins: [
+                    'advlist autolink lists charmap print preview anchor textcolor',
+                    'searchreplace visualblocks code fullscreen',
+                    'insertdatetime media image table contextmenu paste code'
+                ],
+                toolbar: 'undo redo | insert | styleselect | bold italic backcolor forecolor | alignleft aligncenter alignright alignjustify |  bullist numlist outdent indent | removeformat '
+
+            });
+                /*toolbar:false*/
+            });
+</script>
+<script src="~/Scripts/BCSCMapper/BCSCMapper.js"></script>
+

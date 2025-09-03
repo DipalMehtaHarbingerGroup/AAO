@@ -1,0 +1,1789 @@
+﻿@{
+    ViewBag.Title = "IncorrectQuestionDetails";
+}
+
+<script src="~/Scripts/jquery-ui.js"></script>
+<script src="~/Scripts/jquery.ui.touch-punch.js"></script>
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link href="~/fonts/font-awesome/css/font-awesome.css" rel="stylesheet" />
+<link href="~/Content/custom.css" rel="stylesheet" />
+<link href="~/Content/bootstrap-responsive-tabs.css" rel="stylesheet" />
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12 xs-nopadding">
+            <ul class="breadcrumb">
+                <li>
+                    <a href="@Url.Content("~/AggregatePerformance/Index")">Reports </a>
+                    <span>/ Section @ViewBag.SubSpecialityNumber </span>
+                    <span>: @ViewBag.SubSpeciality</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<a href="javascript:void(0)" class="list-group-item active" style="display:none"></a>
+
+<div class="view-assessment-details">
+    <div class="col-lg-12 xs-nopadding">
+        <div class="content-bg">
+            <div class="content-padding">
+                @if (ViewBag.incorrectQuestiondetailscount > 0)
+                {
+                    <div id="displayCount" class="pull-left padtop5">
+                        @*Displaying questions 10 of @ViewBag.viewAssessmentdetailscount*@
+                    </div>
+                }
+
+                <div class="filter-container">
+                    <div class="flex-unit">
+                        <div class="pull-left padright15 xs-width sm-width padtop5">Expand all</div>
+                        <div class="pull-left padtop5">
+                            <div class="toggle-switch">
+                                <input type="checkbox" name="toggle_switch3" class="toggle-switch-checkbox" id="toggle_switch3">
+                                <label class="toggle-switch-label" for="toggle_switch3">
+                                    <span class="toggle-switch-inner"></span>
+                                    <span class="toggle-switch-switch"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--<div class="flex-unit">
+                            <div class="pull-left padright15 xs-width sm-width padtop5">Filter by</div>
+                            <div class="pull-left">
+                                <select id="filterBy" class="form-control">
+                                    <option selected>All</option>
+                                    <option>Bookmarked</option>-->
+                                    @*<option>Incorrect</option>*@
+                                    <!--<option>Notes</option>
+                                </select>
+                            </div>
+                        </div>-->
+
+                    <div class="flex-unit">
+                        <div class="pull-left padright15 xs-width sm-width padtop5">Questions view</div>
+                        <div class="pull-left">
+                            <select id="QuestView" class="form-control">
+                                <option value="10" selected>10 per page</option>
+                                <option value="20">20 per page</option>
+                                <option value="30">30 per page</option>
+                                <option value="50">50 per page</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="clearfix">
+                </div>
+
+                @if (ViewBag.incorrectQuestiondetailscount > 0)
+                {
+                    <div id="details">
+                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                            <!-- Panel-1 -->
+                            <!--  Accordian -->
+                            @{
+                                var count = 1;
+                                var optionVal = 'A';
+                                foreach (var item in ViewBag.incorrectQuestiondetailsdata)
+                                {
+                                    optionVal = 'A';
+
+                                    <div id="ExamId" style="display:none">@item.examId</div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading" role="tab" id="@(item.questionId + "headingOne")" style="background:none!important">
+                                            <div class="panel-title view-title">
+                                                <a role="button" data-toggle="collapse" class="accordian-tab" data-parent="#accordion" href="#@(item.questionId + "collapseOne")" aria-expanded="true" aria-controls="@(item.questionId +"collapseOne")">
+                                                    <div id="quesText" class="question pad15 panel-bg-white padleft80 xs-padleft50">
+
+                                                        @*<i class="fa fa-sticky-note text-center padleft30 padright10"></i>*@
+                                                        <li class="question-number-view-exam-details">
+
+                                                            @if (Convert.ToInt32(@item.rightChoiceId) == Convert.ToInt32(@item.examAttemptAnswerDTO.ChoiceId))
+                                                            {
+                                                                <i class="fa fa-lg fa-check padright10 font-green"></i>
+                                                            }
+                                                            else
+                                                            {
+                                                                <i class="fa fa-lg fa-times padright10 font-red"></i>
+                                                            }
+
+                                                            @*@item.serialNumber.*@
+                                                        </li>
+                                                        <div class="divHorizontal">
+                                                            <div>
+                                                                @item.serialNumber.&nbsp;
+                                                            </div>
+                                                            <div id="quesTextDiv@(item.questionId)">
+                                                                @Html.Raw(item.questionText)
+                                                                @*@if (@item.markCheck == true)
+                                                                    {
+                                                                        <span id="Markcheck@(item.questionId)"><i class="fa fa-star-o"></i></span>
+                                                                    }
+                                                                    @if (@item.notes.Count > 0)
+                                                                    {
+                                                                        <span id="NoteCount@(item.questionId)"><i class="fa fa-sticky-note-o"></i></span>
+                                                                    }*@
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </a>
+
+                                                <div class="assessment-features assessment-featuresBox">
+                                                    <ul>
+                                                        <li>
+                                                            <a href='javascript:void(0)' data-toggle="modal" id="createNewNotes+@item.questionId" class="createNewNoteClass" ExamId="@Html.Raw((int?)item.examId)" QuestionId="@Html.Raw((int?)item.questionId)" ExamattemptId="@Html.Raw((int?)item.examAttemptId)">
+                                                                @if (item.notes.Count > 0)
+                                                                {
+                                                                    <i id="@("createNotesIcon"+@item.questionId)" class="fa fa-sticky-note text-center menu-icons"></i>
+                                                                }
+                                                                else
+                                                                {<i id="@("createNotesIcon"+@item.questionId)" class="fa fa-sticky-note-o text-center menu-icons"></i>
+                                                                }
+                                                                @*<span class="hidden-xs">Create Notes</span>*@
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            @*<a href="#">
+
+                                                                    <div id="markQuestion" alreadyMarked="@item.markCheck.ToString()" ExamId="@Html.Raw((int?)item.examId)" QuestionId="@Html.Raw((int?)item.questionId)" ExamattemptId="@Html.Raw((int?)item.examAttemptId)">
+                                                                        @*if (@item.markCheck)
+                                                                        {
+                                                                            <span id="Markcheck@(item.questionId)"><i class="fa fa-star text-center menu-icons" id="Markstatus@(item.questionId)"> </i></span>
+                                                                            <span class="hidden-xs">Bookmarked</span>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <span id="Markcheck@(item.questionId)"><i class="fa fa-star-o text-center menu-icons" id="Markstatus@(item.questionId)"></i></span>
+                                                                            <span class="hidden-xs">Bookmark</span>
+                                                                        }
+                                                                    </div>
+                                                                </a>*@
+                                                            <a href='javascript:void(0)'>
+                                                                @if (@item.markCheck)
+                                                                {
+
+                                                                    <i class="Checkmark fa fa-star text-center menu-icons" id="Markstatus" alreadyMarked="@item.markCheck.ToString()" ExamId="@Html.Raw((int?)item.examId)" QuestionId="@Html.Raw((int?)item.questionId)" ExamattemptId="@Html.Raw((int?)item.examAttemptId)"> </i>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <i class="Checkmark fa fa-star-o text-center menu-icons" id="Markstatus" alreadyMarked="@item.markCheck.ToString()" ExamId="@Html.Raw((int?)item.examId)" QuestionId="@Html.Raw((int?)item.questionId)" ExamattemptId="@Html.Raw((int?)item.examAttemptId)"> </i>
+                                                                }
+
+                                                                <div class="Checkmark" id="@("markQuestion"+@item.questionId)" alreadyMarked="@item.markCheck.ToString()" ExamId="@Html.Raw((int?)item.examId)" QuestionId="@Html.Raw((int?)item.questionId)" ExamattemptId="@Html.Raw((int?)item.examAttemptId)">
+                                                                    @*@if (@item.markCheck)
+                                                                                {
+                                                                                 <span class="Checkmark hidden-xs" id="markchecktest"  alreadyMarked="@item.markCheck.ToString()" ExamId="@Html.Raw((int?)item.examId)" QuestionId="@Html.Raw((int?)item.questionId)" ExamattemptId="@Html.Raw((int?)item.examAttemptId)">Bookmarked</span>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <span class="Checkmark hidden-xs" id="markchecktest"  alreadyMarked="@item.markCheck.ToString()" ExamId="@Html.Raw((int?)item.examId)" QuestionId="@Html.Raw((int?)item.questionId)" ExamattemptId="@Html.Raw((int?)item.examAttemptId)">Bookmark</span>
+                                                                        }*@
+                                                                </div>
+
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href='javascript:void(0)' id="@("Feedback"+@item.questionId)" class="questionFeedback" ExamId="@Html.Raw((int?)item.examId)" QuestionId="@Html.Raw((int?)item.questionId)" FriendlyId="@Html.Raw((int?)item.FriendlyId)" RightChoiceId="@Html.Raw((int?)item.rightChoiceId)" ChoiceList="@(Json.Encode(@item.choiceList))" ExamattemptId="@Html.Raw((int?)item.examAttemptId)" TopicName="@Html.Raw((string)item.TopicName)">
+                                                                <i class="fa fa-envelope-o text-center menu-icons"></i>
+                                                                @*<span class="hidden-xs">Feedback</span>*@
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+
+
+                                                @{count = count + 1;}
+                                                <div class="respondents peer-comparison-bg">
+                                                    @{ string responsetext1 = string.Empty;
+                                                        string percentage1 = string.Empty; }
+                                                    <div id="peerPercentage">
+                                                        @foreach (var item1 in @item.PeerDetails)
+                                                        {
+                                                            if (Convert.ToInt32(@item1.IsRightChoice) == 1)
+                                                            {
+                                                                percentage1 = @item1.ChoicePercentage.ToString("0");
+
+                                                            }
+
+                                                        }
+                                                        @if (item.PeerDetails[0].UserType == 0)
+                                                        {
+                                                            responsetext1 = "% of peers answered correctly.";
+                                                        }
+                                                        else
+                                                        {
+                                                            responsetext1 = "% of respondents answered correctly.";
+                                                        }
+
+                                                        <span class="PeerNamechange">@percentage1@responsetext1</span>
+                                                        @*@if (item.PeerDetails[0].UserType == 0)
+                                                            {
+                                                            <span class="PeerNamechange">% of peers answered correctly.</span>
+                                                            }
+                                                            else
+                                                            {
+                                                            <span class="PeerNamechange">% of respondents answered correctly.</span>
+                                                            }*@
+                                                    </div>
+                                                    <div id="percentage">
+                                                        <div class="col-xs-12 hidden-lg hidden-md xs-flex-comparison-score peer-percentage">
+                                                            @foreach (var option in @item.PeerDetails)
+                                                            {
+                                                                <li id="PeerDetailsLiId@(option.ChoiceId)" class="PeerDetailsClass"> @option.ChoiceOption. @option.ChoicePercentage%</li>
+                                                            }
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="clearfix"></div>
+                                        <div id="@(item.questionId + "collapseOne")" class="panel-collapse collapse" role="tabpanel" aria-labelledby="@(item.questionId + "headingOne")" aria-expanded="false">
+                                            <div class="panel-body">
+
+                                                <!--Challenge Mode-->
+
+                                                @if (item.examMode == true)
+                                                {
+                                                    <div id="challengeMode" class="cm-answer-wrapper">
+                                                        <div class="cm-answer">
+                                                            @Html.Raw(@item.examAttemptText)
+                                                        </div>
+                                                        <div class="form-group form-inline margin0">
+                                                            <span class="padright10">Was the answer you wrote correct?</span>
+                                                            @if (item.examAttemptAnswerDTO.IsYourAnswer == 1)
+                                                            {
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" name="inlineRadioOptions@(item.questionId)1" id="inlineRadio1" class="AnswerRadio" value="yes" disabled="disabled" checked="checked" />
+                                                                    Yes
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" name="inlineRadioOptions@(item.questionId)2" id="inlineRadio2" class="AnswerRadio" value="no" disabled="disabled">
+                                                                    No
+                                                                </label>
+                                                            }
+                                                            @if (item.examAttemptAnswerDTO.IsYourAnswer == 2)
+                                                            {
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" name="inlineRadioOptions@(item.questionId)1" id="inlineRadio1" class="AnswerRadio" value="yes" disabled="disabled" />
+                                                                    Yes
+                                                                </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" name="inlineRadioOptions@(item.questionId)2" id="inlineRadio2" class="AnswerRadio" value="no" checked="checked" disabled="disabled">
+                                                                    No
+                                                                </label>
+
+                                                            }
+
+                                                        </div>
+                                                    </div>
+                                                }
+                                                <!-- End of Challenge Mode-->
+
+                                                @if (item.questionImage.Count > 0)
+                                                {
+                                                    if (item.questionImage.Count > 0 && item.questionImage.Count < 4)
+                                                    {
+                                                        <div class="col-lg-12 nopadding">
+
+                                                            @foreach (var item1 in item.questionImage)
+                                                            {
+                                                                <div class="col-sm-2 col-xs-6 nopadding mar10">
+                                                                    <a href="@Url.Content(item1.ImagePath)" class="thumbnail" data-toggle="modal" data-target="#myModal" data-image="@Url.Content(item1.ImagePath)">
+                                                                        <img src="@Url.Content(item1.ImagePath)" id="@item1.QuestionImageId" alt="Image" class="img-responsive img-center img11" />
+                                                                        <div class="zoom-icon-background text-right myDIV">
+                                                                            <i class="glyphicon glyphicon-zoom-in text-right">
+                                                                            </i>
+                                                                        </div>
+                                                                    </a>
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    }
+                                                    if (item.questionImage.Count == 4)
+                                                    {
+                                                        <div class="col-lg-12 nopadding">
+
+                                                            @foreach (var item1 in item.questionImage)
+                                                            {
+
+                                                                <div class="col-sm-2 col-xs-6 nopadding mar10">
+                                                                    <a href="@Url.Content(item1.ImagePath)" class="thumbnail" data-toggle="modal" data-target="#myModal" data-image="@Url.Content(item1.ImagePath)">
+                                                                        <img src="@Url.Content(item1.ImagePath)" id="@item1.QuestionImageId" alt="Image" class="img-responsive img-center img11" />
+                                                                        <div class="zoom-icon-background text-right myDIV"><i class="glyphicon glyphicon-zoom-in text-right" data-image="@Url.Content(item1.ImagePath)"></i></div>
+                                                                    </a>
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    }
+                                                }
+
+                                                <div id="choices">
+                                                    @foreach (var item2 in @item.choiceList)
+                                                    {
+                                                        if (Convert.ToInt32(@item.rightChoiceId) == Convert.ToInt32(@item2.choiceId))
+                                                        {
+                                                            <div id="choiceText@(@item2.choiceId)" class="options bg-success flex-row-center">
+                                                                <div class="col-lg-9 col-sm-8 col-xs-8">
+                                                                    <label>
+                                                                        <li class="option-number-view-exam-details">@optionVal.</li>
+                                                                        @Html.Raw(@item2.choiceText)
+                                                                    </label>
+                                                                </div>
+                                                                @{optionVal = Convert.ToChar(optionVal + 1);}
+
+                                                                <div class="col-lg-3 col-sm-4 col-xs-4 text-left">
+                                                                    @foreach (var details in @item.PeerDetails)
+                                                                    {
+                                                                        if (@item2.choiceId == @details.ChoiceId)
+                                                                        {
+                                                                            <span class="padleft20 hidden-xs">@details.ChoicePercentage%</span>
+                                                                            <span id="correctAns">Correct Answer</span>
+                                                                        }
+                                                                    }
+
+                                                                </div>
+                                                                <div class="clearfix"></div>
+                                                            </div>
+                                                        }
+                                                        else if (Convert.ToInt32(@item.examAttemptAnswerDTO.ChoiceId) == Convert.ToInt32(@item2.choiceId))
+                                                        {
+                                                            <div id="choiceText@(@item2.choiceId)" class="options bg-danger flex-row-center">
+                                                                <div class="col-lg-9 col-sm-8 col-xs-8">
+                                                                    <label>
+                                                                        <li class="option-number-view-exam-details">@optionVal.</li>
+                                                                        @Html.Raw(@item2.choiceText)
+                                                                    </label>
+                                                                </div>
+                                                                @{optionVal = Convert.ToChar(optionVal + 1);}
+
+                                                                <div class="col-lg-3 col-sm-4 col-xs-4 text-left">
+                                                                    @foreach (var details in @item.PeerDetails)
+                                                                    {
+                                                                        if (@item2.choiceId == @details.ChoiceId)
+                                                                        {
+                                                                            <span class="padleft20 hidden-xs">@details.ChoicePercentage%</span>
+
+
+                                                                            if (Convert.ToInt32(@item.examAttemptAnswerDTO.ChoiceId) == Convert.ToInt32(@item2.choiceId))
+                                                                            {
+                                                                                <span id="wrongAns">Your Answer</span>
+                                                                            }
+
+
+                                                                        }
+                                                                    }
+
+                                                                </div>
+                                                                <div class="clearfix"></div>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div id="choiceText@(@item2.choiceId)" class="options">
+                                                                <div class="col-lg-9 col-sm-8 col-xs-8">
+                                                                    <label>
+                                                                        <li class="option-number-view-exam-details">@optionVal.</li>
+                                                                        @Html.Raw(@item2.choiceText)
+                                                                    </label>
+                                                                </div>
+                                                                @{optionVal = Convert.ToChar(optionVal + 1);}
+
+                                                                <div class="col-lg-3 col-sm-4 col-xs-4 text-left">
+                                                                    @foreach (var details in @item.PeerDetails)
+                                                                    {
+                                                                        if (@item2.choiceId == @details.ChoiceId)
+                                                                        {
+                                                                            <span class="padleft20 hidden-xs">@details.ChoicePercentage%</span>
+
+
+                                                                            if (Convert.ToInt32(@item.rightChoiceId) == Convert.ToInt32(@item2.choiceId) && Convert.ToInt32(@item.examAttemptAnswerDTO.ChoiceId) > 0)
+                                                                            {
+                                                                                <span id="correctAns">Correct Answer</span>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                if (Convert.ToInt32(@item.examAttemptAnswerDTO.ChoiceId) == Convert.ToInt32(@item2.choiceId))
+                                                                                {
+                                                                                    <span id="wrongAns">Your Answer</span>
+                                                                                }
+
+                                                                            }
+                                                                        }
+                                                                    }
+
+                                                                </div>
+                                                                <div class="clearfix"></div>
+                                                            </div>
+                                                        }
+                                                    }
+
+                                                </div>
+
+                                                <hr>
+                                                <div>
+                                                    <h5>Explanation & Notes</h5>
+                                                    <!-- Nav tabs -->
+                                                    <ul class="nav nav-tabs responsive-tabs" role="tablist" id="@("MyTab"+@item.questionId)">
+                                                        <li role="presentation" class="active" id="@("disscussion"+@item.questionId)"><a href="#@(item.questionId + "discussion")" aria-controls="@(item.questionId + "discussion")" role="tab" data-toggle="tab">Discussion</a></li>
+                                                        <li role="presentation" id="@("bcsc"+@item.questionId)"><a href="#@(item.questionId + "bcsc")" aria-controls="bcsc-excerpt" role="tab" data-toggle="tab">BCSC Excerpt</a></li>
+                                                        <li role="presentation" id="@("references"+@item.questionId)"><a href="#@(item.questionId + "references")" aria-controls="references" role="tab" data-toggle="tab">References</a></li>
+                                                        <li role="presentation" id="@("relatedContents"+@item.questionId)"><a href="#@(item.questionId + "relatedContents")" aria-controls="relatedContents" role="tab" data-toggle="tab" id="relatedContents_tab_a">Related Content</a></li>
+                                                        <li role="presentation" questionId="@item.questionId" examId="@item.examId" class="loadNotes" id="@("note"+@item.questionId)"><a href="#@(item.questionId + "notes")" aria-controls="notes" role="tab" data-toggle="tab">Notes</a></li>
+                                                    </ul>
+
+                                                    <!-- Tab panes -->
+                                                    <div class="tab-content">
+
+                                                        <div role="tabpanel" class="tab-pane active padtop20" id="@(item.questionId + "discussion")">
+                                                            <div id="@("discussion"+@item.questionId)">
+                                                                <div class="col-lg-12">
+                                                                    <p>@Html.Raw(@item.questionDiscussion.discussionText)</p>
+                                                                    @if (@item.questionDiscussion.discussionImage != null)
+                                                                    {
+                                                                        foreach (var image in @item.questionDiscussion.discussionImage)
+                                                                        {
+                                                                            <div class="col-lg-12 nopadding">
+
+                                                                                <div class="col-sm-2 col-xs-6 nopadding mar10">
+                                                                                    <a href="@Url.Content(image.ImagePath)" class="thumbnail" data-toggle="modal" data-target="#myModal" data-image="@Url.Content(image.ImagePath)">
+                                                                                        <img src="@Url.Content(image.ImagePath)" id="5525" alt="Image" class="img-responsive img-center img11">
+                                                                                        <div class="zoom-icon-background text-right myDIV">
+                                                                                            <i class="glyphicon glyphicon-zoom-in text-right">
+                                                                                            </i>
+                                                                                        </div>
+                                                                                    </a>
+                                                                                </div>
+                                                                            </div>
+                                                                            <p>&nbsp;</p>
+                                                                        }
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div role="tabpanel" class="tab-pane padtop20" id="@(item.questionId + "bcsc")">
+                                                            <div id="@("bcsc_excerpt"+@item.questionId)" class="openwind">
+                                                                <div class="col-lg-12">
+                                                                    @*@foreach (var BCSCExcerpt in item.BCSCExcerpt)
+                    {
+                        @Html.Raw(BCSCExcerpt)
+                    }*@
+                                                                    <div class="panel-group" id="accordion2">
+                                                                        @foreach (var excerptHeading in @item.ExcerptHeadings)
+                                                                        {
+                                                                            <div class="panel panel-default notes-panel" excerptid="@(excerptHeading.HeadingId+"-"+item.questionId)">
+                                                                                <div class="panel-heading notes-panel-bg" role="tab">
+                                                                                    <div class="panel-title view-title clearfix">
+                                                                                        <a role="button" data-toggle="collapse" class="accordian-tab notes-accordian-tab" data-parent="#accordion2" href="#@(excerptHeading.HeadingId+"-"+item.questionId + "collapseOne")" aria-expanded="true" aria-controls="@(excerptHeading.HeadingId+"-"+item.questionId+ "collapseOne")" excerptid="@(excerptHeading.HeadingId+"-"+item.questionId)">
+                                                                                            <div id="@("quesText"+excerptHeading.HeadingId+"-"+item.questionId)" class="question xs-padleft50 font-bold">
+                                                                                                <div id="quesTextDiv@(excerptHeading.HeadingId+"-"+item.questionId)">
+                                                                                                    @Html.Raw(excerptHeading.HeadingText)
+                                                                                                    <li class="question-number-view-exam-details_Excerpt" style="list-style-type:none;margin-top:-20px;">
+                                                                                                        <i class="fa fa-lg fa-angle-right expand"> <span class="expand">expand</span></i>
+                                                                                                    </li>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </a>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div id="@(excerptHeading.HeadingId+"-"+item.questionId + "collapseOne")" class="panel-collapse collapse" aria-labelledby="@(excerptHeading.HeadingId+"-"+item.questionId + "headingOne")" aria-expanded="false" excerptid="@(excerptHeading.HeadingId+"-"+item.questionId)">
+                                                                                <div class="panel-body">
+                                                                                    <div class="accordion nested-accordion" id="@(excerptHeading.HeadingId+"-"+item.questionId + "accordion")">
+                                                                                        <div class="accordion-group">
+                                                                                            <div class="accordion-heading">
+                                                                                                <div id="@(excerptHeading.HeadingId+"-"+item.questionId +"ContainerDiv")">
+                                                                                                    @Html.Raw(excerptHeading.Excerpts)
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        }
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div role="tabpanel" class="tab-pane padtop20" id="@(item.questionId + "references")">
+                                                            <div id="@("references"+ @item.questionId)">
+                                                                <div class="col-lg-12">
+                                                                    @foreach (var reference in @item.references)
+                                                                    {
+                                                                        <p>@Html.Raw(@reference)</p>
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div role="tabpanel" class="tab-pane padtop20" id="@(item.questionId + "relatedContents")">
+                                                            <div id="@("relatedContents"+ @item.questionId)">
+                                                                <div class="col-lg-12">
+                                                                    @if (item != null && item.RelatedContents != null && item.RelatedContents.Count > 0)
+                                                                    {
+                                                                        foreach (var relatedContent in @item.RelatedContents)
+                                                                        {
+                                                                            <p>@Html.Raw(@relatedContent)</p>
+                                                                        }
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                <style>
+                                                                    #@("relatedContents"+@item.questionId), #relatedContents_tab_a 
+                                                                    {
+                                                                        display: none;
+                                                                    }
+                                                                </style>
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div role="tabpanel" class="tab-pane padtop20" id="@(item.questionId + "notes")">
+                                                            <div id="notes">
+                                                                <div class="col-lg-12" id="@("notes" + @item.questionId)">
+                                                                    @foreach (string notes in @item.notes)
+                                                                    {
+                                                                        <p>@Html.Raw(@notes)</p>
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <!--  End Of Accordian -->
+
+                                }
+                            }
+
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center padtop20">No records found.</div>
+                }
+                <div class="text-center">
+                    <nav id="PageNavigation" aria-label="Page navigation example">
+                        <ul class="pagination margin0">
+                            <li id="Firstpage"><a class="page-link" href="#">First</a></li>
+                            <li id="Previouspage"><a id='Prev' class="page-link" href="#">Prev</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="clearfix">
+            </div>
+        </div>
+    </div>
+    @*<input type="hidden" name="FilterExamId" id="FilterExamId" value="@ViewBag.ExamId" />*@
+    @*<input type="hidden" name="FilterId" id="FilterId" value="@ViewBag.Filter" />*@
+
+    <input type="hidden" name="FilterSubSpecialityId" id="FilterSubSpecialityId" value="@ViewBag.SubSpecialityId" />
+    <input type="hidden" name="FilterExamStartDate" id="FilterExamStartDate" value="@ViewBag.ExamStartDate" />
+    <input type="hidden" name="FilterExamCompletedDate" id="FilterExamCompletedDate" value="@ViewBag.ExamCompletedDate" />
+</div>
+
+<div id="userEmail" style="display:none;">
+    @{ string[] email = (@System.Web.HttpContext.Current.User.Identity.Name.Split('|'));
+        @email[0]
+    }
+</div>
+<div id="userName" style="display:none;" class="username pull-right">
+    @{ string[] Name = (@System.Web.HttpContext.Current.User.Identity.Name.Split('|'));
+        @Name[1]
+    }
+</div>
+
+
+<div id="VersionInfo" style="display:none;"></div>
+
+<!-----Image model--->
+<div id="myModal" class="modal  fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">×</span><span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="image-gallery-title"></h4>
+            </div>
+
+            <div class="modal-body">
+                <img class="img-responsive" style="margin:0 auto;" src="" alt="" id="showimg">
+            </div>
+        </div>
+    </div>
+</div>
+<!---End of Image Model---->
+<!----Create notes dialog-->
+<div id="createNotes" class="modal draggable fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close DialogClose " id="AddNotesCloseIcon" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Create Notes</h4>
+            </div>
+            <div class="modal-body">
+                <span class="Notespan error-text"></span>
+                <textarea class="martop20" rows="6" id="NoteTextArea" style="width:100%;padding:0;"></textarea>
+                <i>* Notes will be deleted if the question is removed.</i>
+                <input type="hidden" name="createNotesExamId" id="createNotesExamId" />
+                <input type="hidden" name="createNotesExamAttemptId" id="createNotesExamAttemptId" />
+                <input type="hidden" name="createNotesCurrentQuestionId" id="createNotesCurrentQuestionId" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="CancelNoteBtn">Cancel</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="AddNoteBtn">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!---Create notes dialog end-->
+<!--FeedBack send confirm dialog-->
+<div class="modal fade" id="sendFeedbackconfirmDialog" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Feedback</h4>
+            </div>
+            <div class="modal-body">
+                <p>Thank you! Your feedback has been submitted to the Academy.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!---Feedback send dialog end--->
+<!---send Feedback Error dialog--->
+<div class="modal fade" id="sendFeedbackErrorDialog" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Feedback Error</h4>
+            </div>
+            <div class="modal-body">
+                <p> A problem occurred while sending feedback. Please try again.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!----Send feedback error dialog end-->
+<div class="Cmodal"><!-- Place at bottom of page --></div>
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery.bootstrap-responsive-tabs.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('div._idGenObjectStyleOverride-1 img').addClass('thumbnail');
+        $('img[class^="_idGenObjectAttribute"]').addClass('thumbnail');
+
+        // Append zoom icon to each thumbnail in divs with id starting with "_idContainer"
+        $('div._idGenObjectStyleOverride-1 .thumbnail').each(function () {
+            $(this).after('<div class="zoom_icon"><i class="glyphicon glyphicon-zoom-in text-right"></i></div>');
+        });
+
+        $('img[class^="_idGenObjectAttribute"].thumbnail').each(function () {
+            var zoomIconDiv = $('<div class="zoom_icon"><i class="glyphicon glyphicon-zoom-in text-right"></i></div>');
+            $(this).after(zoomIconDiv);
+        });
+
+        // Event listener for all divs with id starting with "_idContainer"
+        $('div._idGenObjectStyleOverride-1').on('click', function () {
+            var imgElement = $(this).find('img');
+            var lowResImage = imgElement.attr('src');
+            var highResImage = appendSuffix(lowResImage, '_O');
+            showModal(highResImage);
+        });
+
+        $('img[class^="_idGenObjectAttribute"]').on('click', function (event) {
+            var lowResImage = $(this).attr('src');
+            var highResImage = appendSuffix(lowResImage, '_O');
+            showModal(highResImage);
+            event.stopPropagation();
+        });
+
+
+        // Event listener for all zoom icons
+        $('.zoom-icon').on('click', function (event) {
+            var lowResImage = $(this).prev().attr('src');
+            var highResImage = appendSuffix(lowResImage, '_O');
+            showModal(highResImage);
+            event.stopPropagation(); // Prevent triggering the thumbnail click event
+        });
+
+        // Function to append "_O" before the file extension
+        function appendSuffix(imageSrc, suffix) {
+            return imageSrc.replace(/(\.jpg|\.png|\.tif|\.tiff)$/, suffix + '$1');
+        }
+
+        // Function to show the modal with the high-resolution image
+        function showModal(imageSrc) {
+            $('#showimg').attr('src', imageSrc);
+            $('#myModal').modal('show');
+        }
+    });
+</script>
+
+<script>
+    $.noConflict();
+
+    function activaTab(tab){
+        $('.nav-tabs a[href="#' + tab + '"]').tab('show');
+    };
+    $(document).ready(function () {
+        $("#VersionInfo").append(navigator.appVersion);
+        var Filterval = '@ViewBag.Filter'
+        var QuestViewVal = '@ViewBag.NoOfRecords'
+        var QuestViewValue = '@ViewBag.viewCurrentRecordcount'
+        var firstQuestPerPage ='@ViewBag.FirstSerialNum'
+        var lastQuestPerPage = '@ViewBag.LastSerialNum'
+        var PageNoVal = '@ViewBag.PageNo'
+        $("#filterBy").val(Filterval).change();
+        $("#QuestView").val(QuestViewVal).change();
+        if ($("#details").val() == undefined)
+            $("#PageNavigation").hide();
+        else
+            pagination(PageNoVal);
+
+        var QuesViewVal = $("#QuestView").val();
+
+        @*$("#displayCount").append("Displaying questions " + firstQuestPerPage + " - " + lastQuestPerPage + " of " + '@ViewBag.viewAssessmentdetailscount');*@
+        $("#displayCount").append("Displaying questions " + firstQuestPerPage + " - " + lastQuestPerPage + " of " + '@ViewBag.RecordCount');
+
+        //  tabs / accordion
+        $('.responsive-tabs').responsiveTabs({
+            accordionOn: ['xs', 'sm']
+        });
+        var answerchoice=
+
+           $("#toggle_switch3").on("click", function () {
+               var toogleVal = $("#toggle_switch3").is(":checked");
+               if (toogleVal == true) {
+                   $("div[id$='collapseOne']").removeAttr("style");
+                   $("div[id$='collapseOne']").addClass("in");
+               }
+               if (toogleVal == false) {
+                   $("div[id$='collapseOne']").removeClass("in");
+               }
+           });
+
+        $("#filterBy").on('change', function () {
+            //var PageNo = '@ViewBag.PageNo'
+            var PageNo = 1;
+
+            reloadAssessment(PageNo);
+
+        });
+
+        $("#QuestView").on('change', function () {
+            var PageNo = 1;
+
+            reloadAssessment(PageNo);
+        });
+
+        //Image Enlarge
+        /****************************************/
+        $(".img11").off('click');
+        $(".img11").on('click', function () {
+            var img = $(this).attr('src'); // get image
+            $('#showimg').empty();
+            $('#showimg').attr('src', img); //load image in modal
+        });
+        /*****************************************************/
+        $(".myDIV").off('click');
+        $(".myDIV").on('click', function () {
+            var imgSrc = $(this).parent().find("img").attr("src");
+            $('#showimg').empty();
+            $('#showimg').attr('src', imgSrc); //load image in modal
+
+        })
+
+        $("#myModal").draggable({
+            handle: ".modal-header"
+        });
+
+        @*$("#Firstpage").on("click", function () {
+            var currentpage =1;
+            reloadAssessment(currentpage);
+        });*@
+
+        $('.createNewNoteClass').on('click',function () {
+            $("#NoteTextArea").val('');
+            $("#createNotes").modal('show');
+            var examId = $(this).attr('ExamId');
+            var examAttemptId = $(this).attr('ExamattemptId');
+            var questionId = $(this).attr('QuestionId');
+            $(".modal-body #createNotesExamId").val(examId);
+            $(".modal-body #createNotesExamAttemptId").val(examAttemptId);
+            $(".modal-body #createNotesCurrentQuestionId").val(questionId);
+            var subType = null;
+        });
+
+        /**Load notes click*/
+        $(".loadNotes").click(function (event) {
+            var examId =  $(this).attr('examId');
+            var questionId =$(this).attr('questionId');
+            $.ajax({
+                type: 'post',
+                data: { examId: examId, questionid: questionId},
+                url: '/Assessment/GetNotes',
+                success: function (result) {
+                    var note="";
+                    for (var i = 0; i < result.length; i++) {
+                        note+='<P style="margin-bottom:7px !important;">'+result[i] + '<br/></p>';
+                    }
+                    $("#notes"+questionId).html("");
+                    $("#notes"+questionId).html(note);
+                }
+            });
+        });
+        /***Load notes click end****/
+
+        //Mark QUestion
+
+        $(".Checkmark").click(function (){
+            var examId = $(this).attr('ExamId');
+            var examAttemptId = $(this).attr('ExamattemptId');
+            var questionId = $(this).attr('QuestionId');
+            var val = ($("#markQuestion"+questionId).attr("alreadyMarked") === "true");
+            $.ajax({
+                url: '/Assessment/MarkQuestionCheck',
+                type: 'POST',
+                data: { ExamId: examId, ExamattemptId: examAttemptId, CurrentQuestionid: questionId, MarkedStatus: val },
+                success: function (result) {
+                    if (result == true) {
+                        // $("#markQuestion"+questionId).html("Bookmarked").addClass("hidden-xs");
+                        $("#markQuestion"+questionId).attr("alreadyMarked", true);
+                        $("#markQuestion"+questionId).parent().find("i").removeClass('fa-star-o').addClass('fa-star');
+                        // $("[QuestionId="+ questionId +"]").removeClass('fa-star-o').addClass('fa-star');
+                    }
+                    else if (result == false) {
+                        // $("#markQuestion"+questionId).html("Bookmark").addClass("hidden-xs");
+                        $("#markQuestion"+questionId).attr("alreadyMarked", false);
+                        $("#markQuestion"+questionId).parent().find("i").removeClass('fa-star').addClass('fa-star-o');
+                        //$("[QuestionId="+questionId+"]").
+                        // $("[QuestionId="+ questionId +"]").removeClass('fa-star').addClass('fa-star-o');
+
+                    }
+                }
+            });
+        });
+
+        /**Feedback start**/
+
+        $("#FeedbackTxt").on('keypress', function () {
+            $(".FeedbackSpan").text('');
+        })
+
+        var element = '<div id="myForm"><span class="FeedbackSpan error-text-block"></span><form id="popForm"><textarea rows="3" placeholder="Send the Academy a comment about this question or features of the application." name="FeedbackTxt" id="FeedbackTxt" style="width:300px;height:180px;"></textarea><button type="button" class="btn btn-primary pull-right martop10 marbot10" id="sendFeedbackBtn" data-loading-text="Sending info.." data-target="#mySendFeedbackModal"><em class="icon-ok"></em> Send</button><button type="button" class="btn btn-default pull-right martop10 marbot10 mar10" id="cancelFeedbackBtn" data-loading-text="Sending info.."><em class="icon-ok"></em> Cancel</button></form></div>'
+        $('.questionFeedback').popover({
+            placement: 'bottom',
+            title: 'Share feedback',
+            html: true,
+            content: element
+        }).on('click', function () {
+            var questionId= $(this).attr('QuestionId');
+            var rightChoiceId = $(this).attr('RightChoiceId');
+            var myJSON=$(this).attr('ChoiceList');
+            var choiceList  = JSON.parse(myJSON);
+            var myArray = [], myArray1 = [];
+            $.each(choiceList, function (key, value) {
+                myArray.push(value.choiceText);
+                myArray1.push(value.choiceId);
+            })
+            for (var i = 0; i < myArray.length; i++) {
+                myArray1[i];
+                myArray[i];
+                if (rightChoiceId == myArray1[i]) {
+                    myArray[i] = '<b>' + myArray[i] + '</b>';
+                }
+
+            }
+            var browserPlatform = $("#VersionInfo").text();
+            var currentQuestionId = $(this).attr('FriendlyId');
+            var topicName = $(this).attr('TopicName');
+            var questionText = $("#quesTextDiv"+questionId).text();
+            var discussion = $("#discussion"+questionId).text();
+            var references = $("#references"+questionId +" > .col-lg-12").text();
+            var userMailId = $("#userEmail").text();
+            var userName = $("#userName").text();
+
+            $("textarea#FeedbackTxt").val();
+            $('#sendFeedbackBtn.btn-primary').click(function () {
+                $('#Feedback'+questionId).popover('hide');
+                $body = $("body");
+                $body.addClass("loading");
+                setTimeout(function () { }, 5000);
+                if ($("#FeedbackTxt").val() == 0) {
+                    var FeedbackError = " Please enter your feedback, which will be sent by email to the Academy."
+                    $(".FeedbackSpan").text(FeedbackError);
+                    return false;
+                }
+                else {
+                    var strFileName = "";
+                    var feedbackTextArea = "User Name: " + userName + "<br />" +
+                        "User Email: " + userMailId + "<br /><br />" +
+                        "Browser and Platform: " + browserPlatform + "<br /><br />" +
+                        "Feedback: " + $("textarea#FeedbackTxt").val() + "<br /><br />"
+                        + "Question ID: " + currentQuestionId + "<br /><br />" +
+                        "Topic: " + topicName + "<br /><br />" +
+                        "Question: " + questionText + "<br /><br />" +
+                        "1." + myArray[0] + "<br />" + "2." + myArray[1] + "<br />" + "3." + myArray[2] + "<br />" + "4." + myArray[3] + "<br /><br />" +
+                        "Discussion: " + discussion + "<br /><br />" +
+                        "References: " + references;
+                    feedbackTextArea = encodeURIComponent(feedbackTextArea);
+                    $.ajax({
+                        type: 'POST',
+                        data: { feedbackBody: feedbackTextArea, id: currentQuestionId, strFileName: strFileName, userName: userName, emailId: null },
+                        url: '/Assessment/SendFeedback',
+                        dataType: "html",
+                        success: function (result) {
+                            if (result == 1) {
+                                $body.removeClass("loading");
+                                $('#Feedback'+questionId).popover('hide');
+                                $("#myForm").html('');
+                                $("#sendFeedbackconfirmDialog").modal();
+                            }
+                            else {
+                                $body.removeClass("loading");
+                                $("#sendFeedbackErrorDialog").modal();
+                            }
+                        }
+                    });
+                }
+            })
+            $("#cancelFeedbackBtn").on('click', function () {
+                $('#Feedback'+questionId).popover('hide');
+                $("#myForm").html('');
+
+            })
+        });
+        /** Feedback End*/
+        $('a[href^="http://"], a[href^="https://"]').click(function(e){
+            var decodedUri=decodeURI(this.href);
+            decodedUri= decodedUri.replace(/[^\x20-\x7E]/g, '');
+            $(this).attr("href", decodedUri);
+            $(this).attr('target','_blank');
+        });
+
+        $(".notes-panel, .panel-collapse").on("hide.bs.collapse", function () {
+            var id = ($(this).attr("excerptid"));
+            $(this).parent().find("#quesText"+id+" .question-number-view-exam-details_Excerpt i").removeClass("fa-angle-up").addClass("fa-angle-right");
+        });
+        $(".notes-panel, .panel-collapse").on("show.bs.collapse", function () {
+
+            var id = ($(this).attr("excerptid"));
+            $(this).parent().find("#quesText"+id+" .question-number-view-exam-details_Excerpt i").removeClass("fa-angle-right").addClass("fa-angle-up");
+        });
+    });
+
+    function pagination(PageNoVal) {
+        @*var totalnoofitem =@ViewBag.incorrectQuestiondetailscount;*@
+        var totalnoofitem = @ViewBag.RecordCount;
+        var limitperpage = $('#QuestView option:selected').val();
+        var totalpages = Math.round(totalnoofitem / limitperpage);
+        var RoundVal = (totalnoofitem / limitperpage);
+        RoundVal = RoundVal.toFixed(1);
+        var output = RoundVal.split('.')[0];
+        // var output1 = RoundVal.split('.')[1];
+        RoundVal = RoundVal - output;
+
+        if (RoundVal > 0 && RoundVal < 0.5)
+            RoundVal = 1
+        else
+            RoundVal = 0
+        //totalpages = totalpages > 0 ? totalpages : 1;
+        totalpages = totalpages + RoundVal;
+        if (PageNoVal == undefined) {
+            PageNoVal = 1;
+
+        }
+
+        for (var i = 1; i <= totalpages; i++) {
+            if (i == PageNoVal)
+                $(".pagination").append("<li  class='currentpage active'><a href='javascript:void(0)'>" + i + "</a></li>");
+            else{
+                if (i <= 10) {
+                    $(".pagination").append("<li class='currentpage' id='" + i + "Page'><a href='javascript:void(0)'>" + i + "</a></li>");
+                }
+                else {
+                    $(".pagination").append("<li class='currentpage hidden'><a href='javascript:void(0)'>" + i + "</a></li>");
+                }
+            }
+        }
+
+        $(".pagination").append("<li id='Nextpage'> <a  href='javascript:void(0)'>Next</a></li>");
+        $(".pagination").append("<li id='Lastpage'> <a id='Last' href='javascript:void(0)' TotalPages='" + totalpages + "'>Last</a></li>");
+
+        if (totalpages <= 10) {
+            $("#Lastpage").hide();
+            $("#Firstpage").hide();
+        }
+
+        $(".pagination li.currentpage").on("click", function () {
+            if ($(this).hasClass("active")) {
+                return false;
+            }
+            else {
+                var currentpage = $(this).index();
+                currentpage = (currentpage - 1);
+                var getdata = reloadAssessment(currentpage);
+                $(".pagination li").removeClass("active");
+                $(this).addClass("active");
+            }
+
+        });
+        $("#Nextpage").on("click", function () {
+            var currentpage = $(".pagination li.active").index();
+            if (currentpage > totalpages) {
+                return false;
+            } else {
+                reloadAssessment(currentpage);
+
+            }
+        });
+        $("#Previouspage").on("click", function () {
+            var currentpage = $(".pagination .active").index();
+            if (currentpage === 2) {
+                return false;
+            } else if (currentpage>=1) {
+                currentpage = currentpage-2;
+                reloadAssessment(currentpage);
+            }
+        });
+
+        $("#Lastpage").on("click", function () {
+            var currentpage = $(".pagination li.active").index();
+            if (currentpage > totalpages) {
+                return false;
+            }
+            else {
+                reloadAssessment(totalpages);
+            }
+        });
+
+
+        $("#Firstpage").on("click", function () {
+            var currentpage = $(".pagination .active").index();
+            var currentpage1 = 1;
+            if (currentpage === 2) {
+                return false;
+            }
+            else if (currentpage >= 1){
+                reloadAssessment(currentpage1);
+            }
+        });
+    }
+
+
+    function reloadAssessment(PageNo) {
+        if (PageNo == undefined)
+            PageNo = $(".pagination li.active").index();
+        var QuestionViewVal = $('#QuestView option:selected').val();
+        //var Filter = $("#filterBy option:selected").text();
+        //var ExamId = $("#ExamId").text();
+        var ExamStartDate = $("#FilterExamStartDate").text();
+        var ExamCompletedDate = $("#FilterExamCompletedDate").text();
+        window.location.href = '@Url.Action("IncorrectQuestionDetails", "IncorrectResidentReport")' + '?subspecialtyId=' + $("#FilterSubSpecialityId").val() + '&examStartDate=' + $("#FilterExamStartDate").val() + '&examCompletedDate=' + $("#FilterExamCompletedDate").val() + '&NoOfRecords=' + QuestionViewVal + '&PageNo=' + PageNo;
+    }
+
+    /**Add notes click*/
+    $("#AddNoteBtn").on('click', function (event) {
+        var trimNotesStr = $.trim($("#NoteTextArea").val());
+        var examId = $("#createNotesExamId").val();
+        var examAttemptId = $("#createNotesExamAttemptId").val();
+        var questionId =$("#createNotesCurrentQuestionId").val();
+        if (trimNotesStr == "") {
+            var ErrNotesmsg = "Please enter your notes"
+            $(".Notespan").text(ErrNotesmsg);
+            return false;
+        }
+        else {
+            var NotesTextAreaDetails = $("#NoteTextArea").val();
+            $.ajax({
+                type: 'post',
+                data: { ExamId: examId, CurrentQuestionid: questionId, ExamattemptId: examAttemptId, ExamAttemptText: $("#NoteTextArea").val(), TextType: 'N' },
+                url: '/Assessment/AddNotesAnswerText',
+                success: function (result) {
+                    $("#createNotesIcon"+questionId).parent().find("i").removeClass('fa-sticky-note-o').addClass('fa-sticky-note');
+                    //$('#Contentcontainer').html("");
+                    //$('#Contentcontainer').html(result);
+                    //activaTab(questionId+'disscussion');
+                    //activaTab(questionId+'disscussion');
+                    activaTab(questionId+'discussion');
+                }
+            });
+        }
+        $("#NoteTextArea").val('');
+    });
+
+    $("#NoteTextArea").on('keypress', function () {
+        $(".Notespan").text('');
+
+    });
+    /***Add notes click end****/
+    // $('a[href^="http://"], a[href^="https://"]').not('a[href*=gusdecool]').attr('target','_blank');
+</script>
+
+<style>
+    /* 6Nov2024 - CSS adding Start */
+    span.sidebar_blue {
+        color: #6b9bd2;
+        font-family: "Univers LT Std 67 Bold Condensed", sans-serif;
+        font-style: normal;
+        font-weight: normal;
+    }
+    span.box-text_superscript {
+        font-family: "Minion Pro", serif;
+        font-style: normal;
+        font-weight: normal;
+        vertical-align: super;
+    }
+
+    span.bul1 {
+        @*font-family: "ITC Zapf Dingbats Std Medium", sans-serif;*@
+        font-size: 8px;
+        @*font-style: normal;
+        font-weight: normal;*@
+    }
+    span.sidebar2-head {
+        color: #6b9bd2;
+        font-family: "Univers LT Std 67 Bold Condensed", sans-serif;
+        font-style: normal;
+        font-weight: normal;
+    }
+    span.ClinicalTrial_heading {
+        color: white;
+        background-color: #6b9bd2;
+        padding: 2px;
+    }
+    span.sb-h2 {
+        color: #6b9bd2;
+        font-family: "Univers LT Std 65 Bold", sans-serif;
+        font-size: 9px;
+        font-style: normal;
+        font-weight: normal;
+    }
+    span.bullet-list-last_italic {
+        font-family: "Minion Pro", serif;
+        font-style: italic;
+        font-weight: normal;
+    }
+    span.table-body_symbol_underline-text {
+        font-family: "Symbol Std Medium", sans-serif;
+        font-style: normal;
+        font-weight: normal;
+        text-decoration: underline;
+    }
+    p.numbered-list-CustomCSS {
+        color: #000000;
+        font-family: "Minion Pro", serif;
+        @*font-size: 11px;*@
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.238;
+        margin-bottom: 0;
+        margin-left: 31px;
+        margin-right: 0;
+        margin-top: 7px;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: -13px;
+        text-transform: none;
+        widows: 2;
+    }
+    p.numbered-list-CustomCSS1 {
+        color: #000000;
+        font-family: "Minion Pro", serif;
+        @*font-size: 11px;*@
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.238;
+        margin-bottom: 0;
+        margin-left: 31px;
+        margin-right: 0;
+        margin-top: 7px;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: -13px;
+        text-transform: none;
+        widows: 2;
+    }
+    /* 6Nov2024 - CSS adding End */
+
+    /* 14Oct2024 - CSS adding Start */
+    p.sidebar-h1 {
+        -epub-hyphens: none;
+        color: #6b9bd2;
+        font-family: "Univers LT Std 65 Bold", sans-serif;
+        font-size: 10px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.316;
+        margin-bottom: 3px;
+        margin-left: 24px;
+        margin-right: 21px;
+        margin-top: 0;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 2;
+    }
+
+    p.sidebar-title_1 {
+        -epub-hyphens: none;
+        /*color: #ffffff;*/
+        color: #6b9bd2;
+        font-family: "Univers LT Std 57 Condensed", sans-serif;
+        font-size: 11px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.273;
+        margin-bottom: 8px;
+        /*margin-left: 28px;*/
+        margin-right: 0;
+        margin-top: 20px;
+        orphans: 2;
+        page-break-after: avoid;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: uppercase;
+        widows: 2;
+    }
+
+    p.checklist-number-list {
+        color: #000000;
+        font-family: "Univers LT Std 55 Roman", sans-serif;
+        font-size: 10px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.316;
+        margin-bottom: 0;
+        margin-left: 55px;
+        margin-right: 24px;
+        margin-top: 0;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: -12px;
+        text-transform: none;
+        widows: 2;
+    }
+
+    p.checklist-number-sub-list {
+        color: #000000;
+        font-family: "Univers LT Std 55 Roman", sans-serif;
+        font-size: 10px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.316;
+        margin-bottom: 0;
+        margin-left: 67px;
+        margin-right: 21px;
+        margin-top: 0;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: -12px;
+        text-transform: none;
+        widows: 2;
+    }
+
+    p.box-text-head {
+        color: #6b9bd2;
+        margin-bottom: 0;
+        margin-top: 23px;
+        /*font-family: "Univers LT Std 65 Bold", sans-serif;
+        font-size: 11px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.045;
+        margin-bottom: 0;
+        margin-left: 9px;
+        margin-right: 0;
+        margin-top: 23px;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 2;*/
+    }
+
+    span.box-text--no-indent-_italic {
+        font-style: oblique;
+        font-weight: normal;
+    }
+
+    span.QR-code-number {
+        color: #6b9bd2;
+        font-family: "Univers LT Std 65 Bold", sans-serif;
+        /*font-size: 9px;*/
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        text-transform: uppercase;
+    }
+
+    span.keypoint_underline {
+        text-decoration: underline;
+    }
+
+    p.ParaOverride-22 {
+        background-color: #f4f6fb;
+        margin-left: 10px;
+        margin-top: 25px;
+    }
+
+    p.checklist-number-sub-sub-list {
+        color: #000000;
+        font-family: "Univers LT Std 55 Roman", sans-serif;
+        font-size: 10px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.316;
+        margin-bottom: 0;
+        margin-left: 79px;
+        margin-right: 21px;
+        margin-top: 0;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: -12px;
+        text-transform: none;
+        widows: 2;
+    }
+
+    span.table-body_italic {
+        @*font-family: "Univers LT Std 55 Oblique", sans-serif;
+        font-style: normal;
+        font-weight: normal; /*@
+        font-style: italic;
+    }
+	span.table-footnote_italic {
+        font-style: italic;
+    }
+	span.sidebar-text_bold {
+        color: #6b9bd2;
+        font-family: "Univers LT Std 67 Bold Condensed", sans-serif;
+        font-style: normal;
+        font-weight: normal;
+    }	
+    /* 14Oct2024 - CSS adding End */
+
+    .thumbnail {
+        border: 1px solid #ddd !important;
+        cursor: pointer;
+    }
+
+    .zoom_icon {
+        background-color: #f2f2f2;
+        padding: 5px;
+        position: absolute;
+        margin-left: 182px;
+        margin-top: -54px;
+        cursor: pointer;
+    }
+
+@*    img {
+        width: 100%;
+    }*@
+
+    p {
+        margin: 0 0 0px !important;
+    }
+
+    .bcsc-excerpt-custom-ul {
+        padding-left: 4px;
+    }
+
+        .bcsc-excerpt-custom-ul li {
+            padding-left: 0px;
+            list-style-type: none;
+        }
+
+    #bcsc-excerpt li {
+        padding-left: 0px !important;
+        list-style-type: none;
+    }
+
+    .bcsc-excerpt-custom-content {
+        padding-left: 0px;
+        background-color: sandybrown;
+    }
+
+
+    p.h2 {
+        -epub-hyphens: none;
+        color: #000000;
+        /*font-family:"Univers LT Std 67 Bold Condensed", sans-serif;*/
+        font-size: 14px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: bold;
+        line-height: 2.100;
+        margin-bottom: 3px;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 13px;
+        orphans: 99;
+        page-break-after: avoid;
+        page-break-before: auto;
+        text-align: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 1;
+    }
+
+    p.h2-h1 {
+        -epub-hyphens: none;
+        color: #000000;
+        /*font-family:"Univers LT Std 67 Bold Condensed", sans-serif;*/
+        font-size: 14px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: bold;
+        line-height: 2.100;
+        margin-bottom: 3px;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 5px;
+        orphans: 99;
+        page-break-after: avoid;
+        page-break-before: auto;
+        text-align: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 1;
+    }
+
+    p.fm-only_fm-h2 {
+        -epub-hyphens: none;
+        color: #000000;
+        /*font-family:"Univers 67 Bold Condensed", sans-serif;*/
+        font-size: 14px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: bold;
+        line-height: 1.364;
+        margin-bottom: 3px;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 8px;
+        orphans: 1;
+        page-break-after: avoid;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 1;
+    }
+
+    p.h3 {
+        -epub-hyphens: none;
+        color: #000000;
+        /*font-family:"Univers LT Std 67 Bold Condensed Oblique", sans-serif;*/
+        font-size: 14px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: bold;
+        line-height: 2.100;
+        margin-bottom: 1px;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 10px;
+        orphans: 99;
+        page-break-after: avoid;
+        page-break-before: auto;
+        text-align: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 1;
+    }
+
+    p.h3-h2 {
+        -epub-hyphens: none;
+        color: #000000;
+        /*font-family:"Univers LT Std 67 Bold Condensed Oblique", sans-serif;*/
+        font-size: 14px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: bold;
+        line-height: 2.100;
+        margin-bottom: 1px;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 6px;
+        orphans: 99;
+        page-break-after: avoid;
+        page-break-before: auto;
+        text-align: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 1;
+    }
+
+    p.h4-text {
+        color: #000000;
+        /*font-family:"Minion Pro", serif;*/
+        font-size: 14px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        line-height: 1.42857143;
+        margin-bottom: 0;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 8px;
+        orphans: 2;
+        page-break-after: auto;
+        page-break-before: auto;
+        text-align: justify;
+        text-align-last: left;
+        text-decoration: none;
+        text-indent: 0;
+        text-transform: none;
+        widows: 2;
+    }
+
+    span.h4-head {
+        /*font-family:"Univers LT Std 67 Bold Condensed", sans-serif;*/
+        font-size: 14px;
+        font-style: normal;
+        font-weight: bold;
+    }
+
+    span.h4-head_greek {
+        /*font-family:"Times NR Dual Greek MT Bold", sans-serif;*/
+        font-style: normal;
+        font-weight: normal;
+    }
+
+    span.h4-text_accent {
+        font-style: normal;
+        font-weight: normal;
+    }
+
+    span.h4-head_subscript {
+        /*font-family:"Univers LT Std 67 Bold Condensed", sans-serif;*/
+        font-style: normal;
+        font-weight: normal;
+        vertical-align: sub;
+    }
+
+    span.h4-text_italic {
+        font-style: italic;
+        font-weight: normal;
+    }
+
+    span.italic {
+        font-style: italic;
+        font-weight: normal;
+    }
+
+    p.ParaOverride-1 {
+        margin-top: 0px;
+    }
+
+    li.ParaOverride-2 {
+        margin-top: 0px;
+        text-indent: 0px;
+    }
+
+    li.ParaOverride-3 {
+        margin-bottom: 0px;
+        text-indent: 0px;
+    }
+
+    p.ParaOverride-4 {
+        margin-top: 9px;
+    }
+
+    p.ParaOverride-5 {
+        margin-top: 11px;
+    }
+
+    li.ParaOverride-6 {
+        margin-top: 7px;
+        text-indent: 0px;
+    }
+
+    p.ParaOverride-7 {
+        margin-bottom: 0px;
+    }
+
+    p.ParaOverride-8 {
+        margin-top: 15px;
+    }
+
+    p.ParaOverride-9 {
+        margin-top: 8px;
+    }
+
+    p.ParaOverride-10 {
+        margin-top: 14px;
+    }
+
+    p.ParaOverride-11 {
+        margin-top: 13px;
+    }
+
+    p.ParaOverride-12 {
+        margin-top: 10px;
+    }
+
+    p.ParaOverride-13 {
+        margin-top: 7px;
+    }
+
+    li.ParaOverride-14 {
+        margin-top: 6px;
+        text-indent: 0px;
+    }
+
+    li.ParaOverride-15 {
+        margin-bottom: 6px;
+        text-indent: 0px;
+    }
+
+    li.ParaOverride-16 {
+        margin-bottom: 11px;
+        text-indent: 0px;
+    }
+
+    li.ParaOverride-17 {
+        margin-top: 11px;
+        text-indent: 0px;
+    }
+
+    p.ParaOverride-18 {
+        margin-left: 0px;
+        text-indent: 0px;
+    }
+</style>
+<style>
+    .Cmodal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background: rgba( 128,128,128, .8 ) url('/Content/img/Processing.gif') 50% 50% no-repeat;
+    }
+
+    /* When the body has the loading class, we turn
+    the scrollbar off with overflow:hidden */
+    body.loading {
+        overflow: hidden;
+        position: fixed;
+        z-index: 1000;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background: rgba( 128,128,128, .8 ) url('/Content/img/Processing.gif') 50% 50% no-repeat;
+    }
+
+        /* Anytime the body has the loading class, our
+    modal element will be visible */
+        body.loading .Cmodal {
+            display: block;
+        }
+
+    .question-number-view-exam-details {
+        margin-left: -50px !important;
+    }
+
+    .divHorizontal {
+        display: flex;
+    }
+
+    .question-number-view-exam-details_Excerpt {
+        margin-left: 0px !important;
+    }
+
+    .expand {
+        font-size: 14px;
+        font-weight: bold;
+        color: #337ab7;
+    }
+
+    @@media only screen and (max-width: 1200px) {
+        #excerpt_thumbnail_image {
+            display: block;
+            overflow: hidden;
+        }
+    }
+</style>

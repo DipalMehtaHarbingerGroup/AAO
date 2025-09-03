@@ -1,0 +1,123 @@
+﻿@{
+    ViewBag.Title = "ResidentChapterReportDetails";
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12 xs-nopadding">
+            <ul class="breadcrumb">
+                <li><a href="@Url.Content("~/AggregatePerformance/Index")">Reports </a></li>
+                <span>/ Section</span>
+                <span>
+                    @ViewBag.SectionNumber :
+                </span>
+                <span>@ViewBag.Section</span>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="col-lg-12 xs-nopadding">
+    <div class="content-bg">
+        <div class="content-padding">
+            <div class="col-lg-6 col-sm-4 xs-textcenter nopadding">
+                @*<span>Section</span>
+                    <span>
+                        @ViewBag.SectionNumber :
+                    </span>
+                    <span>@ViewBag.Section</span>*@
+            </div>
+
+            <div class="col-lg-6 col-xs-12 dropdown grey-font font18 pull-right text-right nopadding xs-textcenter">
+                <div class="filter-wrapper">
+                    <label class="padright10 filter-label">Filter by</label>
+                    <div id="reportrange" class="pull-right reportdatepickerrange">
+                        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+                        <span></span>
+                    </div>
+                </div>
+                <div class="btn-export-wrapper">
+                    <input type="button" value="Export" id="Export" class="btn btn-primary marleft10 btn-export">
+                </div>
+            </div>
+
+            <div class="col-xs-12">
+                <hr class="nopadding" style="margin-top: 10px;margin-bottom: 10px;">
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-lg-12 nopadding">
+                <div class="col-lg-6 col-sm-6 col-xs- xs-font12 chart-legend xs-nopadding">
+                    <span class="legend correct-bg"></span><span class="padright10">Correct</span>
+                    <span class="legend incorrect-bg"></span><span class="padright10">Incorrect</span>
+                    <span class="legend unanswered-bg"></span><span>Remaining</span>
+                </div>
+                <div class="clearfix">
+                </div>
+                <div id="ResidentSectionChapter_chart" style="width:100%!important" class="hidden-xs">
+                    <div class="loader_main" style="text-align:center;">
+                        <br /><br />
+                        <img src="~/Content/img/Processing.gif" />
+                    </div>
+                </div>
+                <div class="chart-section visible-xs martop20" id="ResidentPeers">
+                    <div id="no-more-tables">
+                        <table class="table-striped table-condensed cf " id="table1">
+                            <thead class="cf">
+                                <tr>
+                                    <th>Chapter</th>
+                                    <th>Correct</th>
+                                    <th>Incorrect</th>
+                                    <th>Remaining</th>
+
+                                </tr>
+                            </thead>
+                            <tbody id="ResidentReportChartDevice"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="clearfix">
+        </div>
+    </div>
+</div>
+<div id="loading">
+        <center>
+            <span class="loader_main">Loading...</span>
+        </center>
+    </div>
+
+
+<script src="~/Scripts/moment.min.js"></script>
+<script src="~/Scripts/daterangepicker.js"></script>
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+
+<script src="@Url.Content("~/Scripts/ResidentReportGraph/ResidentReportGraph.js")" type="text/javascript"></script>
+<script>
+    var ResidentGoogleChart = {
+        url:'@Url.Action("ResidentChartDetail")',
+    };
+    var Id = {
+        SubSpecialityId:'@ViewBag.SubSpecialityId',
+
+    };
+    var ExamStartDate = {
+        ExamStartDate:'@ViewBag.StartDate ',
+
+    };
+    var ExamCompletedDate = {
+        ExamCompletedDate:'@ViewBag.CompletedDate',
+
+
+    };
+
+
+
+</script>
+<style>
+    .loader_main {
+        height: 100%;
+        width: 100%;
+    }
+</style>

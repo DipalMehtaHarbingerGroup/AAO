@@ -1,0 +1,197 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>OpenTelemetry.Instrumentation.MySqlData</name>
+    </assembly>
+    <members>
+        <member name="T:OpenTelemetry.Instrumentation.MySqlData.MySqlActivitySourceHelper">
+            <summary>
+            Helper class to hold common properties used by MySqlDataDiagnosticListener.
+            </summary>
+        </member>
+        <member name="T:OpenTelemetry.Instrumentation.MySqlData.MySqlDataInstrumentation">
+            <summary>
+            MySql.Data instrumentation.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Instrumentation.MySqlData.MySqlDataInstrumentation.TraceEvent(System.Diagnostics.TraceEventCache,System.String,System.Diagnostics.TraceEventType,System.Int32,System.String,System.Object[])">
+            <inheritdoc />
+        </member>
+        <member name="T:OpenTelemetry.Instrumentation.MySqlData.MySqlDataInstrumentationEventSource">
+            <summary>
+            EventSource events emitted from the project.
+            </summary>
+        </member>
+        <member name="T:OpenTelemetry.Instrumentation.MySqlData.MySqlDataInstrumentationOptions">
+            <summary>
+            Options for <see cref="T:OpenTelemetry.Instrumentation.MySqlData.MySqlDataInstrumentation"/>.
+            </summary>
+        </member>
+        <member name="P:OpenTelemetry.Instrumentation.MySqlData.MySqlDataInstrumentationOptions.RecordException">
+            <summary>
+            Gets or sets a value indicating whether the exception will be recorded as ActivityEvent or not. Default value: False.
+            </summary>
+            <remarks>
+            https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/trace/semantic_conventions/exceptions.md.
+            </remarks>
+        </member>
+        <member name="P:OpenTelemetry.Instrumentation.MySqlData.MySqlDataInstrumentationOptions.SetDbStatement">
+            <summary>
+            Gets or sets a value indicating whether or not the <see cref="T:OpenTelemetry.Instrumentation.MySqlData.MySqlDataInstrumentation"/> should add the text as the <see cref="F:OpenTelemetry.Trace.SemanticConventions.AttributeDbStatement"/> tag. Default value: False.
+            </summary>
+        </member>
+        <member name="P:OpenTelemetry.Instrumentation.MySqlData.MySqlDataInstrumentationOptions.EnableConnectionLevelAttributes">
+            <summary>
+            Gets or sets a value indicating whether or not the <see cref="T:OpenTelemetry.Instrumentation.MySqlData.MySqlDataInstrumentation"/> should parse the DataSource on a SqlConnection into server name, instance name, and/or port connection-level attribute tags. Default value: False.
+            </summary>
+            <remarks>
+            The default behavior is to set the MySqlConnection DataSource as the <see cref="F:OpenTelemetry.Trace.SemanticConventions.AttributePeerService"/> tag. If enabled, MySqlConnection DataSource will be parsed and the server name will be sent as the <see cref="F:OpenTelemetry.Trace.SemanticConventions.AttributeNetPeerName"/> or <see cref="F:OpenTelemetry.Trace.SemanticConventions.AttributeNetPeerIp"/> tag, the instance name will be sent as the <see cref="F:OpenTelemetry.Trace.SemanticConventions.AttributeDbMsSqlInstanceName"/> tag, and the port will be sent as the <see cref="F:OpenTelemetry.Trace.SemanticConventions.AttributeNetPeerPort"/> tag if it is not 1433 (the default port).
+            </remarks>
+        </member>
+        <member name="T:OpenTelemetry.Instrumentation.MySqlData.MySqlDataTraceCommand">
+            <summary>
+            Information of current executing command.
+            </summary>
+        </member>
+        <member name="T:OpenTelemetry.Trace.TracerProviderBuilderExtensions">
+            <summary>
+            Extension methods to simplify registering of dependency instrumentation.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Trace.TracerProviderBuilderExtensions.AddMySqlDataInstrumentation(OpenTelemetry.Trace.TracerProviderBuilder,System.Action{OpenTelemetry.Instrumentation.MySqlData.MySqlDataInstrumentationOptions})">
+            <summary>
+            Enables SqlClient instrumentation.
+            </summary>
+            <param name="builder"><see cref="T:OpenTelemetry.Trace.TracerProviderBuilder"/> being configured.</param>
+            <param name="configureMySqlDataInstrumentationOptions">SqlClient configuration options.</param>
+            <returns>The instance of <see cref="T:OpenTelemetry.Trace.TracerProviderBuilder"/> to chain the calls.</returns>
+        </member>
+        <member name="T:OpenTelemetry.Trace.SemanticConventions">
+            <summary>
+            Constants for semantic attribute names outlined by the OpenTelemetry specifications.
+            <see href="https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/trace/semantic_conventions/README.md"/>.
+            </summary>
+        </member>
+        <member name="T:OpenTelemetry.Trace.IActivityEnumerator`1">
+            <summary>
+            An interface used to perform zero-allocation enumeration of <see cref="T:System.Diagnostics.Activity"/> elements. Implementation must be a struct.
+            </summary>
+            <typeparam name="T">Enumerated item type.</typeparam>
+        </member>
+        <member name="M:OpenTelemetry.Trace.IActivityEnumerator`1.ForEach(`0)">
+            <summary>
+            Called for each <see cref="T:System.Diagnostics.Activity"/> item while the enumeration is executing.
+            </summary>
+            <param name="item">Enumeration item.</param>
+            <returns><see langword="true"/> to continue the enumeration of records or <see langword="false"/> to stop (break) the enumeration.</returns>
+        </member>
+        <member name="T:OpenTelemetry.Trace.ActivityHelperExtensions">
+            <summary>
+            Extension methods on Activity.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Trace.ActivityHelperExtensions.GetTagValue(System.Diagnostics.Activity,System.String)">
+            <summary>
+            Gets the value of a specific tag on an <see cref="T:System.Diagnostics.Activity"/>.
+            </summary>
+            <param name="activity">Activity instance.</param>
+            <param name="tagName">Case-sensitive tag name to retrieve.</param>
+            <returns>Tag value or null if a match was not found.</returns>
+        </member>
+        <member name="T:OpenTelemetry.Trace.SpanAttributeConstants">
+            <summary>
+            Defines well-known span attribute keys.
+            </summary>
+        </member>
+        <member name="T:OpenTelemetry.Internal.Guard">
+            <summary>
+            Methods for guarding against exception throwing values.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfNull(System.Object,System.String)">
+            <summary>
+            Throw an exception if the value is null.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfNullOrEmpty(System.String,System.String)">
+            <summary>
+            Throw an exception if the value is null or empty.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfNullOrWhitespace(System.String,System.String)">
+            <summary>
+            Throw an exception if the value is null or whitespace.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfZero(System.Int32,System.String,System.String)">
+            <summary>
+            Throw an exception if the value is zero.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="message">The message to use in the thrown exception.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfInvalidTimeout(System.Int32,System.String)">
+            <summary>
+            Throw an exception if the value is not considered a valid timeout.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfOutOfRange(System.Int32,System.String,System.Int32,System.Int32,System.String,System.String,System.String)">
+            <summary>
+            Throw an exception if the value is not within the given range.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+            <param name="min">The inclusive lower bound.</param>
+            <param name="max">The inclusive upper bound.</param>
+            <param name="minName">The name of the lower bound.</param>
+            <param name="maxName">The name of the upper bound.</param>
+            <param name="message">An optional custom message to use in the thrown exception.</param>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfOutOfRange(System.Double,System.String,System.Double,System.Double,System.String,System.String,System.String)">
+            <summary>
+            Throw an exception if the value is not within the given range.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+            <param name="min">The inclusive lower bound.</param>
+            <param name="max">The inclusive upper bound.</param>
+            <param name="minName">The name of the lower bound.</param>
+            <param name="maxName">The name of the upper bound.</param>
+            <param name="message">An optional custom message to use in the thrown exception.</param>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfNotOfType``1(System.Object,System.String)">
+            <summary>
+            Throw an exception if the value is not of the expected type.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+            <typeparam name="T">The type attempted to convert to.</typeparam>
+            <returns>The value casted to the specified type.</returns>
+        </member>
+        <member name="T:System.Runtime.CompilerServices.CallerArgumentExpressionAttribute">
+            <summary>
+            Allows capturing of the expressions passed to a method.
+            </summary>
+        </member>
+        <member name="M:System.Runtime.CompilerServices.CallerArgumentExpressionAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.Runtime.CompilerServices.CallerArgumentExpressionAttribute"/> class.
+            </summary>
+            <param name="parameterName">The name of the targeted parameter.</param>
+        </member>
+        <member name="P:System.Runtime.CompilerServices.CallerArgumentExpressionAttribute.ParameterName">
+            <summary>
+            Gets the target parameter name of the CallerArgumentExpression.
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,537 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>OpenTelemetry.Instrumentation.AspNetCore</name>
+    </assembly>
+    <members>
+        <member name="M:OpenTelemetry.Instrumentation.DiagnosticSourceSubscriber.Dispose">
+            <inheritdoc/>
+        </member>
+        <member name="T:OpenTelemetry.Instrumentation.InstrumentationEventSource">
+            <summary>
+            EventSource events emitted from the project.
+            </summary>
+        </member>
+        <member name="T:OpenTelemetry.Instrumentation.ListenerHandler">
+            <summary>
+            ListenerHandler base class.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Instrumentation.ListenerHandler.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OpenTelemetry.Instrumentation.ListenerHandler"/> class.
+            </summary>
+            <param name="sourceName">The name of the <see cref="T:OpenTelemetry.Instrumentation.ListenerHandler"/>.</param>
+        </member>
+        <member name="P:OpenTelemetry.Instrumentation.ListenerHandler.SourceName">
+            <summary>
+            Gets the name of the <see cref="T:OpenTelemetry.Instrumentation.ListenerHandler"/>.
+            </summary>
+        </member>
+        <member name="P:OpenTelemetry.Instrumentation.ListenerHandler.SupportsNullActivity">
+            <summary>
+            Gets a value indicating whether the <see cref="T:OpenTelemetry.Instrumentation.ListenerHandler"/> supports NULL <see cref="T:System.Diagnostics.Activity"/>.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Instrumentation.ListenerHandler.OnStartActivity(System.Diagnostics.Activity,System.Object)">
+            <summary>
+            Method called for an event with the suffix 'Start'.
+            </summary>
+            <param name="activity">The <see cref="T:System.Diagnostics.Activity"/> to be started.</param>
+            <param name="payload">An object that represent the value being passed as a payload for the event.</param>
+        </member>
+        <member name="M:OpenTelemetry.Instrumentation.ListenerHandler.OnStopActivity(System.Diagnostics.Activity,System.Object)">
+            <summary>
+            Method called for an event with the suffix 'Stop'.
+            </summary>
+            <param name="activity">The <see cref="T:System.Diagnostics.Activity"/> to be stopped.</param>
+            <param name="payload">An object that represent the value being passed as a payload for the event.</param>
+        </member>
+        <member name="M:OpenTelemetry.Instrumentation.ListenerHandler.OnException(System.Diagnostics.Activity,System.Object)">
+            <summary>
+            Method called for an event with the suffix 'Exception'.
+            </summary>
+            <param name="activity">The <see cref="T:System.Diagnostics.Activity"/>.</param>
+            <param name="payload">An object that represent the value being passed as a payload for the event.</param>
+        </member>
+        <member name="M:OpenTelemetry.Instrumentation.ListenerHandler.OnCustom(System.String,System.Diagnostics.Activity,System.Object)">
+            <summary>
+            Method called for an event which does not have 'Start', 'Stop' or 'Exception' as suffix.
+            </summary>
+            <param name="name">Custom name.</param>
+            <param name="activity">The <see cref="T:System.Diagnostics.Activity"/> to be processed.</param>
+            <param name="payload">An object that represent the value being passed as a payload for the event.</param>
+        </member>
+        <member name="T:OpenTelemetry.Instrumentation.PropertyFetcher`1">
+            <summary>
+            PropertyFetcher fetches a property from an object.
+            </summary>
+            <typeparam name="T">The type of the property being fetched.</typeparam>
+        </member>
+        <member name="M:OpenTelemetry.Instrumentation.PropertyFetcher`1.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OpenTelemetry.Instrumentation.PropertyFetcher`1"/> class.
+            </summary>
+            <param name="propertyName">Property name to fetch.</param>
+        </member>
+        <member name="M:OpenTelemetry.Instrumentation.PropertyFetcher`1.Fetch(System.Object)">
+            <summary>
+            Fetch the property from the object.
+            </summary>
+            <param name="obj">Object to be fetched.</param>
+            <returns>Property fetched.</returns>
+        </member>
+        <member name="M:OpenTelemetry.Instrumentation.PropertyFetcher`1.TryFetch(System.Object,`0@,System.Boolean)">
+            <summary>
+            Try to fetch the property from the object.
+            </summary>
+            <param name="obj">Object to be fetched.</param>
+            <param name="value">Fetched value.</param>
+            <param name="skipObjNullCheck">Set this to <see langword= "true"/> if we know <paramref name="obj"/> is not <see langword= "null"/>.</param>
+            <returns><see langword= "true"/> if the property was fetched.</returns>
+        </member>
+        <member name="T:OpenTelemetry.Instrumentation.AspNetCore.AspNetCoreInstrumentation">
+            <summary>
+            Asp.Net Core Requests instrumentation.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Instrumentation.AspNetCore.AspNetCoreInstrumentation.Dispose">
+            <inheritdoc/>
+        </member>
+        <member name="T:OpenTelemetry.Instrumentation.AspNetCore.AspNetCoreInstrumentationOptions">
+            <summary>
+            Options for requests instrumentation.
+            </summary>
+        </member>
+        <member name="P:OpenTelemetry.Instrumentation.AspNetCore.AspNetCoreInstrumentationOptions.Filter">
+            <summary>
+            Gets or sets a Filter function that determines whether or not to collect telemetry about requests on a per request basis.
+            The Filter gets the HttpContext, and should return a boolean.
+            If Filter returns true, the request is collected.
+            If Filter returns false or throw exception, the request is filtered out.
+            </summary>
+        </member>
+        <member name="P:OpenTelemetry.Instrumentation.AspNetCore.AspNetCoreInstrumentationOptions.Enrich">
+            <summary>
+            Gets or sets an action to enrich an Activity.
+            </summary>
+            <remarks>
+            <para><see cref="T:System.Diagnostics.Activity"/>: the activity being enriched.</para>
+            <para>string: the name of the event.</para>
+            <para>object: the raw object from which additional information can be extracted to enrich the activity.
+            The type of this object depends on the event, which is given by the above parameter.</para>
+            </remarks>
+        </member>
+        <member name="P:OpenTelemetry.Instrumentation.AspNetCore.AspNetCoreInstrumentationOptions.RecordException">
+            <summary>
+            Gets or sets a value indicating whether the exception will be recorded as ActivityEvent or not.
+            </summary>
+            <remarks>
+            https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/trace/semantic_conventions/exceptions.md.
+            </remarks>
+        </member>
+        <member name="T:OpenTelemetry.Instrumentation.AspNetCore.AspNetCoreMetrics">
+            <summary>
+            Asp.Net Core Requests instrumentation.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Instrumentation.AspNetCore.AspNetCoreMetrics.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:OpenTelemetry.Instrumentation.AspNetCore.AspNetCoreMetrics"/> class.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Instrumentation.AspNetCore.AspNetCoreMetrics.Dispose">
+            <inheritdoc/>
+        </member>
+        <member name="T:OpenTelemetry.Instrumentation.AspNetCore.Implementation.AspNetCoreInstrumentationEventSource">
+            <summary>
+            EventSource events emitted from the project.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Instrumentation.GrpcNetClient.GrpcTagHelper.ResolveSpanStatusForGrpcStatusCode(System.Int32)">
+            <summary>
+            Helper method that populates span properties from RPC status code according
+            to https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/trace/semantic_conventions/rpc.md#status.
+            </summary>
+            <param name="statusCode">RPC status code.</param>
+            <returns>Resolved span <see cref="T:OpenTelemetry.Trace.Status"/> for the Grpc status code.</returns>
+        </member>
+        <member name="T:OpenTelemetry.Instrumentation.GrpcNetClient.StatusCanonicalCode">
+            <summary>
+            Canonical result code of span execution.
+            </summary>
+            <remarks>
+            This follows the standard GRPC codes.
+            https://github.com/grpc/grpc/blob/master/doc/statuscodes.md.
+            </remarks>
+        </member>
+        <member name="F:OpenTelemetry.Instrumentation.GrpcNetClient.StatusCanonicalCode.Ok">
+            <summary>
+            The operation completed successfully.
+            </summary>
+        </member>
+        <member name="F:OpenTelemetry.Instrumentation.GrpcNetClient.StatusCanonicalCode.Cancelled">
+            <summary>
+            The operation was cancelled (typically by the caller).
+            </summary>
+        </member>
+        <member name="F:OpenTelemetry.Instrumentation.GrpcNetClient.StatusCanonicalCode.Unknown">
+            <summary>
+            Unknown error. An example of where this error may be returned is if a Status value received
+            from another address space belongs to an error-space that is not known in this address space.
+            Also errors raised by APIs that do not return enough error information may be converted to
+            this error.
+            </summary>
+        </member>
+        <member name="F:OpenTelemetry.Instrumentation.GrpcNetClient.StatusCanonicalCode.InvalidArgument">
+            <summary>
+            Client specified an invalid argument. Note that this differs from FAILED_PRECONDITION.
+            INVALID_ARGUMENT indicates arguments that are problematic regardless of the state of the
+            system (e.g., a malformed file name).
+            </summary>
+        </member>
+        <member name="F:OpenTelemetry.Instrumentation.GrpcNetClient.StatusCanonicalCode.DeadlineExceeded">
+            <summary>
+            Deadline expired before operation could complete. For operations that change the state of the
+            system, this error may be returned even if the operation has completed successfully. For
+            example, a successful response from a server could have been delayed long enough for the
+            deadline to expire.
+            </summary>
+        </member>
+        <member name="F:OpenTelemetry.Instrumentation.GrpcNetClient.StatusCanonicalCode.NotFound">
+            <summary>
+            Some requested entity (e.g., file or directory) was not found.
+            </summary>
+        </member>
+        <member name="F:OpenTelemetry.Instrumentation.GrpcNetClient.StatusCanonicalCode.AlreadyExists">
+            <summary>
+            Some entity that we attempted to create (e.g., file or directory) already exists.
+            </summary>
+        </member>
+        <member name="F:OpenTelemetry.Instrumentation.GrpcNetClient.StatusCanonicalCode.PermissionDenied">
+            <summary>
+            The caller does not have permission to execute the specified operation. PERMISSION_DENIED
+            must not be used for rejections caused by exhausting some resource (use RESOURCE_EXHAUSTED
+            instead for those errors). PERMISSION_DENIED must not be used if the caller cannot be
+            identified (use UNAUTHENTICATED instead for those errors).
+            </summary>
+        </member>
+        <member name="F:OpenTelemetry.Instrumentation.GrpcNetClient.StatusCanonicalCode.ResourceExhausted">
+            <summary>
+            Some resource has been exhausted, perhaps a per-user quota, or perhaps the entire file system
+            is out of space.
+            </summary>
+        </member>
+        <member name="F:OpenTelemetry.Instrumentation.GrpcNetClient.StatusCanonicalCode.FailedPrecondition">
+            <summary>
+            Operation was rejected because the system is not in a state required for the operation's
+            execution. For example, directory to be deleted may be non-empty, an rmdir operation is
+            applied to a non-directory, etc.
+            A litmus test that may help a service implementor in deciding between FAILED_PRECONDITION,
+            ABORTED, and UNAVAILABLE: (a) Use UNAVAILABLE if the client can retry just the failing call.
+            (b) Use ABORTED if the client should retry at a higher-level (e.g., restarting a
+            read-modify-write sequence). (c) Use FAILED_PRECONDITION if the client should not retry until
+            the system state has been explicitly fixed. E.g., if an "rmdir" fails because the directory
+            is non-empty, FAILED_PRECONDITION should be returned since the client should not retry unless
+            they have first fixed up the directory by deleting files from it.
+            </summary>
+        </member>
+        <member name="F:OpenTelemetry.Instrumentation.GrpcNetClient.StatusCanonicalCode.Aborted">
+            <summary>
+            The operation was aborted, typically due to a concurrency issue like sequencer check
+            failures, transaction aborts, etc.
+            </summary>
+        </member>
+        <member name="F:OpenTelemetry.Instrumentation.GrpcNetClient.StatusCanonicalCode.OutOfRange">
+             <summary>
+             Operation was attempted past the valid range. E.g., seeking or reading past end of file.
+            
+             Unlike INVALID_ARGUMENT, this error indicates a problem that may be fixed if the system
+             state changes. For example, a 32-bit file system will generate INVALID_ARGUMENT if asked to
+             read at an offset that is not in the range [0,2^32-1], but it will generate OUT_OF_RANGE if
+             asked to read from an offset past the current file size.
+            
+             There is a fair bit of overlap between FAILED_PRECONDITION and OUT_OF_RANGE. We recommend
+             using OUT_OF_RANGE (the more specific error) when it applies so that callers who are
+             iterating through a space can easily look for an OUT_OF_RANGE error to detect when they are
+             done.
+             </summary>
+        </member>
+        <member name="F:OpenTelemetry.Instrumentation.GrpcNetClient.StatusCanonicalCode.Unimplemented">
+            <summary>
+            Operation is not implemented or not supported/enabled in this service.
+            </summary>
+        </member>
+        <member name="F:OpenTelemetry.Instrumentation.GrpcNetClient.StatusCanonicalCode.Internal">
+            <summary>
+            Internal errors. Means some invariants expected by underlying system has been broken. If you
+            see one of these errors, something is very broken.
+            </summary>
+        </member>
+        <member name="F:OpenTelemetry.Instrumentation.GrpcNetClient.StatusCanonicalCode.Unavailable">
+             <summary>
+             The service is currently unavailable. This is a most likely a transient condition and may be
+             corrected by retrying with a backoff.
+            
+             See litmus test above for deciding between FAILED_PRECONDITION, ABORTED, and UNAVAILABLE.
+             </summary>
+        </member>
+        <member name="F:OpenTelemetry.Instrumentation.GrpcNetClient.StatusCanonicalCode.DataLoss">
+            <summary>
+            Unrecoverable data loss or corruption.
+            </summary>
+        </member>
+        <member name="F:OpenTelemetry.Instrumentation.GrpcNetClient.StatusCanonicalCode.Unauthenticated">
+            <summary>
+            The request does not have valid authentication credentials for the operation.
+            </summary>
+        </member>
+        <member name="T:OpenTelemetry.Trace.ActivityHelperExtensions">
+            <summary>
+            Extension methods on Activity.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Trace.ActivityHelperExtensions.TryGetStatus(System.Diagnostics.Activity,OpenTelemetry.Trace.StatusCode@,System.String@)">
+            <summary>
+            Gets the status of activity execution.
+            Activity class in .NET does not support 'Status'.
+            This extension provides a workaround to retrieve Status from special tags with key name otel.status_code and otel.status_description.
+            </summary>
+            <param name="activity">Activity instance.</param>
+            <param name="statusCode"><see cref="T:OpenTelemetry.Trace.StatusCode"/>.</param>
+            <param name="statusDescription">Status description.</param>
+            <returns><see langword="true"/> if <see cref="T:OpenTelemetry.Trace.Status"/> was found on the supplied Activity.</returns>
+        </member>
+        <member name="M:OpenTelemetry.Trace.ActivityHelperExtensions.GetTagValue(System.Diagnostics.Activity,System.String)">
+            <summary>
+            Gets the value of a specific tag on an <see cref="T:System.Diagnostics.Activity"/>.
+            </summary>
+            <param name="activity">Activity instance.</param>
+            <param name="tagName">Case-sensitive tag name to retrieve.</param>
+            <returns>Tag value or null if a match was not found.</returns>
+        </member>
+        <member name="M:OpenTelemetry.Trace.ActivityHelperExtensions.TryCheckFirstTag(System.Diagnostics.Activity,System.String,System.Object@)">
+            <summary>
+            Checks if the user provided tag name is the first tag of the <see cref="T:System.Diagnostics.Activity"/> and retrieves the tag value.
+            </summary>
+            <param name="activity">Activity instance.</param>
+            <param name="tagName">Tag name.</param>
+            <param name="tagValue">Tag value.</param>
+            <returns><see langword="true"/> if the first tag of the supplied Activity matches the user provide tag name.</returns>
+        </member>
+        <member name="M:OpenTelemetry.Trace.ActivityHelperExtensions.EnumerateTags``1(System.Diagnostics.Activity,``0@)">
+            <summary>
+            Enumerates all the key/value pairs on an <see cref="T:System.Diagnostics.Activity"/> without performing an allocation.
+            </summary>
+            <typeparam name="T">The struct <see cref="T:OpenTelemetry.Trace.IActivityEnumerator`1"/> implementation to use for the enumeration.</typeparam>
+            <param name="activity">Activity instance.</param>
+            <param name="tagEnumerator">Tag enumerator.</param>
+        </member>
+        <member name="M:OpenTelemetry.Trace.ActivityHelperExtensions.EnumerateLinks``1(System.Diagnostics.Activity,``0@)">
+            <summary>
+            Enumerates all the <see cref="T:System.Diagnostics.ActivityLink"/>s on an <see cref="T:System.Diagnostics.Activity"/> without performing an allocation.
+            </summary>
+            <typeparam name="T">The struct <see cref="T:OpenTelemetry.Trace.IActivityEnumerator`1"/> implementation to use for the enumeration.</typeparam>
+            <param name="activity">Activity instance.</param>
+            <param name="linkEnumerator">Link enumerator.</param>
+        </member>
+        <member name="M:OpenTelemetry.Trace.ActivityHelperExtensions.EnumerateTags``1(System.Diagnostics.ActivityLink,``0@)">
+            <summary>
+            Enumerates all the key/value pairs on an <see cref="T:System.Diagnostics.ActivityLink"/> without performing an allocation.
+            </summary>
+            <typeparam name="T">The struct <see cref="T:OpenTelemetry.Trace.IActivityEnumerator`1"/> implementation to use for the enumeration.</typeparam>
+            <param name="activityLink">ActivityLink instance.</param>
+            <param name="tagEnumerator">Tag enumerator.</param>
+        </member>
+        <member name="M:OpenTelemetry.Trace.ActivityHelperExtensions.EnumerateEvents``1(System.Diagnostics.Activity,``0@)">
+            <summary>
+            Enumerates all the <see cref="T:System.Diagnostics.ActivityEvent"/>s on an <see cref="T:System.Diagnostics.Activity"/> without performing an allocation.
+            </summary>
+            <typeparam name="T">The struct <see cref="T:OpenTelemetry.Trace.IActivityEnumerator`1"/> implementation to use for the enumeration.</typeparam>
+            <param name="activity">Activity instance.</param>
+            <param name="eventEnumerator">Event enumerator.</param>
+        </member>
+        <member name="M:OpenTelemetry.Trace.ActivityHelperExtensions.EnumerateTags``1(System.Diagnostics.ActivityEvent,``0@)">
+            <summary>
+            Enumerates all the key/value pairs on an <see cref="T:System.Diagnostics.ActivityEvent"/> without performing an allocation.
+            </summary>
+            <typeparam name="T">The struct <see cref="T:OpenTelemetry.Trace.IActivityEnumerator`1"/> implementation to use for the enumeration.</typeparam>
+            <param name="activityEvent">ActivityEvent instance.</param>
+            <param name="tagEnumerator">Tag enumerator.</param>
+        </member>
+        <member name="T:OpenTelemetry.Trace.IActivityEnumerator`1">
+            <summary>
+            An interface used to perform zero-allocation enumeration of <see cref="T:System.Diagnostics.Activity"/> elements. Implementation must be a struct.
+            </summary>
+            <typeparam name="T">Enumerated item type.</typeparam>
+        </member>
+        <member name="M:OpenTelemetry.Trace.IActivityEnumerator`1.ForEach(`0)">
+            <summary>
+            Called for each <see cref="T:System.Diagnostics.Activity"/> item while the enumeration is executing.
+            </summary>
+            <param name="item">Enumeration item.</param>
+            <returns><see langword="true"/> to continue the enumeration of records or <see langword="false"/> to stop (break) the enumeration.</returns>
+        </member>
+        <member name="T:OpenTelemetry.Trace.SemanticConventions">
+            <summary>
+            Constants for semantic attribute names outlined by the OpenTelemetry specifications.
+            <see href="https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/trace/semantic_conventions/README.md"/>.
+            </summary>
+        </member>
+        <member name="T:OpenTelemetry.Trace.SpanAttributeConstants">
+            <summary>
+            Defines well-known span attribute keys.
+            </summary>
+        </member>
+        <member name="T:OpenTelemetry.Trace.SpanHelper">
+            <summary>
+            A collection of helper methods to be used when building spans.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Trace.SpanHelper.ResolveSpanStatusForHttpStatusCode(System.Diagnostics.ActivityKind,System.Int32)">
+            <summary>
+            Helper method that populates span properties from http status code according
+            to https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/trace/semantic_conventions/http.md#status.
+            </summary>
+            <param name="kind">The span kind.</param>
+            <param name="httpStatusCode">Http status code.</param>
+            <returns>Resolved span <see cref="T:OpenTelemetry.Trace.Status"/> for the Http status code.</returns>
+        </member>
+        <member name="T:OpenTelemetry.Trace.TracerProviderBuilderExtensions">
+            <summary>
+            Extension methods to simplify registering of ASP.NET Core request instrumentation.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Trace.TracerProviderBuilderExtensions.AddAspNetCoreInstrumentation(OpenTelemetry.Trace.TracerProviderBuilder,System.Action{OpenTelemetry.Instrumentation.AspNetCore.AspNetCoreInstrumentationOptions})">
+            <summary>
+            Enables the incoming requests automatic data collection for ASP.NET Core.
+            </summary>
+            <param name="builder"><see cref="T:OpenTelemetry.Trace.TracerProviderBuilder"/> being configured.</param>
+            <param name="configureAspNetCoreInstrumentationOptions">ASP.NET Core Request configuration options.</param>
+            <returns>The instance of <see cref="T:OpenTelemetry.Trace.TracerProviderBuilder"/> to chain the calls.</returns>
+        </member>
+        <member name="M:OpenTelemetry.Internal.ExceptionExtensions.ToInvariantString(System.Exception)">
+            <summary>
+            Returns a culture-independent string representation of the given <paramref name="exception"/> object,
+            appropriate for diagnostics tracing.
+            </summary>
+            <param name="exception">Exception to convert to string.</param>
+            <returns>Exception as string with no culture.</returns>
+        </member>
+        <member name="T:OpenTelemetry.Internal.Guard">
+            <summary>
+            Methods for guarding against exception throwing values.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfNull(System.Object,System.String)">
+            <summary>
+            Throw an exception if the value is null.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfNullOrEmpty(System.String,System.String)">
+            <summary>
+            Throw an exception if the value is null or empty.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfNullOrWhitespace(System.String,System.String)">
+            <summary>
+            Throw an exception if the value is null or whitespace.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfZero(System.Int32,System.String,System.String)">
+            <summary>
+            Throw an exception if the value is zero.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="message">The message to use in the thrown exception.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfInvalidTimeout(System.Int32,System.String)">
+            <summary>
+            Throw an exception if the value is not considered a valid timeout.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfOutOfRange(System.Int32,System.String,System.Int32,System.Int32,System.String,System.String,System.String)">
+            <summary>
+            Throw an exception if the value is not within the given range.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+            <param name="min">The inclusive lower bound.</param>
+            <param name="max">The inclusive upper bound.</param>
+            <param name="minName">The name of the lower bound.</param>
+            <param name="maxName">The name of the upper bound.</param>
+            <param name="message">An optional custom message to use in the thrown exception.</param>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfOutOfRange(System.Double,System.String,System.Double,System.Double,System.String,System.String,System.String)">
+            <summary>
+            Throw an exception if the value is not within the given range.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+            <param name="min">The inclusive lower bound.</param>
+            <param name="max">The inclusive upper bound.</param>
+            <param name="minName">The name of the lower bound.</param>
+            <param name="maxName">The name of the upper bound.</param>
+            <param name="message">An optional custom message to use in the thrown exception.</param>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfNotOfType``1(System.Object,System.String)">
+            <summary>
+            Throw an exception if the value is not of the expected type.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+            <typeparam name="T">The type attempted to convert to.</typeparam>
+            <returns>The value casted to the specified type.</returns>
+        </member>
+        <member name="T:OpenTelemetry.Metrics.MeterProviderBuilderExtensions">
+            <summary>
+            Extension methods to simplify registering of ASP.NET Core request instrumentation.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Metrics.MeterProviderBuilderExtensions.AddAspNetCoreInstrumentation(OpenTelemetry.Metrics.MeterProviderBuilder)">
+            <summary>
+            Enables the incoming requests automatic data collection for ASP.NET Core.
+            </summary>
+            <param name="builder"><see cref="T:OpenTelemetry.Metrics.MeterProviderBuilder"/> being configured.</param>
+            <returns>The instance of <see cref="T:OpenTelemetry.Metrics.MeterProviderBuilder"/> to chain the calls.</returns>
+        </member>
+        <member name="T:System.ServiceProviderExtensions">
+            <summary>
+            Extension methods for OpenTelemetry dependency injection support.
+            </summary>
+        </member>
+        <member name="M:System.ServiceProviderExtensions.GetOptions``1(System.IServiceProvider)">
+            <summary>
+            Get options from the supplied <see cref="T:System.IServiceProvider"/>.
+            </summary>
+            <typeparam name="T">Options type.</typeparam>
+            <param name="serviceProvider"><see cref="T:System.IServiceProvider"/>.</param>
+            <returns>Options instance.</returns>
+        </member>
+        <member name="T:System.Runtime.CompilerServices.CallerArgumentExpressionAttribute">
+            <summary>
+            Allows capturing of the expressions passed to a method.
+            </summary>
+        </member>
+        <member name="M:System.Runtime.CompilerServices.CallerArgumentExpressionAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.Runtime.CompilerServices.CallerArgumentExpressionAttribute"/> class.
+            </summary>
+            <param name="parameterName">The name of the targeted parameter.</param>
+        </member>
+        <member name="P:System.Runtime.CompilerServices.CallerArgumentExpressionAttribute.ParameterName">
+            <summary>
+            Gets the target parameter name of the CallerArgumentExpression.
+            </summary>
+        </member>
+    </members>
+</doc>

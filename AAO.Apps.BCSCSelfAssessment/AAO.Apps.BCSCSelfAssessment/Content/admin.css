@@ -1,0 +1,253 @@
+.username{color:#000;font-size:12px;padding-top:30px;text-align:right;padding-right:12px;}
+.radio-inline label {min-height: 20px;margin-bottom: 0;font-weight: normal;cursor: pointer;}
+.search-wrapper{background-color: #f2f2f2;padding: 10px 15px 10px 10px;}
+.input-group.add-on .btn{font-size:14px;}
+
+.bcsc-self-assessment .panel-title{font-size:14px;}
+.bcsc-self-assessment .panel-default > .panel-heading{background-color: transparent;}
+.bcsc-self-assessment #accordion .panel-heading{padding:10px 15px !important;}
+.bcsc-self-assessment .panel-title a{padding:0;display:block;}
+.bcsc-self-assessment .panel-default > .panel-heading + .panel-collapse > .panel-body{padding:5px 0 5px 42px;color:#7a7c7e;}
+
+/*Programatic & Manual dates css - Start(09Jan24)*/
+#container1 {
+    overflow: hidden;  
+}
+#sidebyside {
+    width: 50%;
+    float: right;
+    color: #333;
+}
+.datecolor_span {
+    /*color: #676662db;*/
+    color: #7a7c7e;
+}
+/*Programatic & Manual dates css - End*/
+
+.MapperquestionView {
+    position: absolute;
+    right: 15px;
+    top: 0;
+}
+.padtop5 {
+padding-top:5px;
+}
+.nested-accordion-title{background-color: #f2f2f2;padding:10px 15px;margin:0 38px 5px 0;position: relative;}
+.nested-accordion-title a{float:right;background-color:#aaa;color:#fff;position: absolute;padding:10px;top: 0;right: 0;min-width:170px;text-align:right;}
+.nested-accordion-title a .fa{margin-left:15px;}
+.nested-accordion .accordion-toggle:after {
+    font-family: 'FontAwesome';
+    content: "\f054";    
+    float: right;
+	margin-left: 15px;
+}
+.nested-accordion .accordion-opened .accordion-toggle:after {    
+    content: "\f078";    
+}
+.accordion-inner{
+	color:#7a7c7e;
+	padding: 10px;
+}
+.list-items{
+	padding-left: 15px;
+	list-style-type: none;    
+    color: #7a7c7e;
+	line-height: 24px;
+}
+.form-control{height:31px;}
+.sub-title{font-weight:normal;color:#333;}
+.sub-title span{font-style:italic;font-size:12px;color: #7a7c7e;}
+.eq-wth{width:20%}
+#AdminReport_wrapper{padding-bottom:20px;}
+#AdminReport.table{width:100% !important;}
+#AdminReport thead, #QuestionPerformanceReport thead, #NotificationMessageSettingTable thead {
+    background-color: #659fd5;
+    color: #fff;
+}
+ #AdminReport thead td, #AdminReport tbody td{text-align:center;}
+ #AdminReport thead td:nth-child(1), #AdminReport tbody td:nth-child(1){text-align:left; padding-right:0}
+ #AdminReport thead td:nth-child(2), #AdminReport tbody td:nth-child(2){text-align:center;}
+
+    #AdminReport thead .sorting_asc:after, #QuestionPerformanceReport thead .sorting_asc:after, #NotificationMessageSettingTable thead .sorting_asc:after {
+        display: none;
+    }
+ #DisplayData .form-control[readonly]{background-color:#fff;}
+ #QuestionPerformanceReport.table td{padding:8px 5px;font-size:13px;}
+#NotificationMessageSettingTable.table td {
+    padding: 8px 5px;
+    font-size: 13px;
+}
+.row-eq-col {
+    display: flex;
+}
+.btn-transfer{position:relative;top:45%}
+.txt-description{height:300px !important;}
+#QuestionPerformanceReport_wrapper {padding-bottom:20px;}
+3NotificationMessageSettingTable.table {
+    width: 100% !important
+}
+#QuestionPerformanceReport.table {
+    width: 100% !important
+}
+.alertmessage{
+    text-align:left;
+    float:left;
+}
+#QuestionPerformanceReport_wrapper.container-fluid{
+    padding-left:0;
+    padding-right:0;
+}
+.filterby{
+    position: absolute;
+    top: 40px;
+    right: 60px;
+}
+
+.disable{
+    pointer-events: none;
+    opacity: 0.6;
+}
+.relative-position{position:relative;}
+.filter-wrapper{
+    position: absolute;
+    right: 40px;
+    top: 29px;
+    z-index: 2;
+}
+
+.font-green {
+color: #a9c23f;
+}
+@media (min-width: 768px) and (max-width: 1024px) and (orientation:landscape){
+	.eq-wth{width:18.5%}
+}
+@media (min-width: 768px) and (max-width: 1024px) and (orientation:portrait){
+	.eq-wth{width:15.5%}
+}
+
+#OptInReport.table{width:100% !important;}
+#OptInReport thead, #QuestionPerformanceReport thead, #NotificationMessageSettingTable thead {
+    background-color: #659fd5;
+    color: #fff;
+}
+#OptInReport thead td, #AdminReport tbody td{text-align:center;}
+#OptInReport thead td:nth-child(1), #AdminReport tbody td:nth-child(1){text-align:left; padding-right:0}
+#OptInReport thead td:nth-child(2), #AdminReport tbody td:nth-child(2){text-align:center;}
+    #OptInReport thead .sorting_asc:after, #QuestionPerformanceReport thead .sorting_asc:after, #NotificationMessageSettingTable thead .sorting_asc:after {
+        display: none;
+    }
+
+
+.btn-pipeline {
+    border-left: 1px solid #659fd5;
+    margin: 0px 0px 0px 10px;
+    height: 31px;
+    width: 1px;
+    top: 11px;
+    position: relative;
+}
+
+#reportrange.reportdatepickerrange {
+    float: none;
+    display: inline-block
+}
+
+@media (max-width: 800px) {
+    .custom-filter-wrapper {
+        position: initial;
+        top: 0;
+        right: 0;
+        display: flex;
+        flex-flow: wrap;
+    }
+    .eq-btn {
+        margin-left: 7px;
+    }
+    .ex-btn {
+        margin-left: 7px;
+    }
+    .eq-btn .btn-export,
+    .ex-btn .btn-export {
+        margin-top: 0px;
+    }
+    .filter-all {
+        width: 100px;
+    }
+    .filter-btn {
+        margin-top: 0px;
+    }
+    .btn-pipeline {
+       top: 0;
+    }
+}
+
+.input-type-number {
+    width: 6em !important;
+    padding: 5px 5px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.message-fieldset {
+    background-color: #eeeeee;
+    padding: 20px;
+}
+
+.margin-b-10 {
+    margin-bottom: 10px;
+}
+
+.margin-br-10 {
+    margin-left: 10px;
+}
+
+.input-type-submit {
+    background-color: #00539CFF; /* Green */
+    border-color: gainsboro;
+    margin: 0;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.cancel-btn {
+    margin: 0;
+    text-align: center;
+    display: inline-block;
+}
+
+.message-modal-content {
+    background-color: #00539CFF;
+}
+
+.message-modal-header {
+    color: aliceblue;
+}
+
+.message-close {
+    color: #fff;
+    text-shadow: none;
+    opacity: 0.9;
+}
+
+    .message-close:hover {
+        color: #fff;
+        text-shadow: none;
+        opacity: 0.6;
+    }
+
+@media (max-width: 767px) {
+    .filter-btn {
+        width: 100%;
+        margin-bottom: 15px
+    }
+    .filter-all {
+        margin-top: 15px;
+    }
+    .btn-pipeline {
+        top: 0;
+    }
+}

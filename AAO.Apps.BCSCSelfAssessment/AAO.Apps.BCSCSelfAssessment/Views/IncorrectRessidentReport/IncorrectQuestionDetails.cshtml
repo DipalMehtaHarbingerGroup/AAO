@@ -1,0 +1,375 @@
+﻿@{
+    ViewBag.Title = "IncorrectQuestionDetails";
+
+}
+
+
+<a href="javascript:void(0)" class="list-group-item active" style="display:none"></a>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <ul class="breadcrumb">
+                <li>
+                    <a href="@Url.Content("~/AggregatePerformance/Index")">Reports </a>
+                    <span>/ Section @ViewBag.SubSpecialityNumber </span>
+                    <span>: @ViewBag.SubSpeciality</span>
+                </li>
+               
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="view-assessment-details">
+    <div class="col-lg-12 xs-nopadding">
+        <div class="content-bg">
+            <div class="content-padding">
+             <div id="displayCount" class="pull-left padtop5">
+                    @*Displaying questions 10 of @ViewBag.incorrectQuestiondetailscount*@
+                </div>
+
+                <div class="filter-container">
+                    <div class="flex-unit">
+                        <div class="pull-left padright15 xs-width sm-width padtop5">Expand all</div>
+                        <div class="pull-left padtop5">
+                            <div class="toggle-switch">
+                                <input type="checkbox" name="toggle_switch3" class="toggle-switch-checkbox" id="toggle_switch3">
+                                <label class="toggle-switch-label" for="toggle_switch3">
+                                    <span class="toggle-switch-inner"></span>
+                                    <span class="toggle-switch-switch"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex-unit">
+                        <div class="pull-left padright15 xs-width sm-width padtop5">Questions view</div>
+                        <div class="pull-left">
+                            <select id="QuestView" class="form-control">
+                                <option value="10" selected>10 per page</option>
+                                <option value="20">20 per page</option>
+                                <option value="30">30 per page</option>
+                                <option value="50">50 per page</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="clearfix">
+                </div>
+
+                @if (ViewBag.incorrectQuestiondetailscount > 0)
+                {
+                    <div id="details">
+                        <div class="panel-group margin0" id="accordion" role="tablist" aria-multiselectable="true">
+                            <!-- Panel-1 -->
+                            <!--  Accordian -->
+                            @{ var count = 1;
+                                var optionVal = 'A';
+
+
+                                foreach (var item in ViewBag.incorrectQuestiondetailsdata)
+                                {
+
+                                    optionVal = 'A';
+
+
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading" role="tab" id="@(item.questionId + "headingOne")">
+                                            <div class="panel-title view-title ">
+
+                                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#@(item.questionId + "collapseOne")" aria-expanded="true" aria-controls="@(item.questionId +"collapseOne")">
+                                                    <div id="#quesText" class="question pad15 panel-bg-white padleft80">
+                                                        <li class="question-number-view-exam-details">
+
+                                                            @if (Convert.ToInt32(@item.rightChoiceId) == Convert.ToInt32(@item.examAttemptAsnwerDTO.ChoiceId))
+                                                            {
+                                                                <i class="fa fa-lg fa-check padright10 font-green"></i>
+                                                            }
+                                                            else
+                                                            {
+                                                                <i class="fa fa-lg fa-times padright10 font-red"></i>
+                                                            }
+
+                                                            @item.serialNumber.
+                                                        </li>
+
+                                                        <div id="quesTextDiv@(item.questionId)">@Html.Raw(item.questionText)</div>
+
+
+
+                                                    </div>
+                                                    @{count = count + 1;}
+                                                    <div class="respondents peer-comparison-bg">
+                                                        <div id="peerPercentage">
+                                                            @{ string responsetext2 = string.Empty;
+                                                                string percentage2 = string.Empty; }
+                                                              @foreach (var item1 in @item.PeerDetails)
+                                                              {
+                                                                  if (Convert.ToInt32(@item1.IsRightChoice) == 1)
+                                                                  {
+                                                                      percentage2 = @item1.ChoicePercentage.ToString("0");
+                                                                  }
+                                                              }
+                                                            @if (item.PeerDetails[0].UserType == 0)
+                                                            {
+                                                                responsetext2 = "% of peers answered correctly.";
+                                                            }
+                                                            else
+                                                            {
+                                                                responsetext2 = "% of respondents answered correctly.";
+                                                            }
+                                                         
+                                                            <span class="PeerNamechange">@percentage2@responsetext2</span>
+                                                        </div>
+                                                        <div id="percentage">
+                                                            <div class="col-xs-12 hidden-lg hidden-md xs-flex-comparison-score peer-percentage">
+                                                                @foreach (var option in @item.PeerDetails)
+                                                                {
+                                                                      <li id="PeerDetailsLiId@(option.ChoiceId)" class="PeerDetailsClass"> @option.ChoiceOption. @option.ChoicePercentage%</li>
+
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <div class="clearfix"></div>
+
+                                        <div id="@(item.questionId + "collapseOne")" class="panel-collapse collapse" role="tabpanel" aria-labelledby="@(item.questionId + "headingOne")" aria-expanded="false">
+                                            <div class="panel-body">
+
+                                                <div id="choices">
+                                                    @foreach (var item2 in @item.choiceList)
+                                                    {
+
+                                                        if (Convert.ToInt32(@item.rightChoiceId) == Convert.ToInt32(@item2.choiceId) && Convert.ToInt32(@item.examAttemptAsnwerDTO.ChoiceId) > 0)
+                                                        {
+                                                            <div id="choiceText@(@item2.choiceId)" class="options bg-success flex-row-center">
+                                                                <div class="col-lg-9 col-sm-8 col-xs-8">
+                                                                    <label>
+                                                                        <li class="option-number-view-exam-details">@optionVal.</li>
+                                                                        @Html.Raw(@item2.choiceText)
+                                                                    </label>
+                                                                </div>
+                                                                @{optionVal = Convert.ToChar(optionVal + 1);}
+
+                                                                <div class="col-lg-3 col-sm-4 col-xs-4 text-left">
+                                                                    @foreach (var details in @item.PeerDetails)
+                                                                    {
+                                                                        if (@item2.choiceId == @details.ChoiceId)
+                                                                        {
+                                                                            <span class="padleft20 hidden-xs">@details.ChoicePercentage%</span>
+                                                                            <span id="ReportscorrectAns">Correct Answer</span>
+                                                                        }
+                                                                    }
+
+                                                                </div>
+                                                                <div class="clearfix"></div>
+                                                            </div>
+                                                                    }
+                                                                    else if (Convert.ToInt32(@item.examAttemptAsnwerDTO.ChoiceId) == Convert.ToInt32(@item2.choiceId))
+                                                                    {
+                                                                        <div id="choiceText@(@item2.choiceId)" class="options bg-danger flex-row-center">
+                                                                            <div class="col-lg-9 col-sm-8 col-xs-8">
+                                                                                <label>
+                                                                                    <li class="option-number-view-exam-details">@optionVal.</li>
+                                                                                    @Html.Raw(@item2.choiceText)
+                                                                                </label>
+                                                                            </div>
+                                                                            @{optionVal = Convert.ToChar(optionVal + 1);}
+
+                                                                            <div class="col-lg-3 col-sm-4 col-xs-4 text-left">
+                                                                                @foreach (var details in @item.PeerDetails)
+                                                                                {
+                                                                                    if (@item2.choiceId == @details.ChoiceId)
+                                                                                    {
+                                                                                        <span class="padleft20 hidden-xs">@details.ChoicePercentage%</span>
+
+
+                                                                                        if (Convert.ToInt32(@item.examAttemptAsnwerDTO.ChoiceId) == Convert.ToInt32(@item2.choiceId))
+                                                                                        {
+                                                                                            <span id="ReportwrongAns">Your Answer</span>
+                                                                                        }
+
+
+                                                                                    }
+                                                                                }
+
+                                                                            </div>
+                                                                            <div class="clearfix"></div>
+                                                                        </div>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <div id="choiceText@(@item2.choiceId)" class="options">
+                                                                                        <div class="col-lg-9 col-sm-8 col-xs-8">
+                                                                                            <label>
+                                                                                                <li class="option-number-view-exam-details">@optionVal.</li>
+                                                                                                @Html.Raw(@item2.choiceText)
+                                                                                            </label>
+                                                                                        </div>
+                                                                                        @{optionVal = Convert.ToChar(optionVal + 1);}
+
+                                                                                        <div class="col-lg-3 col-sm-4 col-xs-4 text-left">
+                                                                                            @foreach (var details in @item.PeerDetails)
+                                                                                            {
+                                                                                                if (@item2.choiceId == @details.ChoiceId)
+                                                                                                {
+                                                                                                    <span class="padleft20 hidden-xs">@details.ChoicePercentage%</span>
+
+
+                                                                                                    if (Convert.ToInt32(@item.rightChoiceId) == Convert.ToInt32(@item2.choiceId) && Convert.ToInt32(@item.examAttemptAsnwerDTO.ChoiceId) > 0)
+                                                                                                    {
+                                                                                                        <span id="ReportscorrectAns">Correct Answer</span>
+                                                                                                    }
+                                                                                                    else
+                                                                                                    {
+                                                                                                        if (Convert.ToInt32(@item.examAttemptAsnwerDTO.ChoiceId) == Convert.ToInt32(@item2.choiceId))
+                                                                                                        {
+                                                                                                            <span id="ReportwrongAns">Your Answer</span>
+                                                                                                        }
+
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+
+                                                                                        </div>
+                                                                                        <div class="clearfix"></div>
+                                                                                    </div>
+                                                                                            }
+                                                                                            }
+
+                                                </div>
+                                         <hr>
+                                                <div>
+                                                    <h5>Explanation & Notes</h5>
+                                                    <!-- Nav tabs -->
+                                                    <ul class="nav nav-tabs responsive-tabs" role="tablist">
+                                                        <li role="presentation" class="active"><a href="#@(item.questionId + "discussion")" aria-controls="@(item.questionId + "discussion")" role="tab" data-toggle="tab">Discussion</a></li>
+                                                        <li role="presentation"><a href="#@(item.questionId + "bcsc")" aria-controls="bcsc-excerpt" role="tab" data-toggle="tab">BCSC Excerpt</a></li>
+                                                        <li role="presentation"><a href="#@(item.questionId + "references")" aria-controls="references" role="tab" data-toggle="tab">References</a></li>
+                                                        <li role="presentation"><a href="#@(item.questionId + "notes")" aria-controls="notes" role="tab" data-toggle="tab">Notes</a></li>
+                                                    </ul>
+
+                                                    <!-- Tab panes -->
+                                                    <div class="tab-content">
+
+                                                        <div role="tabpanel" class="tab-pane active padtop20" id="@(item.questionId + "discussion")">
+                                                            <div id="discussion">
+                                                                <div class="col-lg-12">
+                                                                    <p>@item.questionDiscussion.discussionText</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div role="tabpanel" class="tab-pane padtop20" id="@(item.questionId + "bcsc")">
+                                                            <div id="bcsc_excerpt">
+                                                                <div class="col-lg-12">
+                                                                    @foreach (var BCSCExcerpt in item.BCSCExcerpt)
+                                                                    {
+                                                                       @Html.Raw(@BCSCExcerpt)
+                                                                    }
+                                                                </div>
+                                                                </div>
+                                                        </div>
+
+                                                        <div role="tabpanel" class="tab-pane padtop20" id="@(item.questionId + "references")">
+                                                            <div id="references">
+                                                                <div class="col-lg-12">
+                                                                    @foreach (var reference in @item.references)
+                                                                    {
+                                                                        <p>@Html.Raw(@reference)</p>
+                                                                    }
+                                                                    </div>
+
+                                                                </div>
+                                                        </div>
+
+                                                        <div role="tabpanel" class="tab-pane padtop20" id="@(item.questionId + "notes")">
+                                                            <div id="notes">
+                                                                <div class="col-lg-12">
+                                                                    @foreach (string notes in @item.notes)
+                                                                    {
+                                                                        <p>@Html.Raw(@notes)</p>
+                                                                    }
+                                                                    </div>
+                                                                </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                    <!--  End Of Accordian -->
+                                                                }
+                            }
+
+                        </div>
+                    </div>
+                     }
+                     else
+                   {
+                <div>No records found.</div>
+                 }
+            </div>
+            <div class="text-center">
+                <nav id="PageNavigation" aria-label="Page navigation example">
+                    <ul class="pagination margin0 marbot20">
+                        <li id="Previouspage"><a class="page-link" href="#">Prev</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <div class="clearfix">
+        </div>
+    </div>
+</div>
+
+
+<input type="hidden" name="FilterId" id="FilterId" value="@ViewBag.Filter" />
+
+
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.bootstrap-responsive-tabs.js"></script>
+<script src="@Url.Content("~/Scripts/IncorrectResidentReport/IncorrectResidentReport.js")" type="text/javascript"></script>
+<script>
+    var IncorrectDetails = {
+        Filterval: '@ViewBag.Filter',
+        QuestViewVal: '@ViewBag.NoOfRecords',
+        firstQuestPerPage:'@ViewBag.FirstSerialNum',
+        lastQuestPerPage: '@ViewBag.LastSerialNum',
+        @*QuestViewValue : '@ViewBag.viewCurrentRecordcount',*@
+        PageNoVal: '@ViewBag.PageNo',
+        QuestionCount: '@ViewBag.incorrectQuestiondetailscount',
+        SubSpecialityId: '@ViewBag.SubSpecialityId',
+        RecordCount: '@ViewBag.RecordCount ',
+
+    };
+
+</script>        
+
+<style>
+p {
+    margin: 0 0 0px !important;
+}
+#bcsc-excerpt li {
+    padding-left: 0px !important;
+    list-style:none;
+}
+.bcsc-excerpt-custom-ul li{
+    padding-left:0px;
+    list-style-type: none;
+}
+.bcsc-excerpt-custom-content{
+        padding-left: 0px; 
+        background-color: sandybrown; 
+    }
+.bcsc-excerpt-custom-ul{
+    padding-left:4px;
+}
+</style>                     

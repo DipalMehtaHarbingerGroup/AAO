@@ -1,0 +1,644 @@
+﻿@using AAO.Apps.BCSCSelfAssessment.CustomeHelper
+@using AAO.Common.BCSCSelfAssessment;
+@model   AAO.DTO.BCSCSelfAssessment.ExamDTO
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12 xs-nopadding">
+            <ul class="breadcrumb">
+                <li class="active">Build Exam</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="col-lg-12 xs-nopadding">
+    <div class="content-bg">
+
+        @using (Html.BeginForm("CreateExam", "ExamManager", FormMethod.Post, new { id = "createExam", @class = "form-inline build-exam" }))
+        {
+            <div class="content-padding">
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "error-text" })
+                <input type="hidden" name="SelectedQuestions" value="@Model.SelectedQuestions" />
+                <input type="hidden" name="QuestionListData" value="@Model.QuestionListData" />
+                <div id="successNotification" class="success-notification" style="display: none; position: fixed; top: 20px; right: 20px; background: #d4edda; border: 1px solid #c3e6cb; border-radius: 5px; padding: 15px 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 9999; max-width: 400px; cursor: pointer;">
+                    <div class="notification-content">
+                        <div class="notification-text">
+                            <strong>✓ Success!</strong>
+                            <div class="notification-message" id="successMessage" style="margin-top: 5px; color: #155724;"></div>
+                        </div>
+                        <small style="color: #6c757d; margin-top: 10px; display: block;">Click to dismiss</small>
+                    </div>
+                </div>
+
+                <div class="build-exam-top-row d-flex align-items-center">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ExamType, "Select Exam Type", new { @class = "control-label" })
+                        <span class="font-red">*</span><br />
+                        @Html.DropDownList("ExamType", (IEnumerable<SelectListItem>)ViewBag.EnumExamList, new { @class = "form-control" })
+                    </div>
+
+                    <div id="custommode" style="display: inline-block !important;">
+                        <div class="form-group exam-title clearable-input">
+                            @Html.LabelFor(model => model.ExamName, htmlAttributes: new { @class = "control-label" })
+                            <div class="clearfix"></div>
+                            @Html.EditorFor(model => model.ExamName, new { htmlAttributes = new { maxlength = 30, @class = "form-control examtitle-input " } })
+                            <span data-clear-input>&times;</span>
+                            <div class="clearfix"></div>
+                            <span class="ExamTitleSpan error-text"></span>
+                            <span class="SameNameErrSpan error-text"></span>
+
+                        </div>
+                    </div>
+                </div>
+                <div style="padding: 15px;">
+                    <a class="btn btn-warning btn-lg d-flex align-items-center justify-content-center" href="#" role="button">
+                        Go to Shared Exams Page
+                    </a>
+                 </div>
+                <div class="clearfix"></div>
+                <span class="SimulatedTextSpan" style="font-style: italic;font-size: 12px; display:block"></span>
+                <hr>
+
+                <div id="quick">
+                    <div class="col-lg-12 xs-nopadding">
+                        <div class="pull-left selectsection">
+                            Select BCSC Section(s) <span class="font-red"> * </span>
+                        </div>
+                        <div class="pull-left martop2">
+                            <label class="container-checkbox">
+                                <input value="" type="checkbox" id='selectall' class="TypeofCategoryList">
+                                Select all
+                                <span class='checkmark'></span>
+                            </label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div id="ErrorMsg" class='error-text'></div>
+                    </div>
+                    <div class="form-group rt width100percent">
+                        @Html.CheckBoxList((List<SelectListItem>)ViewBag.CategoryTypelist, "TypeofCategoryList", (String[])ViewBag.QuestionTypeListCount)
+                        @*@Html.ValidationMessageFor(model => model.TypeofCategory, "", new { @class = "text-danger" })*@
+                    </div>
+                    <div class="clearfix"></div>
+                    <hr class="martop0">
+                </div>
+
+                <div class="clearfix"></div>
+                <div id="custom">
+                    <div class="build-exam-options">
+                        <div class="form-group form-inline question-number xs-mb0 xs-nopadding">
+                            @Html.LabelFor(model => model.NoofQuestions, htmlAttributes: new { @class = "control-label pull-left" })
+                            <span id="QuestionStarmark" class="font-red fixed-label-width"> * </span>
+                            @Html.EditorFor(model => model.NoofQuestions, new { htmlAttributes = new { maxlength = 4, minlength = 1, @class = "form-control input-count" } })
+                            <div class="clearfix"></div>
+                            <span class="NoOfQuesSpan error-text"></span>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div id="ExamModeDiv">
+                            <div class="form-group form-inline build-exam-section nopadding">
+                                <div class="col-lg-2 col-sm-4 xs-nopadding">
+                                    @Html.LabelFor(model => model.ExamMode, htmlAttributes: new { @class = "" })
+                                </div>
+                                <div class="col-lg-8 col-sm-8 xs-nopadding">
+                                    <div class="toggle-switch" id="exammode12">
+                                        @Html.CheckBoxFor(model => model.ExamMode, htmlAttributes: new { @class = "toggle-switch-checkbox" })
+                                        @*@Html.ValidationMessageFor(model => model.ExamMode, "", new { @class = "text-danger" })*@
+                                        <label class="toggle-switch-label" for="ExamMode">
+                                            <span class="toggle-switch-inner"></span>
+                                            <span class="toggle-switch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="col-lg-12 xs-nopadding">
+                            <span class="marbot20">In challenge mode you are asked to type in your own answer before you see the answer choices.</span>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="form-group form-inline build-exam-section nopadding">
+                            <div class="col-lg-2 col-sm-4 xs-nopadding">
+                                @Html.LabelFor(model => model.ExamAnswerToShow, htmlAttributes: new { @class = "" })
+                            </div>
+                            <div class="col-lg-8 col-sm-8 xs-nopadding">
+                                <div class="toggle-switch" id="exammode13">
+                                    @Html.CheckBoxFor(model => model.ExamAnswerToShow, htmlAttributes: new { @class = "toggle-switch-checkbox" })
+                                    @*@Html.ValidationMessageFor(model => model.ExamAnswerToShow, "", new { @class = "text-danger" })*@
+                                    <label class="toggle-switch-label" for="ExamAnswerToShow">
+                                        <span class="toggle-switch-inner"></span>
+                                        <span class="toggle-switch-switch"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="col-lg-12 xs-nopadding">
+                            <span class="">
+                                When this option is on, correct answers, discussions, and references will display after each question is answered.
+                            </span>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div id="ExamTypeTimeDiv" class="martop20">
+                            <div class="form-group form-inline build-exam-section nopadding">
+                                <div class="col-lg-2 col-sm-4 xs-nopadding">
+                                    @Html.LabelFor(model => model.ExamTimeType, htmlAttributes: new { @class = "" })
+                                </div>
+                                <div class="col-lg-8 col-sm-8 xs-nopadding">
+                                    <div class="toggle-switch" id="exammode14">
+                                        @Html.CheckBoxFor(model => model.ExamTimeType, htmlAttributes: new { @class = "toggle-switch-checkbox" })
+                                        @*@Html.ValidationMessageFor(model => model.ExamTimeType, "", new { @class = "text-danger" })*@
+                                        <label class="toggle-switch-label" for="ExamTimeType">
+                                            <span class="toggle-switch-inner"></span>
+                                            <span class="toggle-switch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="col-lg-12 xs-nopadding">
+                                    <span class="">
+                                        Time limit for timed exams is calculated by the number of questions selected.
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div id="SharedExamFields" class="martop20" style="display: none;">
+                            <div class="form-group form-inline build-exam-section nopadding">
+                                <div class="col-lg-2 col-sm-4 xs-nopadding">
+                                    @Html.LabelFor(model => model.ShowDetailedAnswers, "Show Detailed Answers After Exam Submit", htmlAttributes: new { @class = "control-label" })
+                                </div>
+                                <div class="col-lg-8 col-sm-8 xs-nopadding">
+                                    <div class="toggle-switch" id="showDetailedAnswersToggleSwitch">
+                                        @Html.CheckBoxFor(model => model.ShowDetailedAnswers, htmlAttributes: new { @class = "toggle-switch-checkbox" })
+                                        <label class="toggle-switch-label" for="ShowDetailedAnswers">
+                                            <span class="toggle-switch-inner"></span>
+                                            <span class="toggle-switch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="col-lg-12 xs-nopadding">
+                                <span class="marbot20">Show Detailed Answers on the Exam History Page.</span>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="form-group form-inline build-exam-section nopadding">
+                                <div class="col-lg-2 col-sm-4 xs-nopadding">
+                                    @Html.LabelFor(model => model.ShowAnsAfterExamCompletion, "Show Detailed Answers After End Date", htmlAttributes: new { @class = "control-label" })
+                                </div>
+                                <div class="col-lg-8 col-sm-8 xs-nopadding">
+                                    <div class="toggle-switch" id="showAnsAfterExamCompletionToggleSwitch">
+                                        @Html.CheckBoxFor(model => model.ShowAnsAfterExamCompletion, htmlAttributes: new { @class = "toggle-switch-checkbox" })
+                                        <label class="toggle-switch-label" for="ShowAnsAfterExamCompletion">
+                                            <span class="toggle-switch-inner"></span>
+                                            <span class="toggle-switch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="col-lg-12 xs-nopadding">
+                                <span class="marbot20">Show Detailed Answers on the Exam History Page only after the Exam End Date</span>
+                            </div>
+                            <div class="clearfix"></div>
+                            <!-- Set Date Range Toggle -->
+                            <div class="form-group form-inline build-exam-section nopadding">
+                                <div class="col-lg-2 col-sm-4 xs-nopadding">
+                                    @Html.LabelFor(model => model.DateRangeEnabled, "Set Date Range", htmlAttributes: new { @class = "control-label" })
+                                </div>
+                                <div class="col-lg-8 col-sm-8 xs-nopadding">
+                                    <div class="toggle-switch" id="dateRangeToggleSwitch">
+                                        @Html.CheckBoxFor(model => model.DateRangeEnabled, htmlAttributes: new { @class = "toggle-switch-checkbox" })
+                                        <label class="toggle-switch-label" for="DateRangeEnabled">
+                                            <span class="toggle-switch-inner"></span>
+                                            <span class="toggle-switch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="col-lg-12 xs-nopadding">
+                                <span class="marbot20">Set a date range to control when the shared exam is available to recipients.</span>
+                            </div>
+                            <div class="clearfix"></div>
+
+                            <!-- Start Date -->
+                            <div class="form-group form-inline build-exam-section nopadding">
+                                <div class="col-lg-2 col-sm-4 xs-nopadding">
+                                    @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label" })
+                                </div>
+                                <div class="col-lg-4 col-sm-8 xs-nopadding">
+                                    @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control date-input", @type = "date", @disabled = "disabled" } })
+                                    <div class="clearfix"></div>
+                                    <span class="StartDateSpan error-text"></span>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div style="margin-bottom: 20px;"></div>
+                            <!-- End Date -->
+                            <div class="form-group form-inline build-exam-section martop20" style="margin-top: 20px;">
+                                <div class="col-lg-2 col-sm-4 xs-nopadding">
+                                    @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label" })
+                                </div>
+                                <div class="col-lg-4 col-sm-8 xs-nopadding">
+                                    @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control date-input", @type = "date", @disabled = "disabled" } })
+                                    <div class="clearfix"></div>
+                                    <span class="EndDateSpan error-text"></span>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div style="margin-bottom: 20px;"></div>
+                            <!-- Email Field -->
+                            <!-- Multiple Email Field -->
+                            <div class="form-group form-inline build-exam-section nopadding martop20">
+                                <div class="col-lg-2 col-sm-4 xs-nopadding">
+                                    @Html.LabelFor(model => model.EmailId, htmlAttributes: new { @class = "control-label" })
+                                </div>
+                                <div class="col-lg-6 col-sm-8 xs-nopadding">
+                                    <div class="multiple-email-container">
+                                        <div class="selected-emails-container" id="selectedEmailsContainer" style="display: flex; flex-wrap: wrap;">
+                                            <!-- Selected emails will appear here as chips -->
+                                        </div>
+                                        <div class="email-input-container" style="position: relative;">
+                                            <input type="text" id="emailInput" class="form-control email-autocomplete"
+                                                   placeholder="Enter email addresses" autocomplete="off" />
+                                            <div id="emailSuggestions" class="email-suggestions" style="display: none;"></div>
+                                        </div>
+                                        <!-- Hidden field to store all emails for form submission -->
+                                        @Html.HiddenFor(model => model.EmailId, new { @id = "EmailIdHidden" })
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <span class="EmailIdSpan error-text"></span>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="col-lg-12 xs-nopadding">
+                                <span class="">Enter email addresses of people you want to share this exam with. You can add multiple emails.</span>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div style="margin-bottom: 20px;"></div>
+                            <!-- Search Questions for Shared Exam -->
+                            <div class="form-group form-inline build-exam-section nopadding shared-exam-search-group martop20">
+                                <div class="col-lg-2 col-sm-4 xs-nopadding">
+                                    <label class="control-label shared-exam-search-label">Search Questions</label>
+                                </div>
+                                <div class="col-lg-4 col-sm-8 xs-nopadding">
+                                    <div class="shared-exam-search" id="shared-exam-search-div">
+                                        <div class="input-group search-input-with-icon-container">
+                                            <input type="text" id="sharedExamSearch" class="form-control shared-exam-search-input" placeholder="Search Questions" />
+                                            <span class="shared-exam-search-icon-inside" onclick="searchAAOSharedExam()">
+                                                <i class="fa fa-search"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="col-lg-12 xs-nopadding">
+                                <span class="">Search for specific questions to include in your shared exam.</span>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div style="margin-bottom: 20px;"></div>
+                            <!-- Number of Questions Field -->
+                            <div class="form-group form-inline build-exam-section nopadding martop20">
+                                <div class="col-lg-2 col-sm-4 xs-nopadding">
+                                    @Html.LabelFor(model => model.NumberOfCustomisedQuestions, "Total Customised Questions", htmlAttributes: new { @class = "control-label" })
+                                </div>
+                                <div class="col-lg-4 col-sm-8 xs-nopadding">
+                                    @Html.TextBoxFor(model => model.NumberOfCustomisedQuestions, new
+                                    {
+                                        @class = "form-control",
+                                        @type = "number",
+                                        @readonly = "readonly",
+                                        @id = "NumberOfQuestions",
+                                        @min = "0",
+                                        @value = "0"
+                                    })
+                                    <div class="clearfix"></div>
+                                    <span class="NumberOfQuestionsSpan error-text"></span>
+                                </div>
+                            </div>
+
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+
+                    <div class="clearfix"></div>
+                    <hr>
+                </div>
+
+                <div id="anothermode">
+                    <div class="form-inline col-lg-12 xs-nopadding">
+                        <label for="exampleInputName2">
+                            Type of Questions <span class="font-red">*</span>
+
+                            <div class="col-lg-12 xs-nopadding martop10 xs-marbot10 small marl14">
+                                <i>The number of questions for the selected BCSC section(s) appears in parentheses.</i>
+                            </div>
+                        </label>
+                        <div id="QuesTypeErr" class='error-text'></div>
+                    </div>
+                    <div class="rtt form-group form-inline width100percent">
+                        @Html.CheckBoxList((List<SelectListItem>)ViewBag.QuestionTypelist, "TypeofQuestionList", (String[])ViewBag.QuestionTypeListCount)
+                        <div class="clearfix"></div>
+                        <hr class="marbot0">
+                    </div>
+
+                </div>
+
+                <div class="col-lg-12 marbot20 xs-nopadding">
+                    <span class="font-red">*</span><label style="font-style: italic;font-size: 12px;">Required field </label>
+                </div>
+
+                <div class="col-lg-6 text-left marbot20 xs-nopadding">
+                    <input type="submit" value="Start Exam" id="Create" class="btn btn-default btn-primary" />
+                    <input type="button" value="Cancel" id="Cancel" class="btn btn-default" />
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        }
+
+
+    </div>
+
+</div>
+@{
+    // Check if this is a Shared Exam scenario
+    bool isSharedExamScenario = ViewBag.SelectedExamType?.ToString() == "4" ||
+                               (ViewBag.PreserveFormData != null && (bool)ViewBag.PreserveFormData);
+}
+
+<!-- Success notification functions - MOVED OUTSIDE the if condition so they work for all exam types -->
+<script type="text/javascript">
+    // Success notification functions (available for all exam types)
+    function showSuccessNotification(message) {
+        $('#successMessage').text(message);
+        $('#successNotification').fadeIn(300);
+        setTimeout(hideSuccessNotification, 5000);
+    }
+
+    function hideSuccessNotification() {
+        $('#successNotification').addClass('slide-out');
+        setTimeout(function () {
+            $('#successNotification').hide().removeClass('slide-out');
+        }, 500);
+    }
+
+    // Success notification handling - MOVED OUTSIDE so it works for all exam types
+    @if (TempData["MsgSuccess"] != null)
+    {
+        <text>
+        $(document).ready(function() {
+            showSuccessNotification('@Html.Raw(TempData["MsgSuccess"])');
+        });
+        </text>
+    }
+</script>
+
+@if (isSharedExamScenario)
+{
+    <script type="text/javascript">
+    // Server-side values passed to JavaScript
+    var serverConfig = {
+        selectedExamType: '@ViewBag.SelectedExamType',
+        preserveFormData: @Html.Raw(ViewBag.PreserveFormData.ToString().ToLower()),
+        formData: {
+            examName: '@Html.Raw(Html.Encode(Model.ExamName ?? ""))',
+            searchTerm: '@Html.Raw(Html.Encode(Model.SearchTerm ?? ""))',
+            noofQuestions: '@Model.NoofQuestions',
+            emailId: '@Html.Raw(Html.Encode(Model.EmailId ?? ""))',
+            examMode: @Html.Raw(Model.ExamMode.ToString().ToLower()),
+            examAnswerToShow: @Html.Raw(Model.ExamAnswerToShow.ToString().ToLower()),
+            examTimeType: @Html.Raw(Model.ExamTimeType.ToString().ToLower()),
+            showDetailedAnswers: @Html.Raw(Model.ShowDetailedAnswers.ToString().ToLower()),
+            showAnsAfterExamCompletion: @Html.Raw(Model.ShowAnsAfterExamCompletion.ToString().ToLower()),
+            dateRangeEnabled: @Html.Raw(Model.DateRangeEnabled.ToString().ToLower()),
+            startDate: '@(Model.StartDate?.ToString("yyyy-MM-dd") ?? "")',
+            endDate: '@(Model.EndDate?.ToString("yyyy-MM-dd") ?? "")',
+            selectedSections: @Html.Raw(Json.Encode(ViewBag.SelectedSections ?? new string[0])),
+            selectedQuestionTypes: @Html.Raw(Json.Encode(ViewBag.SelectedQuestionTypes ?? new string[0]))
+        },
+        selectedQuestions: {
+            ids: @Html.Raw(Json.Encode(ViewBag.SelectedQuestionIds ?? new List<int>())),
+            string: '@Html.Raw(ViewBag.SelectedQuestionsString ?? "")',
+            listData: '@Html.Raw(ViewBag.QuestionListData ?? "")'
+        }
+    };
+
+    //console.log("=== SERVER CONFIG ===", serverConfig);
+
+    // Make variables globally available for backward compatibility
+    var selectedExamType = serverConfig.selectedExamType;
+    var preserveFormData = serverConfig.preserveFormData;
+    var serverFormData = serverConfig.formData;
+
+    var selectedQuestionIds = [];
+
+    if (serverConfig.selectedQuestions.ids && Array.isArray(serverConfig.selectedQuestions.ids)) {
+        selectedQuestionIds = serverConfig.selectedQuestions.ids.slice();
+    } else if (serverConfig.selectedQuestions.string) {
+        try {
+            selectedQuestionIds = serverConfig.selectedQuestions.string.split(',')
+                                    .filter(x => x.trim() !== '')
+                                    .map(x => parseInt(x.trim()))
+                                    .filter(x => !isNaN(x));
+        } catch (e) {
+            selectedQuestionIds = [];
+        }
+    }
+
+    // Make selectedQuestionIds globally accessible
+    window.selectedQuestionIds = selectedQuestionIds;
+
+    // Question selection functions
+    function addQuestionToSelection(questionId) {
+        questionId = parseInt(questionId);
+        if (!isNaN(questionId) && selectedQuestionIds.indexOf(questionId) === -1) {
+            selectedQuestionIds.push(questionId);
+            //console.log("Added question", questionId, "to selection. Total:", selectedQuestionIds.length);
+        }
+    }
+
+    function removeQuestionFromSelection(questionId) {
+        questionId = parseInt(questionId);
+        var index = selectedQuestionIds.indexOf(questionId);
+        if (index > -1) {
+            selectedQuestionIds.splice(index, 1);
+            //console.log("Removed question", questionId, "from selection. Total:", selectedQuestionIds.length);
+        }
+    }
+
+    function getCurrentSelection() {
+        return selectedQuestionIds.slice();
+    }
+
+    function clearSelection() {
+        selectedQuestionIds = [];
+        //console.log("Cleared all selected questions");
+    }
+
+    // Make functions globally available
+    window.addQuestionToSelection = addQuestionToSelection;
+    window.removeQuestionFromSelection = removeQuestionFromSelection;
+    window.getCurrentSelection = getCurrentSelection;
+    window.clearSelection = clearSelection;
+
+    // Restore question selection UI
+    if (preserveFormData && selectedQuestionIds.length > 0) {
+        //console.log("=== RESTORING QUESTION SELECTION UI ===");
+        $(document).ready(function() {
+            selectedQuestionIds.forEach(function(questionId) {
+                var checkbox = $('input[type="checkbox"][value="' + questionId + '"]');
+                if (checkbox.length > 0) {
+                    checkbox.prop('checked', true);
+                    //console.log("Restored checkbox for question:", questionId);
+                }
+            });
+        });
+    }
+
+    // Form population functions
+        function populateFormFields() {
+            //console.log("populateFormFields called");
+
+            if (!serverFormData) {
+                //console.log("No serverFormData available");
+                return;
+            }
+
+            isPopulatingForm = true;
+
+            try {
+                populateTextField('#ExamName', serverFormData.examName);
+                populateTextField('#sharedExamSearch', serverFormData.searchTerm);
+                populateTextField('#NoofQuestions', serverFormData.noofQuestions);
+                populateTextField('#NumberOfCustomisedQuestions', serverFormData.numberOfCustomisedQuestions);
+
+                // UPDATED EMAIL HANDLING - Handle multiple emails properly
+                if (serverFormData.emailId && serverFormData.emailId.trim() !== '') {
+                    //console.log("Populating emails:", serverFormData.emailId);
+
+                    // Wait for the email system to be initialized
+                    setTimeout(function () {
+                        if (typeof window.setSelectedEmails === 'function') {
+                            // Split the comma-separated email string and set them
+                            var emailsArray = serverFormData.emailId.split(',')
+                                .map(email => email.trim())
+                                .filter(email => email !== '');
+
+                            //console.log("Setting emails array:", emailsArray);
+                            window.setSelectedEmails(emailsArray);
+                        } else {
+                            // Fallback - set the hidden field directly
+                            $('#EmailIdHidden').val(serverFormData.emailId);
+                            //console.log("Fallback: Set hidden field with:", serverFormData.emailId);
+                        }
+                    }, 300); // Small delay to ensure email system is ready
+                }
+
+                populateTextField('#StartDate', serverFormData.startDate);
+                populateTextField('#EndDate', serverFormData.endDate);
+
+                populateCheckbox('#ExamAnswerToShow', serverFormData.examAnswerToShow);
+                populateCheckbox('#ExamTimeType', serverFormData.examTimeType);
+                populateCheckbox('#ExamMode', serverFormData.examMode);
+                populateCheckbox('#DateRangeEnabled', serverFormData.dateRangeEnabled);
+                populateCheckbox('#ShowDetailedAnswers', serverFormData.showDetailedAnswers);
+                populateCheckbox('#ShowAnsAfterExamCompletion', serverFormData.showAnsAfterExamCompletion);
+
+                populateCheckboxList('TypeofCategoryList', serverFormData.selectedSections);
+                populateCheckboxList('TypeofQuestionList', serverFormData.selectedQuestionTypes);
+
+                //console.log("Form population completed");
+            } catch (error) {
+                console.error("Error in populateFormFields:", error);
+            } finally {
+                setTimeout(() => { isPopulatingForm = false; }, 100);
+            }
+        }
+
+    function populateTextField(selector, value) {
+        if (value) $(selector).val(value);
+    }
+
+    function populateCheckbox(selector, value) {
+        var isChecked = value === true || value === 'true';
+        $(selector).prop('checked', isChecked);
+    }
+
+    function populateCheckboxList(name, values) {
+        if (!values || !Array.isArray(values)) return;
+
+        $(`input[name="${name}"]`).prop('checked', false);
+
+        values.forEach(function(value) {
+            $(`input[name="${name}"][value="${value}"]`).prop('checked', true);
+        });
+
+        if (name === 'TypeofCategoryList') {
+            updateSelectAllCheckbox();
+        }
+    }
+
+    function updateSelectAllCheckbox() {
+        var totalCategories = $('.TypeofCategoryList').length;
+        var checkedCategories = $('.TypeofCategoryList:checked').length;
+        $("#selectall").prop('checked', totalCategories === checkedCategories);
+    }
+
+    // Initialize readonly field styling
+    $(document).ready(function () {
+        var numberOfQuestions = $('#NumberOfQuestions').val();
+        if (numberOfQuestions && numberOfQuestions > 0) {
+            $('#NumberOfQuestions').prop('readonly', true).addClass('readonly-field');
+            $('#NumberOfQuestions').after('<div class="text-info"><small><i class="fa fa-info-circle"></i> This value is set based on Selected Questions from Search Questions.</small></div>');
+        }
+    });
+    </script>
+}
+else
+{
+    <script type="text/javascript">
+    // Server-side values for non-shared exam scenario
+    var selectedExamType = '@ViewBag.SelectedExamType';
+    var preserveFormData = @Html.Raw((ViewBag.PreserveFormData ?? false).ToString().ToLower());
+
+    // Initialize empty selected questions array for consistency
+    window.selectedQuestionIds = [];
+
+    // Make variables globally available
+    window.selectedExamType = selectedExamType;
+    window.preserveFormData = preserveFormData;
+    </script>
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Update button text based on exam type
+        function updateSubmitButtonText() {
+            var examType = $('#ExamType').val();
+            var submitButton = $('#Create');
+
+            if (examType === '4') {
+                submitButton.val('Create Shared Exam');
+            } else {
+                submitButton.val('Start Exam');
+            }
+        }
+
+        // Initial update
+        updateSubmitButtonText();
+
+        // Update when exam type changes
+        $('#ExamType').change(function () {
+            updateSubmitButtonText();
+        });
+    });
+</script>
+<script src="~/Scripts/BuilExam/BuildExam.js"></script>
+

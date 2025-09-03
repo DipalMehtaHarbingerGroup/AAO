@@ -1,0 +1,301 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>@ViewBag.Title  AAO | BCSC Self Assessment Program</title>
+
+    @*@Styles.Render("~/Content/css")*@
+
+
+    <script src="~/Scripts/modernizr-2.6.2.js"></script>
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/fonts/font-awesome/css/font-awesome.css" rel="stylesheet" />
+
+    <link href="~/Content/daterangepicker.css" rel="stylesheet" />
+    <script src="~/Scripts/daterangepicker.js"></script>
+    <link href="~/Content/DataTables/css/buttons.dataTables.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/DataTables/css/dataTables.bootstrap.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery.bootstrap-responsive-tabs.js"></script>
+    <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/DataTables/dataTables.bootstrap.js"></script>
+    <link href="~/Content/bootstrap-responsive-tabs.css" rel="stylesheet" />
+    <script src="~/Scripts/DataTables/dataTables.responsive.min.js"></script>
+    <link href="~/Content/DataTables/css/responsive.dataTables.css" rel="stylesheet" />
+    <link href="~/Content/custom.css" rel="stylesheet" />
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+
+    <header>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+
+                <div class="navbar-header header">
+
+                    <div class="col-lg-12 col-xs-10">
+                        @*<a class="navbar-brand" href="#">
+                        <img src="~/Content/img/logo.png" class="img-responsive logo-size">
+                    </a>*@
+
+                        <a class="navbar-brand logo-size" href="#">
+
+                        </a>
+
+                    </div>
+
+                    <div class="col-xs-2">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false" style="border: none;">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+                    @if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
+                    {
+
+                        if (User.IsInRole("A"))
+                        {
+                            @*@Html.ActionLink("MY Home", "Index", new { Controller = "AdminDashboard" }, new { @class = "navbar-brand" })*@
+                        }
+                        else
+                        {
+                            @*@Html.ActionLink("My Home", "Index", new { Controller = "Dashboard" }, new { @class = "navbar-brand" })*@
+                        }
+                    }
+
+                </div>
+
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse LayoutMainTabs" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav main-menu">
+
+                        @if (System.Web.HttpContext.Current.User.IsInRole("A"))
+                        {
+                            <li>@Html.ActionLink("BCSC Content Mapper", "Index", new { Controller = "BCSCMapper" }, new { @class = "OptIn-Padding" })</li>
+                            @*<li>@Html.ActionLink("Import QAS Data", "ImportQASData", new { Controller = "AdminDashboard" })</li>*@
+                            <li>@Html.ActionLink("Reports", "Index", new { Controller = "AggregateUserPerformance" }, new { @class = "OptIn-Padding" })</li>
+                            <li>@Html.ActionLink("Question Performance", "Index", new { Controller = "AdminQuestionPerformance" }, new { @class = "OptIn-Padding" })</li>
+                            <li>@Html.ActionLink("Utilization Reports", "Index", new { Controller = "UtilizationReports" }, new { @class = "OptIn-Padding" })</li>
+                            <li>@Html.ActionLink("Opt-in", "Index", new { Controller = "OptInReports" }, new { @class = "OptIn-Padding" })</li>
+                            <li>@Html.ActionLink("User View", "Index", new { Controller = "UserView" }, new { @class = "OptIn-Padding" })</li>
+                            @*<li><a href="#">Welcome Mr/Ms @User.Identity.Name.ToString()</a> </li>*@
+                        }
+                        @if (System.Web.HttpContext.Current.User.IsInRole("U"))
+                        {
+                            <li id="Dashboard">
+                                <a href="@Url.Content("~/Dashboard/Index")">
+                                    <i class="fa fa-tachometer text-center menu-icons"></i>
+                                    Dashboard
+                                </a>
+                            </li>
+                            <li class="space-rep-icon">
+                                <a href="@Url.Content("~/SpacedRepetition/SRLanding")" id="spaceRep" style="clear:left" class="spaceRep-margin">
+
+
+                                    @*<img id="spaceImg" src="\Content\img\GspaceRep.svg">*@
+                                    <i class="fa fa-retweet text-center menu-icons" aria-hidden="true"></i>
+                                    Spaced Repetition
+                                </a>
+                            </li>
+                            <li>
+                                <a href="@Url.Content("~/ExamManager/Index")">
+                                    <i class="fa fa-file text-center menu-icons" style="color:#8679a3;"></i>
+                                    Build Exam
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="@Url.Content("~/ExamHistory/Index")">
+                                    <i class="fa fa-save text-center menu-icons"></i>
+                                    Exam History
+                                </a>
+                            </li>
+                            <li>
+                                <a href="@Url.Content("~/AggregatePerformance/Index")">
+                                    <i class="fa fa-line-chart text-center menu-icons"></i>
+                                    Exam Reports
+                                </a>
+                            </li>
+                            <li>
+                                <a href="@Url.Content("~/CMECredit/CMEIndexPage")">
+                                    <i class="fa fa-certificate text-center menu-icons"></i>
+                                    CME Credits
+                                </a>
+                            </li>
+
+                        }
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <div class="username">
+                            @if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
+                            {
+                                {
+                                    string[] @Name = (@System.Web.HttpContext.Current.User.Identity.Name.Split('|'));
+                                    <li>
+                                        <span class="welcome-message">Welcome </span>@Name[1]
+                                    </li>
+                                }
+                            }
+                        </div>
+
+                        @if (User.IsInRole("U"))
+                        {
+                            <div class="header-secondary-icons pull-left xs-padleft12">
+                                <li class="pull-right ">
+                                    <a href="@Url.Content("~/Dashboard/HelpPage")" style="color: #8679a3;">
+                                        <i class="fa fa-question-circle"></i>  Help
+                                    </a>
+                                </li>
+                                @*<li id="about-drop" class="cursor-pointer" data-toggle="popover" data-container="body" data-placement="left" type="button" data-html="true">*@
+
+                                <li class="nopadding">
+                                    <a href="@Url.Content("~/Dashboard/AboutPage")" style="color: #8679a3;">
+                                        <i class="fa fa-info-circle"></i> About
+                                    </a> &nbsp;
+                                </li>
+                            </div>
+
+                        }
+                    </ul>
+                </div>
+            </div><!-- /.container-fluid -->
+            <div class="header-search">
+                <div class="input-group">
+                    <input type="text" id="headersearch" search="searchbox" class="form-control" placeholder="Search">
+                    <span class="input-group-btn">
+                        <a id="searchButton" class="btn btn-primary" href="#" onclick="searchAAO()"><span class="icn-search"></span></a>
+                    </span>
+                </div>
+
+            </div>
+        </nav>
+
+    </header>
+
+
+
+    <div class="container-fluid body-content">
+        @RenderBody()
+    </div>
+
+    <footer class="martop30">
+        <div class="container-fluid">
+
+            <div class="col-lg-12 text-center xs-nopadding">
+                <div class="copyright-text">
+                    &copy American Academy of Ophthalmology @DateTime.Now.Year
+                </div>
+            </div>
+            <div class="clearfix">
+            </div>
+        </div>
+    </footer>
+    <div id="about-popover" class="hide">
+        <div class="col-lg-7">
+            <p class="about-popover-content">
+                This program from the American Academy of Ophthalmology helps
+                Ophthalmology residents and practicing ophthalmologists assess their clinical and scientific
+                Knowledge efficiently and effectively.
+            </p>
+            <a href="~/Dashboard/AboutPage" class="font12">know more</a>
+        </div>
+        <div class="col-lg-5 nopadding about-popover-links">
+            <li><a href="/Dashboard/AboutPage#aboutProgram">About the program</a></li>
+            <li><a href="/Dashboard/AboutPage#authors">Authors</a></li>
+            <li><a href="/Dashboard/AboutPage#cme">CME</a></li>
+            <li><a href="/Dashboard/AboutPage#contact">Contact Us</a></li>
+        </div>
+    </div>
+    <script src="~/Scripts/CommonScript/CommonScript.js"></script>
+
+</body>
+</html>
+<script>
+    //window.setInterval(keepAlive, 236000);
+    //window.setInterval(function () {
+    //    alert('Referesh');
+    //    keepAlive();
+    //}, 60 * 1000); // 60 * 1000 milsec
+
+    //function keepAlive() {
+    //    $.ajax(
+    //    {
+    //        url: "/basecontroller/checkSession",
+    //        cache: false,
+    //        success: function () { }
+    //    }
+    //    );
+    //}
+
+    function searchAAO() {
+        let searchitem = $('#headersearch').val();
+        if (searchitem.trim() != "") {
+            window.location.href = '/SearchByExam/SearchByQuestions' + '?SearchTerm=' + searchitem.trim() + '&Filter=' + "All";
+        }
+    }
+
+    $('#headersearch').keypress(function (e) {
+        var key = e.which;
+        if (key == 13)  // the enter key code
+        {
+            searchAAO();
+            return false;
+        }
+    });   
+
+
+</script>
+<style>
+
+
+
+    a#spaceRep:hover > div > #spaceImg {
+        content: url('/Content/img/spaceRepition.svg');
+    }
+
+    a#spaceRep:active > div > #spaceImg {
+        content: url('/Content/img/spaceRepition.svg');
+    }
+
+    a#spaceRep:visited > #spaceImg {
+        content: url('/Content/img/spaceRepition.svg');
+    }
+
+    a#spaceRep:after > div > #spaceImg {
+        content: url('/Content/img/spaceRepition.svg');
+    }
+
+    .addspaceRep {
+        content: url('/Content/img/spaceRepition.svg');
+    }
+
+    .space-rep-icon.active img#spaceImg {
+        content: url('/Content/img/spaceRepition.svg');
+    }
+
+    #spaceImg {
+        width:100%;
+        height: 100%;
+        color: #8679a3;       
+    }
+
+    .divImage {
+        display: block;
+        text-align: center;
+        width: 20px;
+        height: 20px;
+        margin: 0 auto;
+    }
+
+    #spaceRep {
+        margin-top: 0px;
+    }
+</style>

@@ -1,0 +1,88 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AAO.WebAPI.BCSCSelfAssessment", "AAO.WebAPI.BCSCSelfAssessment\AAO.WebAPI.BCSCSelfAssessment.csproj", "{EE10D54E-468F-4C0F-84E3-561A785FE2B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AAO.SQLHelper.BCSCSelfAssessment", "AAO.SQLHelper.BCSCSelfAssessment\AAO.SQLHelper.BCSCSelfAssessment.csproj", "{AB1CCCAB-C537-49E1-85B0-016283608211}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AAO.DAL.BCSCSelfAssessment", "AAO.DAL.BCSCSelfAssessment\AAO.DAL.BCSCSelfAssessment.csproj", "{1705E09D-E947-4EA2-AFB3-0E12FE00AE93}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AAO.DTO.BCSCSelfAssessment", "AAO.DTO.BCSCSelfAssessment\AAO.DTO.BCSCSelfAssessment.csproj", "{777F6F49-B48E-4C5C-B5CE-4A168DC4859D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AAO.Common.BCSCSelfAssessment", "AAO.Common.BCSCSelfAssessment\AAO.Common.BCSCSelfAssessment.csproj", "{D85A4B7A-0536-443A-A103-A9A7773B234F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AAO.BAL.BCSCSelfAssessment", "AAO.BAL.BCSCSelfAssessment\AAO.BAL.BCSCSelfAssessment.csproj", "{D55826E1-8AEE-4425-A861-55E5BDC4A69D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AAO.QRREADER.BCSCSelfAssessment", "AAO.QRREADER.BCSCSelfAssessment\AAO.QRREADER.BCSCSelfAssessment.csproj", "{90FBF0F2-569F-45D3-BC53-32B64A981A48}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EE10D54E-468F-4C0F-84E3-561A785FE2B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE10D54E-468F-4C0F-84E3-561A785FE2B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE10D54E-468F-4C0F-84E3-561A785FE2B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE10D54E-468F-4C0F-84E3-561A785FE2B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB1CCCAB-C537-49E1-85B0-016283608211}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB1CCCAB-C537-49E1-85B0-016283608211}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB1CCCAB-C537-49E1-85B0-016283608211}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB1CCCAB-C537-49E1-85B0-016283608211}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1705E09D-E947-4EA2-AFB3-0E12FE00AE93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1705E09D-E947-4EA2-AFB3-0E12FE00AE93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1705E09D-E947-4EA2-AFB3-0E12FE00AE93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1705E09D-E947-4EA2-AFB3-0E12FE00AE93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{777F6F49-B48E-4C5C-B5CE-4A168DC4859D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{777F6F49-B48E-4C5C-B5CE-4A168DC4859D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{777F6F49-B48E-4C5C-B5CE-4A168DC4859D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{777F6F49-B48E-4C5C-B5CE-4A168DC4859D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D85A4B7A-0536-443A-A103-A9A7773B234F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D85A4B7A-0536-443A-A103-A9A7773B234F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D85A4B7A-0536-443A-A103-A9A7773B234F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D85A4B7A-0536-443A-A103-A9A7773B234F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D55826E1-8AEE-4425-A861-55E5BDC4A69D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D55826E1-8AEE-4425-A861-55E5BDC4A69D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D55826E1-8AEE-4425-A861-55E5BDC4A69D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D55826E1-8AEE-4425-A861-55E5BDC4A69D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90FBF0F2-569F-45D3-BC53-32B64A981A48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90FBF0F2-569F-45D3-BC53-32B64A981A48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90FBF0F2-569F-45D3-BC53-32B64A981A48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90FBF0F2-569F-45D3-BC53-32B64A981A48}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C82969D1-AB6C-4E9F-961C-DAF5E03B45B9}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 8
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://dev.azure.com/aao-org
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = AAO.WebAPI.BCSCSelfAssessment\\AAO.WebAPI.BCSCSelfAssessment.csproj
+		SccProjectName1 = AAO.WebAPI.BCSCSelfAssessment
+		SccLocalPath1 = AAO.WebAPI.BCSCSelfAssessment
+		SccProjectUniqueName2 = AAO.SQLHelper.BCSCSelfAssessment\\AAO.SQLHelper.BCSCSelfAssessment.csproj
+		SccProjectName2 = AAO.SQLHelper.BCSCSelfAssessment
+		SccLocalPath2 = AAO.SQLHelper.BCSCSelfAssessment
+		SccProjectUniqueName3 = AAO.DAL.BCSCSelfAssessment\\AAO.DAL.BCSCSelfAssessment.csproj
+		SccProjectName3 = AAO.DAL.BCSCSelfAssessment
+		SccLocalPath3 = AAO.DAL.BCSCSelfAssessment
+		SccProjectUniqueName4 = AAO.DTO.BCSCSelfAssessment\\AAO.DTO.BCSCSelfAssessment.csproj
+		SccProjectName4 = AAO.DTO.BCSCSelfAssessment
+		SccLocalPath4 = AAO.DTO.BCSCSelfAssessment
+		SccProjectUniqueName5 = AAO.Common.BCSCSelfAssessment\\AAO.Common.BCSCSelfAssessment.csproj
+		SccProjectName5 = AAO.Common.BCSCSelfAssessment
+		SccLocalPath5 = AAO.Common.BCSCSelfAssessment
+		SccProjectUniqueName6 = AAO.BAL.BCSCSelfAssessment\\AAO.BAL.BCSCSelfAssessment.csproj
+		SccProjectName6 = AAO.BAL.BCSCSelfAssessment
+		SccLocalPath6 = AAO.BAL.BCSCSelfAssessment
+		SccProjectUniqueName7 = AAO.QRREADER.BCSCSelfAssessment\\AAO.QRREADER.BCSCSelfAssessment.csproj
+		SccProjectName7 = AAO.QRREADER.BCSCSelfAssessment
+		SccLocalPath7 = AAO.QRREADER.BCSCSelfAssessment
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,386 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>OpenTelemetry.Instrumentation.StackExchangeRedis</name>
+    </assembly>
+    <members>
+        <member name="M:OpenTelemetry.Instrumentation.DiagnosticSourceSubscriber.Dispose">
+            <inheritdoc/>
+        </member>
+        <member name="T:OpenTelemetry.Instrumentation.InstrumentationEventSource">
+            <summary>
+            EventSource events emitted from the project.
+            </summary>
+        </member>
+        <member name="T:OpenTelemetry.Instrumentation.ListenerHandler">
+            <summary>
+            ListenerHandler base class.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Instrumentation.ListenerHandler.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OpenTelemetry.Instrumentation.ListenerHandler"/> class.
+            </summary>
+            <param name="sourceName">The name of the <see cref="T:OpenTelemetry.Instrumentation.ListenerHandler"/>.</param>
+        </member>
+        <member name="P:OpenTelemetry.Instrumentation.ListenerHandler.SourceName">
+            <summary>
+            Gets the name of the <see cref="T:OpenTelemetry.Instrumentation.ListenerHandler"/>.
+            </summary>
+        </member>
+        <member name="P:OpenTelemetry.Instrumentation.ListenerHandler.SupportsNullActivity">
+            <summary>
+            Gets a value indicating whether the <see cref="T:OpenTelemetry.Instrumentation.ListenerHandler"/> supports NULL <see cref="T:System.Diagnostics.Activity"/>.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Instrumentation.ListenerHandler.OnStartActivity(System.Diagnostics.Activity,System.Object)">
+            <summary>
+            Method called for an event with the suffix 'Start'.
+            </summary>
+            <param name="activity">The <see cref="T:System.Diagnostics.Activity"/> to be started.</param>
+            <param name="payload">An object that represent the value being passed as a payload for the event.</param>
+        </member>
+        <member name="M:OpenTelemetry.Instrumentation.ListenerHandler.OnStopActivity(System.Diagnostics.Activity,System.Object)">
+            <summary>
+            Method called for an event with the suffix 'Stop'.
+            </summary>
+            <param name="activity">The <see cref="T:System.Diagnostics.Activity"/> to be stopped.</param>
+            <param name="payload">An object that represent the value being passed as a payload for the event.</param>
+        </member>
+        <member name="M:OpenTelemetry.Instrumentation.ListenerHandler.OnException(System.Diagnostics.Activity,System.Object)">
+            <summary>
+            Method called for an event with the suffix 'Exception'.
+            </summary>
+            <param name="activity">The <see cref="T:System.Diagnostics.Activity"/>.</param>
+            <param name="payload">An object that represent the value being passed as a payload for the event.</param>
+        </member>
+        <member name="M:OpenTelemetry.Instrumentation.ListenerHandler.OnCustom(System.String,System.Diagnostics.Activity,System.Object)">
+            <summary>
+            Method called for an event which does not have 'Start', 'Stop' or 'Exception' as suffix.
+            </summary>
+            <param name="name">Custom name.</param>
+            <param name="activity">The <see cref="T:System.Diagnostics.Activity"/> to be processed.</param>
+            <param name="payload">An object that represent the value being passed as a payload for the event.</param>
+        </member>
+        <member name="T:OpenTelemetry.Instrumentation.PropertyFetcher`1">
+            <summary>
+            PropertyFetcher fetches a property from an object.
+            </summary>
+            <typeparam name="T">The type of the property being fetched.</typeparam>
+        </member>
+        <member name="M:OpenTelemetry.Instrumentation.PropertyFetcher`1.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OpenTelemetry.Instrumentation.PropertyFetcher`1"/> class.
+            </summary>
+            <param name="propertyName">Property name to fetch.</param>
+        </member>
+        <member name="M:OpenTelemetry.Instrumentation.PropertyFetcher`1.Fetch(System.Object)">
+            <summary>
+            Fetch the property from the object.
+            </summary>
+            <param name="obj">Object to be fetched.</param>
+            <returns>Property fetched.</returns>
+        </member>
+        <member name="M:OpenTelemetry.Instrumentation.PropertyFetcher`1.TryFetch(System.Object,`0@,System.Boolean)">
+            <summary>
+            Try to fetch the property from the object.
+            </summary>
+            <param name="obj">Object to be fetched.</param>
+            <param name="value">Fetched value.</param>
+            <param name="skipObjNullCheck">Set this to <see langword= "true"/> if we know <paramref name="obj"/> is not <see langword= "null"/>.</param>
+            <returns><see langword= "true"/> if the property was fetched.</returns>
+        </member>
+        <member name="M:OpenTelemetry.Instrumentation.StackExchangeRedis.Implementation.RedisProfilerEntryToActivityConverter.CreateFieldGetter``1(System.Type,System.String,System.Reflection.BindingFlags)">
+            <summary>
+            Creates getter for a field defined in private or internal type
+            repesented with classType variable.
+            </summary>
+        </member>
+        <member name="T:OpenTelemetry.Instrumentation.StackExchangeRedis.StackExchangeRedisCallsInstrumentation">
+            <summary>
+            Redis calls instrumentation.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Instrumentation.StackExchangeRedis.StackExchangeRedisCallsInstrumentation.#ctor(StackExchange.Redis.IConnectionMultiplexer,OpenTelemetry.Instrumentation.StackExchangeRedis.StackExchangeRedisCallsInstrumentationOptions)">
+            <summary>
+            Initializes a new instance of the <see cref="T:OpenTelemetry.Instrumentation.StackExchangeRedis.StackExchangeRedisCallsInstrumentation"/> class.
+            </summary>
+            <param name="connection"><see cref="T:StackExchange.Redis.IConnectionMultiplexer"/> to instrument.</param>
+            <param name="options">Configuration options for redis instrumentation.</param>
+        </member>
+        <member name="M:OpenTelemetry.Instrumentation.StackExchangeRedis.StackExchangeRedisCallsInstrumentation.GetProfilerSessionsFactory">
+            <summary>
+            Returns session for the Redis calls recording.
+            </summary>
+            <returns>Session associated with the current span context to record Redis calls.</returns>
+        </member>
+        <member name="M:OpenTelemetry.Instrumentation.StackExchangeRedis.StackExchangeRedisCallsInstrumentation.Dispose">
+            <inheritdoc/>
+        </member>
+        <member name="T:OpenTelemetry.Instrumentation.StackExchangeRedis.StackExchangeRedisCallsInstrumentationOptions">
+            <summary>
+            Options for StackExchange.Redis instrumentation.
+            </summary>
+        </member>
+        <member name="P:OpenTelemetry.Instrumentation.StackExchangeRedis.StackExchangeRedisCallsInstrumentationOptions.FlushInterval">
+            <summary>
+            Gets or sets the maximum time that should elapse between flushing the internal buffer of Redis profiling sessions and creating <see cref="T:System.Diagnostics.Activity"/> objects. Default value: 00:00:10.
+            </summary>
+        </member>
+        <member name="P:OpenTelemetry.Instrumentation.StackExchangeRedis.StackExchangeRedisCallsInstrumentationOptions.SetVerboseDatabaseStatements">
+            <summary>
+            Gets or sets a value indicating whether or not the <see cref="T:OpenTelemetry.Instrumentation.StackExchangeRedis.StackExchangeRedisCallsInstrumentation"/> should use reflection to get more detailed <see cref="F:OpenTelemetry.Trace.SemanticConventions.AttributeDbStatement"/> tag values. Default value: False.
+            </summary>
+        </member>
+        <member name="P:OpenTelemetry.Instrumentation.StackExchangeRedis.StackExchangeRedisCallsInstrumentationOptions.Enrich">
+            <summary>
+            Gets or sets an action to enrich an Activity.
+            </summary>
+            <remarks>
+            <para><see cref="T:System.Diagnostics.Activity"/>: the activity being enriched.</para>
+            <para><see cref="T:StackExchange.Redis.Profiling.IProfiledCommand"/>: the profiled redis command from which additional information can be extracted to enrich the activity.</para>
+            </remarks>
+        </member>
+        <member name="T:OpenTelemetry.Trace.ActivityHelperExtensions">
+            <summary>
+            Extension methods on Activity.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Trace.ActivityHelperExtensions.TryGetStatus(System.Diagnostics.Activity,OpenTelemetry.Trace.StatusCode@,System.String@)">
+            <summary>
+            Gets the status of activity execution.
+            Activity class in .NET does not support 'Status'.
+            This extension provides a workaround to retrieve Status from special tags with key name otel.status_code and otel.status_description.
+            </summary>
+            <param name="activity">Activity instance.</param>
+            <param name="statusCode"><see cref="T:OpenTelemetry.Trace.StatusCode"/>.</param>
+            <param name="statusDescription">Status description.</param>
+            <returns><see langword="true"/> if <see cref="T:OpenTelemetry.Trace.Status"/> was found on the supplied Activity.</returns>
+        </member>
+        <member name="M:OpenTelemetry.Trace.ActivityHelperExtensions.GetTagValue(System.Diagnostics.Activity,System.String)">
+            <summary>
+            Gets the value of a specific tag on an <see cref="T:System.Diagnostics.Activity"/>.
+            </summary>
+            <param name="activity">Activity instance.</param>
+            <param name="tagName">Case-sensitive tag name to retrieve.</param>
+            <returns>Tag value or null if a match was not found.</returns>
+        </member>
+        <member name="M:OpenTelemetry.Trace.ActivityHelperExtensions.TryCheckFirstTag(System.Diagnostics.Activity,System.String,System.Object@)">
+            <summary>
+            Checks if the user provided tag name is the first tag of the <see cref="T:System.Diagnostics.Activity"/> and retrieves the tag value.
+            </summary>
+            <param name="activity">Activity instance.</param>
+            <param name="tagName">Tag name.</param>
+            <param name="tagValue">Tag value.</param>
+            <returns><see langword="true"/> if the first tag of the supplied Activity matches the user provide tag name.</returns>
+        </member>
+        <member name="M:OpenTelemetry.Trace.ActivityHelperExtensions.EnumerateTags``1(System.Diagnostics.Activity,``0@)">
+            <summary>
+            Enumerates all the key/value pairs on an <see cref="T:System.Diagnostics.Activity"/> without performing an allocation.
+            </summary>
+            <typeparam name="T">The struct <see cref="T:OpenTelemetry.Trace.IActivityEnumerator`1"/> implementation to use for the enumeration.</typeparam>
+            <param name="activity">Activity instance.</param>
+            <param name="tagEnumerator">Tag enumerator.</param>
+        </member>
+        <member name="M:OpenTelemetry.Trace.ActivityHelperExtensions.EnumerateLinks``1(System.Diagnostics.Activity,``0@)">
+            <summary>
+            Enumerates all the <see cref="T:System.Diagnostics.ActivityLink"/>s on an <see cref="T:System.Diagnostics.Activity"/> without performing an allocation.
+            </summary>
+            <typeparam name="T">The struct <see cref="T:OpenTelemetry.Trace.IActivityEnumerator`1"/> implementation to use for the enumeration.</typeparam>
+            <param name="activity">Activity instance.</param>
+            <param name="linkEnumerator">Link enumerator.</param>
+        </member>
+        <member name="M:OpenTelemetry.Trace.ActivityHelperExtensions.EnumerateTags``1(System.Diagnostics.ActivityLink,``0@)">
+            <summary>
+            Enumerates all the key/value pairs on an <see cref="T:System.Diagnostics.ActivityLink"/> without performing an allocation.
+            </summary>
+            <typeparam name="T">The struct <see cref="T:OpenTelemetry.Trace.IActivityEnumerator`1"/> implementation to use for the enumeration.</typeparam>
+            <param name="activityLink">ActivityLink instance.</param>
+            <param name="tagEnumerator">Tag enumerator.</param>
+        </member>
+        <member name="M:OpenTelemetry.Trace.ActivityHelperExtensions.EnumerateEvents``1(System.Diagnostics.Activity,``0@)">
+            <summary>
+            Enumerates all the <see cref="T:System.Diagnostics.ActivityEvent"/>s on an <see cref="T:System.Diagnostics.Activity"/> without performing an allocation.
+            </summary>
+            <typeparam name="T">The struct <see cref="T:OpenTelemetry.Trace.IActivityEnumerator`1"/> implementation to use for the enumeration.</typeparam>
+            <param name="activity">Activity instance.</param>
+            <param name="eventEnumerator">Event enumerator.</param>
+        </member>
+        <member name="M:OpenTelemetry.Trace.ActivityHelperExtensions.EnumerateTags``1(System.Diagnostics.ActivityEvent,``0@)">
+            <summary>
+            Enumerates all the key/value pairs on an <see cref="T:System.Diagnostics.ActivityEvent"/> without performing an allocation.
+            </summary>
+            <typeparam name="T">The struct <see cref="T:OpenTelemetry.Trace.IActivityEnumerator`1"/> implementation to use for the enumeration.</typeparam>
+            <param name="activityEvent">ActivityEvent instance.</param>
+            <param name="tagEnumerator">Tag enumerator.</param>
+        </member>
+        <member name="T:OpenTelemetry.Trace.IActivityEnumerator`1">
+            <summary>
+            An interface used to perform zero-allocation enumeration of <see cref="T:System.Diagnostics.Activity"/> elements. Implementation must be a struct.
+            </summary>
+            <typeparam name="T">Enumerated item type.</typeparam>
+        </member>
+        <member name="M:OpenTelemetry.Trace.IActivityEnumerator`1.ForEach(`0)">
+            <summary>
+            Called for each <see cref="T:System.Diagnostics.Activity"/> item while the enumeration is executing.
+            </summary>
+            <param name="item">Enumeration item.</param>
+            <returns><see langword="true"/> to continue the enumeration of records or <see langword="false"/> to stop (break) the enumeration.</returns>
+        </member>
+        <member name="T:OpenTelemetry.Trace.SemanticConventions">
+            <summary>
+            Constants for semantic attribute names outlined by the OpenTelemetry specifications.
+            <see href="https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/trace/semantic_conventions/README.md"/>.
+            </summary>
+        </member>
+        <member name="T:OpenTelemetry.Trace.SpanAttributeConstants">
+            <summary>
+            Defines well-known span attribute keys.
+            </summary>
+        </member>
+        <member name="T:OpenTelemetry.Trace.SpanHelper">
+            <summary>
+            A collection of helper methods to be used when building spans.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Trace.SpanHelper.ResolveSpanStatusForHttpStatusCode(System.Diagnostics.ActivityKind,System.Int32)">
+            <summary>
+            Helper method that populates span properties from http status code according
+            to https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/trace/semantic_conventions/http.md#status.
+            </summary>
+            <param name="kind">The span kind.</param>
+            <param name="httpStatusCode">Http status code.</param>
+            <returns>Resolved span <see cref="T:OpenTelemetry.Trace.Status"/> for the Http status code.</returns>
+        </member>
+        <member name="T:OpenTelemetry.Trace.TracerProviderBuilderExtensions">
+            <summary>
+            Extension methods to simplify registering of dependency instrumentation.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Trace.TracerProviderBuilderExtensions.AddRedisInstrumentation(OpenTelemetry.Trace.TracerProviderBuilder,StackExchange.Redis.IConnectionMultiplexer,System.Action{OpenTelemetry.Instrumentation.StackExchangeRedis.StackExchangeRedisCallsInstrumentationOptions})">
+            <summary>
+            Enables automatic data collection of outgoing requests to Redis.
+            </summary>
+            <remarks>
+            Note: If an <see cref="T:StackExchange.Redis.IConnectionMultiplexer"/> is not supplied
+            using the <paramref name="connection"/> parameter it will be
+            resolved using the application <see cref="T:System.IServiceProvider"/>.
+            </remarks>
+            <param name="builder"><see cref="T:OpenTelemetry.Trace.TracerProviderBuilder"/> being configured.</param>
+            <param name="connection">Optional <see cref="T:StackExchange.Redis.IConnectionMultiplexer"/> to instrument.</param>
+            <param name="configure">Optional callback to configure options.</param>
+            <returns>The instance of <see cref="T:OpenTelemetry.Trace.TracerProviderBuilder"/> to chain the calls.</returns>
+        </member>
+        <member name="M:OpenTelemetry.Internal.ExceptionExtensions.ToInvariantString(System.Exception)">
+            <summary>
+            Returns a culture-independent string representation of the given <paramref name="exception"/> object,
+            appropriate for diagnostics tracing.
+            </summary>
+            <param name="exception">Exception to convert to string.</param>
+            <returns>Exception as string with no culture.</returns>
+        </member>
+        <member name="T:OpenTelemetry.Internal.Guard">
+            <summary>
+            Methods for guarding against exception throwing values.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfNull(System.Object,System.String)">
+            <summary>
+            Throw an exception if the value is null.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfNullOrEmpty(System.String,System.String)">
+            <summary>
+            Throw an exception if the value is null or empty.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfNullOrWhitespace(System.String,System.String)">
+            <summary>
+            Throw an exception if the value is null or whitespace.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfZero(System.Int32,System.String,System.String)">
+            <summary>
+            Throw an exception if the value is zero.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="message">The message to use in the thrown exception.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfInvalidTimeout(System.Int32,System.String)">
+            <summary>
+            Throw an exception if the value is not considered a valid timeout.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfOutOfRange(System.Int32,System.String,System.Int32,System.Int32,System.String,System.String,System.String)">
+            <summary>
+            Throw an exception if the value is not within the given range.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+            <param name="min">The inclusive lower bound.</param>
+            <param name="max">The inclusive upper bound.</param>
+            <param name="minName">The name of the lower bound.</param>
+            <param name="maxName">The name of the upper bound.</param>
+            <param name="message">An optional custom message to use in the thrown exception.</param>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfOutOfRange(System.Double,System.String,System.Double,System.Double,System.String,System.String,System.String)">
+            <summary>
+            Throw an exception if the value is not within the given range.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+            <param name="min">The inclusive lower bound.</param>
+            <param name="max">The inclusive upper bound.</param>
+            <param name="minName">The name of the lower bound.</param>
+            <param name="maxName">The name of the upper bound.</param>
+            <param name="message">An optional custom message to use in the thrown exception.</param>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfNotOfType``1(System.Object,System.String)">
+            <summary>
+            Throw an exception if the value is not of the expected type.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+            <typeparam name="T">The type attempted to convert to.</typeparam>
+            <returns>The value casted to the specified type.</returns>
+        </member>
+        <member name="T:System.ServiceProviderExtensions">
+            <summary>
+            Extension methods for OpenTelemetry dependency injection support.
+            </summary>
+        </member>
+        <member name="M:System.ServiceProviderExtensions.GetOptions``1(System.IServiceProvider)">
+            <summary>
+            Get options from the supplied <see cref="T:System.IServiceProvider"/>.
+            </summary>
+            <typeparam name="T">Options type.</typeparam>
+            <param name="serviceProvider"><see cref="T:System.IServiceProvider"/>.</param>
+            <returns>Options instance.</returns>
+        </member>
+        <member name="T:System.Runtime.CompilerServices.CallerArgumentExpressionAttribute">
+            <summary>
+            Allows capturing of the expressions passed to a method.
+            </summary>
+        </member>
+        <member name="M:System.Runtime.CompilerServices.CallerArgumentExpressionAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.Runtime.CompilerServices.CallerArgumentExpressionAttribute"/> class.
+            </summary>
+            <param name="parameterName">The name of the targeted parameter.</param>
+        </member>
+        <member name="P:System.Runtime.CompilerServices.CallerArgumentExpressionAttribute.ParameterName">
+            <summary>
+            Gets the target parameter name of the CallerArgumentExpression.
+            </summary>
+        </member>
+    </members>
+</doc>

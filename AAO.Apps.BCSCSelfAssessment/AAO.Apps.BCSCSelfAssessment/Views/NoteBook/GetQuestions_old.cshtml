@@ -1,0 +1,436 @@
+﻿
+@{
+    ViewBag.Title = "GetQuestions";
+}
+<script src="~/Scripts/jquery-ui.js"></script>
+<script src="~/Scripts/jquery.ui.touch-punch.js"></script>
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+<link href="~/fonts/font-awesome/css/font-awesome.css" rel="stylesheet" />
+<link href="~/Content/bootstrap-responsive-tabs.css" rel="stylesheet" />
+<link href="~/Content/custom.css" rel="stylesheet" />
+
+<script src="~/Scripts/Notebook/jquery.selectBoxIt.min.js"></script>
+<link href="~/Content/jquery.selectBoxIt.css" rel="stylesheet" />
+
+<style type="text/css">
+    .divLeft {
+        display: inline;
+        border: 1px solid red;
+    }
+
+    .divRight {
+        display: inline;
+    }
+</style>
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12 xs-nopadding">
+            <ul class="breadcrumb">
+                <li><a href="@Url.Content("~/ExamHistory/Index")">Exam History</a></li>
+                @if (ViewBag.noteBookList != null)
+                {
+                    <li class="active">Notebook</li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<a href="javascript:void(0)" class="list-group-item active" style="display:none"></a>
+
+<div class="view-assessment-details">
+    <div class="col-lg-12 xs-nopadding">
+        <div class="content-bg">
+            <div class="content-padding">
+
+                <div class="row">
+                    <div class="col-lg-12 col-md-4">
+                        @*@if (ViewBag.noteBookList != null)
+                                {
+                                    if (ViewBag.noteBookList.Count > 0)
+                                    {
+                                        <div id="displayCount">
+                                            View Notes - <b>Section @ViewBag.noteBookList[0].BCSCSectionNumber: @ViewBag.noteBookList[0].BCSCSectionTitle</b>
+
+                                        </div>
+                                    }
+                                }
+                            </div>
+                            </div>*@
+                        <div class="row" style="margin-top:5px!important">
+                            <div class="col-lg-12 col-md-12 pull-right">
+                                <div class="notes-filter-container pull-left">
+                                    <div class="notes-list">
+                                        <select id="SectionList" class="form-control mylist"></select>
+                                    </div>
+                                    <div class="notes-list tet">
+                                        <select id="ChapterList" class="form-control mylist1">
+                                            <option value="0">All Chapters</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="notes-list notes-list-inline">
+                                        <button class="btn btn-primary" id="GetQuestionDetails">View Notes</button>
+                                    </div>
+                                    <div class="notes-list notes-list-inline" style="border-left: 1px solid #cccccc;padding: 0 0 0 10px;">
+                                        <a href="#." id="print" class="printPage">
+                                            <span class="glyphicon glyphicon-print text-center" style="display: block"></span>
+                                            Print Notes
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="mb-0 border-gray">
+
+                        @if (ViewBag.noteBookList != null)
+                        {
+                            if (ViewBag.noteBookList.Count > 0 && ViewBag.noteBookList[0].ChapterList.Count > 0 && ViewBag.noteBookList[0].ChapterList[0].Chapter != null)
+                            {
+                                <div id="details">
+                                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                        <!-- Panel-1 -->
+                                        <!--  Accordian -->
+                                        @foreach (var section in ViewBag.noteBookList)
+                                        {
+                                            if (section.ChapterList.Count > 0)
+                                            {
+                                                <div id="displayCount1">
+
+                                                    <b>Section @Html.Raw(section.BCSCSectionNumber) : @Html.Raw(section.BCSCSectionTitle) </b>
+
+                                                </div>
+                                            }
+
+                                            if (section.ChapterList.Count > 0)
+                                            {
+                                                var chapterCounter = 1;
+                                                foreach (var chapter in section.ChapterList)
+                                                {
+                                                    <div>
+                                                        <span class="notes-chapter">
+                                                            @Html.Raw(chapter.Chapter)
+                                                        </span>
+
+                                                        <span class="marleft10 font-bold">
+                                                            @Html.Raw(chapter.ChapterName)
+                                                        </span>
+                                                    </div>
+
+                                                    var count = 1;
+                                                    var optionVal = 'A';
+                                                    if (chapter.QuestionList.Count > 0)
+                                                    {
+                                                        foreach (var item in chapter.QuestionList)
+                                                        {
+                                                            optionVal = 'A';
+                                                            @*<div>
+                                                                    <span class="notes-chapter">
+                                                                        Topic
+                                                                    </span>
+                                                                    <div class="font-bold">
+                                                                        <span>@Html.Raw(@item.TopicName)</span>
+                                                                    </div>
+                                                                    <div class="clearfix"></div>
+                                                                </div>*@
+
+                                                            <span class="notes-chapter">
+                                                                @Html.Raw(@item.Topic)
+                                                            </span>
+
+                                                            <span class="marleft10 font-bold">
+                                                                @Html.Raw(@item.TopicName)
+                                                            </span>
+                                                            <div class="panel panel-default notes-panel">
+                                                                <div class="panel-heading notes-panel-bg" role="tab" id="@(item.QuestionId+chapterCounter+ "headingOne")">
+                                                                    <div class="panel-title view-title clearfix">
+                                                                        <a role="button" data-toggle="collapse" class="accordian-tab notes-accordian-tab" data-parent="#accordion" href="#@(item.QuestionId+chapterCounter + "collapseOne")" aria-expanded="true" aria-controls="@(item.QuestionId+chapterCounter + "collapseOne")">
+                                                                            <div id="quesText" class="question xs-padleft50 font-bold">
+                                                                                <li class="question-number-view-exam-details">
+                                                                                    <i class="fa fa-lg fa-angle-down"></i>
+                                                                                </li>
+                                                                                <div id="quesTextDiv@(item.QuestionId+chapterCounter)">
+                                                                                    @Html.Raw(item.Stem)
+
+                                                                                </div>
+                                                                            </div>
+
+                                                                        </a>
+
+                                                                        <div class="assessment-features assessment-featuresBox add-note">
+                                                                            <ul>
+                                                                                <li>
+                                                                                    <a href='javascript:void(0)' data-toggle="modal" id="createNewNotes+@item.QuestionId" class="createNewNoteClass" QuestionId="@Html.Raw((int?)item.QuestionId)" ChapterCounter="@Html.Raw((int?)chapterCounter)" @*ExamId="@Html.Raw((int?)item.examId)" ExamattemptId="@Html.Raw((int?)item.examAttemptId)"*@>
+                                                                                        <span id="@("createNotesIcon" + @item.QuestionId)" class="menu-icons font12">Add Note</span>
+                                                                                    </a>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+
+
+                                                                        @{count = count + 1;}
+
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="clearfix"></div>
+                                                                <div id="@(item.QuestionId+chapterCounter + "collapseOne")" class="panel-collapse collapse" role="tabpanel" aria-labelledby="@(item.QuestionId+ chapterCounter + "headingOne")" aria-expanded="false">
+                                                                    <div class="panel-body pb-0">
+
+                                                                        @if (item.QuestionImageList != null)
+                                                                        {
+                                                                            if (item.QuestionImageList.Count > 0)
+                                                                            {
+                                                                                if (item.QuestionImageList.Count > 0 && item.QuestionImageList.Count < 4)
+                                                                                {
+                                                                                    <div class="col-lg-12 nopadding">
+
+                                                                                        @foreach (var item1 in item.QuestionImageList)
+                                                                                        {
+                                                                                            <div class="col-sm-2 col-xs-6 nopadding mar10">
+                                                                                                <a href="@Url.Content(item1.ImagePath)" class="thumbnail" data-toggle="modal" data-target="#myModal" data-image="@Url.Content(item1.ImagePath)">
+                                                                                                    <img src="@Url.Content(item1.ImagePath)" id="@item1.QuestionImageId" alt="Image" class="img-responsive img-center img11" />
+                                                                                                    <div class="zoom-icon-background text-right myDIV">
+                                                                                                        <i class="glyphicon glyphicon-zoom-in text-right">
+                                                                                                        </i>
+                                                                                                    </div>
+                                                                                                </a>
+                                                                                            </div>
+                                                                                        }
+                                                                                    </div>
+                                                                                }
+                                                                                if (item.QuestionImageList.Count == 4)
+                                                                                {
+                                                                                    <div class="col-lg-12 nopadding">
+
+                                                                                        @foreach (var item1 in item.QuestionImageList)
+                                                                                        {
+
+                                                                                            <div class="col-sm-2 col-xs-6 nopadding mar10">
+                                                                                                <a href="@Url.Content(item1.ImagePath)" class="thumbnail" data-toggle="modal" data-target="#myModal" data-image="@Url.Content(item1.ImagePath)">
+                                                                                                    <img src="@Url.Content(item1.ImagePath)" id="@item1.QuestionImageId" alt="Image" class="img-responsive img-center img11" />
+                                                                                                    <div class="zoom-icon-background text-right myDIV"><i class="glyphicon glyphicon-zoom-in text-right" data-image="@Url.Content(item1.ImagePath)"></i></div>
+                                                                                                </a>
+                                                                                            </div>
+                                                                                        }
+                                                                                    </div>
+                                                                                }
+                                                                            }
+                                                                        }
+
+                                                                        <div id="choices">
+                                                                            @foreach (var item2 in @item.ChoiceList)
+                                                                            {
+                                                                                if (Convert.ToInt32(@item.RightChoiceId) == Convert.ToInt32(@item2.choiceId))
+                                                                                {
+                                                                                    <div id="choiceText@(@item2.choiceId)" class="options optionSelected">
+                                                                                        <div class="col-lg-12">
+                                                                                            <label>
+                                                                                                <li class="option-number-view-exam-details">@optionVal.</li>
+                                                                                                @Html.Raw(@item2.choiceText)
+                                                                                            </label>
+                                                                                        </div>
+                                                                                        @{optionVal = Convert.ToChar(optionVal + 1);}
+
+                                                                                        <div class="clearfix"></div>
+                                                                                    </div>
+                                                                                }
+
+                                                                                else
+                                                                                {
+                                                                                    <div id="choiceText@(@item2.choiceId)" class="options">
+                                                                                        <div class="col-lg-12">
+                                                                                            <label>
+                                                                                                <li class="option-number-view-exam-details">@optionVal.</li>
+                                                                                                @Html.Raw(@item2.choiceText)
+                                                                                            </label>
+                                                                                        </div>
+                                                                                        @{optionVal = Convert.ToChar(optionVal + 1);}
+
+
+                                                                                        <div class="clearfix"></div>
+                                                                                    </div>
+                                                                                }
+                                                                            }
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <!--  End Of Accordian -->
+                                                                <div class="clearfix">
+                                                                    <div class="col-lg-12 explaination-list" id="@("notes" + @item.QuestionId+chapterCounter)">
+                                                                        <div>
+                                                                            <ul>
+                                                                                @foreach (var notes in @item.NotesList)
+                                                                                {
+
+                                                                                    <li id="@("notes" + @item.QuestionId+@notes.NotesId)">
+                                                                                        <div class="martop10 EditText" id="@("edit-note-textarea-action"+@item.QuestionId+@notes.NotesId+chapterCounter)">
+                                                                                            <span class="Notespan error-text"></span>
+                                                                                            <textarea id="@("edittextarea"+@item.QuestionId+@notes.NotesId+chapterCounter)" class="EditNotesTextArea"></textarea>
+                                                                                            <button class="btn btn-primary SaveEdit" id="@("EditNoteBtn"+@item.QuestionId+@notes.NotesId+chapterCounter)" NotesId="@Html.Raw((int?)notes.NotesId)" QuestionId="@Html.Raw((int?)item.QuestionId)" ChapterCounter="@Html.Raw((int?)chapterCounter)">Save</button>
+                                                                                            <button class="btn btn-default CancelEdit" id="@("CancelEdit"+@item.QuestionId+@notes.NotesId+chapterCounter)" NotesId="@Html.Raw((int?)notes.NotesId)" QuestionId="@Html.Raw((int?)item.QuestionId)" ChapterCounter="@Html.Raw((int?)chapterCounter)">Cancel</button>
+                                                                                        </div>
+                                                                                        <div class="martop10" id="@("textarea_show"+@item.QuestionId+@notes.NotesId+chapterCounter)">
+                                                                                            <span class="NotesContent">@Html.Raw(@notes.NotesText)</span>
+                                                                                            <a href='javascript:void(0)' id="@("EditNotes"+@notes.NotesId)" class="EditNoteClass NotesContent" NotesId="@Html.Raw((int?)notes.NotesId)" QuestionId="@Html.Raw((int?)item.QuestionId)" ChapterCounter="@Html.Raw((int?)chapterCounter)">
+                                                                                                <i id="@("EditNotesIcon" + @notes.NotesId)" class="fa fa-edit marleft10"></i>
+
+                                                                                            </a>
+                                                                                            <a href='javascript:void(0)' id="@("DeleteNotes"+@notes.NotesId)" class="DeleteNoteClass NotesContent" NotesId="@Html.Raw((int?)notes.NotesId)" QuestionId="@Html.Raw((int?)item.QuestionId)" ChapterCounter="@Html.Raw((int?)chapterCounter)">
+                                                                                                <i id="@("DeleteNotesIcon" + @notes.NotesId)" class="fa fa-trash marleft10"></i>
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </li>
+
+                                                                                }
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--  End Of Accordian -->
+
+                                                        }
+                                                    }
+                                                    chapterCounter++;
+                                                }
+                                            }
+
+                                        }
+
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div style="padding-bottom: 25px;" class="text-center padtop20">No records found.</div>
+                            }
+                        }
+                        <div class="text-center" style="margin-right:10px;">
+                            <nav id="PageNavigation" aria-label="Page navigation example">
+                                <ul class="pagination margin0">
+                                    <li id="Firstpage"><a class="page-link" href="#">First</a></li>
+                                    <li id="Previouspage"><a id='Prev' class="page-link" href="#">Prev</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+
+                    <div class="clearfix">
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" name="FilterExamId" id="FilterExamId" value="@ViewBag.ExamId" />
+            <input type="hidden" name="FilterId" id="FilterId" value="@ViewBag.Filter" />
+
+        </div>
+
+        <div id="VersionInfo" style="display:none;"></div>
+
+        <!-----Image model--->
+        <div id="myModal" class="modal  fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">×</span><span class="sr-only">Close</span>
+                        </button>
+                        <h4 class="modal-title" id="image-gallery-title"></h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <img class="img-responsive" style="margin:0 auto;" src="" alt="" id="showimg">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!---End of Image Model---->
+        <!----Create notes dialog-->
+        <div id="createNotes" class="modal draggable fade" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close DialogClose " id="AddNotesCloseIcon" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Add Note</h4>
+                    </div>
+                    <div class="modal-body">
+                        <span class="Notespan error-text"></span>
+                        <textarea class="martop20" rows="6" id="NoteTextArea" style="width:100%;padding:0;"></textarea>
+                        <i>* Notes will be deleted if the question is removed.</i>
+                        <input type="hidden" name="ChapterCounter" id="ChapterCounter" />
+                        <input type="hidden" name="createNotesExamAttemptId" id="createNotesExamAttemptId" />
+                        <input type="hidden" name="createNotesCurrentQuestionId" id="createNotesCurrentQuestionId" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" id="AddNoteBtn">Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" id="CancelNoteBtn">Cancel</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!---Create notes dialog end-->
+        <!---Delete Notes dialog start-->
+
+        <div class="modal draggable fade" id="deleteNotes" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+                        <h3 class="modal-title">Delete Note</h3>
+
+                    </div>
+                    <div class="modal-body">
+                        <div class="small martop10">Your note will be deleted.<br /><br />Are you sure you want to permanently delete this note?</div>
+                        <input type="hidden" name="ChapterCounter" id="ChapterCounter" />
+                        <input type="hidden" name="deleteNotesId" id="deleteNotesId" />
+                        <input type="hidden" name="deleteNotesQuestionId" id="deleteNotesQuestionId" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" id="CancelDeleteBtn">Cancel</button>
+                        <button type="button" class="btn btn-primary deleted" data-dismiss="modal" id="DeleteNoteBtn">Delete</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+
+        <!---Delete Notes dialog start-->
+
+        <div id="VersionInfo" style="display:none;"></div>
+        <script>
+    var NotebookViewModel = {
+        firstSerialNo: '@ViewBag.FirstSerialNum',
+        lastSerialNo: '@ViewBag.LastSerialNum',
+        chapterCount: '@ViewBag.ChapterCount',
+        noOfRecords: '@ViewBag.NoOfRecords',
+        PageNo: '@ViewBag.PageNo',
+        subSpecialtyId: '@ViewBag.SubSpecialtyId',
+        chapterName: '@ViewBag.chapterName'
+    };
+        </script>
+        <script src="~/Scripts/tinymce/js/tinymce/tinymce.min.js"></script>
+        <script src="~/Scripts/tinymce/js/tinymce/jquery.tinymce.min.js"></script>
+        <script src="@Url.Content("~/Scripts/Notebook/Notebook.js")" type="text/javascript"></script>
+        <style>
+            .selectboxit-container .selectboxit, .selectboxit-container .selectboxit-options {
+                width: 300px; /* Width of the dropdown button */
+                border-radius: 0;
+                max-height: 240px;
+            }
+
+            .selectboxit-options .selectboxit-option .selectboxit-option-anchor {
+                white-space: normal;
+                min-height: 15px;
+                height: auto;
+            }
+        </style>

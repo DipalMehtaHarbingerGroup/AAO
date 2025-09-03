@@ -1,0 +1,49 @@
+﻿<script src="~/Scripts/moment.min.js"></script>
+<div class="col-lg-8 col-xs-12 xs-marbot30 xs-nopadding iphone-tweak" id="ExamProgreesId1">
+    <div class="widget-exams-in-progress">
+        <div class="col-lg-6 col-md-6 col-sm-6 nopadding">
+            <h4 class="widget-title">Exams in Progress</h4>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 text-right xs-textleft nopadding">
+            <button class="btn btn-cta" id="examBuild">Build New Exam</button>
+            <button class="btn btn-cta" id="examBuildquick">Build Quick Exam </button>
+        </div>
+        <table class="table" id="no-more-tables"></table>
+        <div class="marbot10 text-right padright10">
+            @if (ViewBag.optInStatus == "N" || ViewBag.optInStatus == "0")
+            {
+               <a href="#" id="SharedOpenUpdate">Share data</a>
+            }
+            <a href="@Url.Content("~/ExamHistory/Index")">View all</a>
+        </div>
+    </div>
+</div>
+
+<div class="col-lg-8 col-xs-12 xs-marbot30 xs-nopadding" id="ExamProgreesId2" style="display:none"> @*col-lg-9*@
+    <div class="widget-exams-in-progress">
+        <div class="col-lg-6 nopadding">
+            <h4 class="widget-title">Exams in Progress</h4>
+        </div>
+        <div class="col-lg-6 text-right nopadding hidden-xs">
+            &nbsp;
+        </div>
+        <div class="clearfix"></div>
+        
+        <div class="col-lg-12 widget-noexams-in-progress text-center martop30">
+            <p>You have no exams in progress. Start building your first exam now!</p>
+            <button class="btn btn-cta martop30" id="examBuild">Build Custom Exam <i class="fa fa-plus padleft10"></i></button>
+            <button class="btn btn-cta martop30" id="examBuildquick">Build Quick Exam <i class="fa fa-plus padleft10"></i></button>
+        </div>
+
+
+        <div class="marbot10 text-right">
+            &nbsp; 
+        </div>
+        <div class="marbot10 text-right padright10">
+            @if (ViewBag.optInStatus == "N" || ViewBag.optInStatus == "0")
+            {
+                <a href="#" id="SharedOpenUpdate1">Share data</a>
+            }          
+        </div>
+    </div>
+</div>

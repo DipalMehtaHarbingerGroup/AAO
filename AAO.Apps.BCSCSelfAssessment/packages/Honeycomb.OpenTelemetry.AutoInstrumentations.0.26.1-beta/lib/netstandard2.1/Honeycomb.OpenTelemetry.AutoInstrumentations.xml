@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Honeycomb.OpenTelemetry.AutoInstrumentations</name>
+    </assembly>
+    <members>
+        <member name="T:OpenTelemetry.Trace.TracerProviderBuilderExtensions">
+            <summary>
+            Extension methods to add instrumentation support for many common instrumentation packages.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Trace.TracerProviderBuilderExtensions.AddAutoInstrumentations(OpenTelemetry.Trace.TracerProviderBuilder)">
+            <summary>
+            Adds support for common instrumentation packages. Refer to documentation for a complete list of included instrumentations.
+            </summary>
+            <param name="builder"><see cref="T:OpenTelemetry.Trace.TracerProviderBuilder"/> being configured.</param>
+            <returns>The instance of <see cref="T:OpenTelemetry.Trace.TracerProviderBuilder"/> to chain the calls.</returns>
+        </member>
+    </members>
+</doc>

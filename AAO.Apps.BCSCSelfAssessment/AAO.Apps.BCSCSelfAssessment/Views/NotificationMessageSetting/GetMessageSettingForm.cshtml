@@ -1,0 +1,39 @@
+﻿@model AAO.Common.BCSCSelfAssessment.NotificationMessageSetting
+@{
+    Layout = null;
+}
+@using (Html.BeginForm("SaveNotificationMessageSetting", "NotificationMessageSetting", FormMethod.Post, new { id = "SaveNotificationMessageSettingForm", onsubmit = "return saveNotificationMessageSetting(this);" }))
+{
+<fieldset class="message-fieldset">
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(x => x.NotificationMessageSettingId)
+    <div class="row">
+        <div class="col-sm-12 margin-b-10">
+            <label for="message">Enter Message:</label>
+            @Html.EditorFor(model => model.NotificationMessage, new { htmlAttributes = new { @class = "form-control", @rows = "3", @placeholder = "Enter Message (Up to 500 Characters)\nTo add Hyperlink use <a href='/link'>Text</a>", @onkey = "limit(this);", @onkeyup = "limit(this,500);" } })
+
+            @Html.ValidationMessageFor(model => model.NotificationMessage, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-xs-12 col-sm-12 col-lg-6  margin-b-10">
+            <label for="not">Number of Times:&nbsp;</label>
+            @Html.EditorFor(model => model.NoOfTime, new { htmlAttributes = new { @class = "form-control input-type-number" } })
+            <br />
+            @Html.ValidationMessageFor(model => model.NoOfTime, "", new { @class = "text-danger" })
+        </div>
+        @*<div class="col-xs-12 col-sm-12 col-lg-6  margin-b-10">
+            <label for="hp">Screen Hold Time:&nbsp;</label>
+            @Html.EditorFor(model => model.OnholdScreenTime, new { htmlAttributes = new { @class = "form-control input-type-number" } })
+            <br />
+            @Html.ValidationMessageFor(model => model.OnholdScreenTime, "", new { @class = "text-danger" })
+        </div>*@
+        <div class="col-xs-12 col-sm-12 col-lg-12 margin-b-10">
+            <label class="form-control-inline">Enabled</label>
+            @Html.CheckBoxFor(model => model.IsUnable.Value, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        <div class="col-xs-12 col-sm-12 col-lg-12">
+            <input class="btn btn-primary pt-3 input-type-submit" type="submit" value="Submit">
+            <input class="btn btn-warning cancel-btn pt-3" data-dismiss="modal" type="button" value="Cancel">
+        </div>
+    </div>
+</fieldset>
+}

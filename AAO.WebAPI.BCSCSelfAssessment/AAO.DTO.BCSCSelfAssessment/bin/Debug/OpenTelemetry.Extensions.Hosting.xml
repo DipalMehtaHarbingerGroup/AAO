@@ -1,0 +1,261 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>OpenTelemetry.Extensions.Hosting</name>
+    </assembly>
+    <members>
+        <member name="T:OpenTelemetry.Extensions.Hosting.Implementation.HostingExtensionsEventSource">
+            <summary>
+            EventSource events emitted from the project.
+            </summary>
+        </member>
+        <member name="T:OpenTelemetry.Metrics.MeterProviderBuilderExtensions">
+            <summary>
+            Contains extension methods for the <see cref="T:OpenTelemetry.Metrics.MeterProviderBuilder"/> class.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Metrics.MeterProviderBuilderExtensions.Configure(OpenTelemetry.Metrics.MeterProviderBuilder,System.Action{System.IServiceProvider,OpenTelemetry.Metrics.MeterProviderBuilder})">
+            <summary>
+            Register a callback action to configure the <see
+            cref="T:OpenTelemetry.Metrics.MeterProviderBuilder"/> once the application <see
+            cref="T:System.IServiceProvider"/> is available.
+            </summary>
+            <param name="meterProviderBuilder"><see cref="T:OpenTelemetry.Metrics.MeterProviderBuilder"/>.</param>
+            <param name="configure">Configuration callback.</param>
+            <returns>The supplied <see cref="T:OpenTelemetry.Metrics.MeterProviderBuilder"/> for chaining.</returns>
+        </member>
+        <member name="M:OpenTelemetry.Metrics.MeterProviderBuilderExtensions.GetServices(OpenTelemetry.Metrics.MeterProviderBuilder)">
+            <summary>
+            Gets the application <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> attached to
+            the <see cref="T:OpenTelemetry.Metrics.MeterProviderBuilder"/>.
+            </summary>
+            <param name="meterProviderBuilder"><see cref="T:OpenTelemetry.Metrics.MeterProviderBuilder"/>.</param>
+            <returns><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> or <see langword="null"/>
+            if services are unavailable.</returns>
+        </member>
+        <member name="T:OpenTelemetry.OpenTelemetryBuilderHostingExtensions">
+            <summary>
+            Contains hosting extension methods for the <see
+            cref="T:OpenTelemetry.OpenTelemetryBuilder"/> class.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.OpenTelemetryBuilderHostingExtensions.StartWithHost(OpenTelemetry.OpenTelemetryBuilder)">
+            <summary>
+            Registers an <see cref="T:Microsoft.Extensions.Hosting.IHostedService"/> to automatically start all
+            configured OpenTelemetry services in the supplied <see
+            cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection" />.
+            </summary>
+            <remarks>
+            Note: This is safe to be called multiple times. Only a single <see
+            cref="T:Microsoft.Extensions.Hosting.IHostedService"/> will be created for a given <see
+            cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/>. This should generally be called by hosting
+            application code and NOT library authors.
+            </remarks>
+            <param name="builder"><see cref="T:OpenTelemetry.OpenTelemetryBuilder"/>.</param>
+            <returns>The supplied <see cref="T:OpenTelemetry.OpenTelemetryBuilder"/> for chaining
+            calls.</returns>
+        </member>
+        <member name="T:OpenTelemetry.Trace.TracerProviderBuilderExtensions">
+            <summary>
+            Contains extension methods for the <see cref="T:OpenTelemetry.Trace.TracerProviderBuilder"/> class.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Trace.TracerProviderBuilderExtensions.Configure(OpenTelemetry.Trace.TracerProviderBuilder,System.Action{System.IServiceProvider,OpenTelemetry.Trace.TracerProviderBuilder})">
+            <summary>
+            Register a callback action to configure the <see
+            cref="T:OpenTelemetry.Trace.TracerProviderBuilder"/> once the application <see
+            cref="T:System.IServiceProvider"/> is available.
+            </summary>
+            <param name="tracerProviderBuilder"><see cref="T:OpenTelemetry.Trace.TracerProviderBuilder"/>.</param>
+            <param name="configure">Configuration callback.</param>
+            <returns>The supplied <see cref="T:OpenTelemetry.Trace.TracerProviderBuilder"/> for chaining.</returns>
+        </member>
+        <member name="M:OpenTelemetry.Trace.TracerProviderBuilderExtensions.GetServices(OpenTelemetry.Trace.TracerProviderBuilder)">
+            <summary>
+            Gets the application <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> attached to
+            the <see cref="T:OpenTelemetry.Trace.TracerProviderBuilder"/>.
+            </summary>
+            <param name="tracerProviderBuilder"><see cref="T:OpenTelemetry.Trace.TracerProviderBuilder"/>.</param>
+            <returns><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> or <see langword="null"/>
+            if services are unavailable.</returns>
+        </member>
+        <member name="M:OpenTelemetry.Internal.ExceptionExtensions.ToInvariantString(System.Exception)">
+            <summary>
+            Returns a culture-independent string representation of the given <paramref name="exception"/> object,
+            appropriate for diagnostics tracing.
+            </summary>
+            <param name="exception">Exception to convert to string.</param>
+            <returns>Exception as string with no culture.</returns>
+        </member>
+        <member name="T:OpenTelemetry.Internal.Guard">
+            <summary>
+            Methods for guarding against exception throwing values.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfNull(System.Object,System.String)">
+            <summary>
+            Throw an exception if the value is null.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfNullOrEmpty(System.String,System.String)">
+            <summary>
+            Throw an exception if the value is null or empty.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfNullOrWhitespace(System.String,System.String)">
+            <summary>
+            Throw an exception if the value is null or whitespace.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfZero(System.Int32,System.String,System.String)">
+            <summary>
+            Throw an exception if the value is zero.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="message">The message to use in the thrown exception.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfInvalidTimeout(System.Int32,System.String)">
+            <summary>
+            Throw an exception if the value is not considered a valid timeout.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfOutOfRange(System.Int32,System.String,System.Int32,System.Int32,System.String,System.String,System.String)">
+            <summary>
+            Throw an exception if the value is not within the given range.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+            <param name="min">The inclusive lower bound.</param>
+            <param name="max">The inclusive upper bound.</param>
+            <param name="minName">The name of the lower bound.</param>
+            <param name="maxName">The name of the upper bound.</param>
+            <param name="message">An optional custom message to use in the thrown exception.</param>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfOutOfRange(System.Double,System.String,System.Double,System.Double,System.String,System.String,System.String)">
+            <summary>
+            Throw an exception if the value is not within the given range.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+            <param name="min">The inclusive lower bound.</param>
+            <param name="max">The inclusive upper bound.</param>
+            <param name="minName">The name of the lower bound.</param>
+            <param name="maxName">The name of the upper bound.</param>
+            <param name="message">An optional custom message to use in the thrown exception.</param>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfNotOfType``1(System.Object,System.String)">
+            <summary>
+            Throw an exception if the value is not of the expected type.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+            <typeparam name="T">The type attempted to convert to.</typeparam>
+            <returns>The value casted to the specified type.</returns>
+        </member>
+        <member name="T:Microsoft.Extensions.DependencyInjection.OpenTelemetryServicesExtensions">
+            <summary>
+            Extension methods for setting up OpenTelemetry services in an <see
+            cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection" />.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Extensions.DependencyInjection.OpenTelemetryServicesExtensions.AddOpenTelemetryTracing(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Configure OpenTelemetry and register a <see cref="T:Microsoft.Extensions.Hosting.IHostedService"/>
+            to automatically start tracing services in the supplied <see
+            cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection" />.
+            </summary>
+            <remarks>
+            Notes:
+            <list type="bullet">
+            <item>
+            This is safe to be called multiple times. Only a single <see
+            cref="T:OpenTelemetry.Trace.TracerProvider"/> will be created for a given <see
+            cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/>.
+            </item>
+            <item>
+            This method should be called by application host code. Library
+            authors should call <see
+            cref="M:OpenTelemetry.Trace.OpenTelemetryDependencyInjectionTracingServiceCollectionExtensions.ConfigureOpenTelemetryTracerProvider(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{System.IServiceProvider,OpenTelemetry.Trace.TracerProviderBuilder})"/>
+            instead.
+            </item>
+            </list>
+            </remarks>
+            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/>.</param>
+            <returns>Supplied <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> for chaining
+            calls.</returns>
+        </member>
+        <member name="M:Microsoft.Extensions.DependencyInjection.OpenTelemetryServicesExtensions.AddOpenTelemetryTracing(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{OpenTelemetry.Trace.TracerProviderBuilder})">
+            <summary>
+            Configure OpenTelemetry and register a <see cref="T:Microsoft.Extensions.Hosting.IHostedService"/>
+            to automatically start tracing services in the supplied <see
+            cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection" />.
+            </summary>
+            <remarks><inheritdoc
+            cref="M:Microsoft.Extensions.DependencyInjection.OpenTelemetryServicesExtensions.AddOpenTelemetryTracing(Microsoft.Extensions.DependencyInjection.IServiceCollection)"
+            path="/remarks"/></remarks>
+            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/>.</param>
+            <param name="configure">Callback action to configure the <see
+            cref="T:OpenTelemetry.Trace.TracerProviderBuilder"/>.</param>
+            <returns>Supplied <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> for chaining
+            calls.</returns>
+        </member>
+        <member name="M:Microsoft.Extensions.DependencyInjection.OpenTelemetryServicesExtensions.AddOpenTelemetryMetrics(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Configure OpenTelemetry and register a <see cref="T:Microsoft.Extensions.Hosting.IHostedService"/>
+            to automatically start metric services in the supplied <see
+            cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection" />.
+            </summary>
+            <remarks>
+            Notes:
+            <list type="bullet">
+            <item>
+            This is safe to be called multiple times. Only a single <see
+            cref="T:OpenTelemetry.Metrics.MeterProvider"/> will be created for a given <see
+            cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/>.
+            </item>
+            <item>
+            This method should be called by application host code. Library
+            authors should call <see
+            cref="M:OpenTelemetry.Metrics.OpenTelemetryDependencyInjectionMetricsServiceCollectionExtensions.ConfigureOpenTelemetryMeterProvider(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{System.IServiceProvider,OpenTelemetry.Metrics.MeterProviderBuilder})"/>
+            instead.
+            </item>
+            </list>
+            </remarks>
+            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/>.</param>
+            <returns>Supplied <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> for chaining
+            calls.</returns>
+        </member>
+        <member name="M:Microsoft.Extensions.DependencyInjection.OpenTelemetryServicesExtensions.AddOpenTelemetryMetrics(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{OpenTelemetry.Metrics.MeterProviderBuilder})">
+            <summary>
+            Configure OpenTelemetry and register a <see cref="T:Microsoft.Extensions.Hosting.IHostedService"/>
+            to automatically start metric services in the supplied <see
+            cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection" />.
+            </summary>
+            <remarks><inheritdoc
+            cref="M:Microsoft.Extensions.DependencyInjection.OpenTelemetryServicesExtensions.AddOpenTelemetryMetrics(Microsoft.Extensions.DependencyInjection.IServiceCollection)"
+            path="/remarks"/></remarks>
+            <param name="services"><see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/>.</param>
+            <param name="configure">Callback action to configure the <see
+            cref="T:OpenTelemetry.Trace.TracerProviderBuilder"/>.</param>
+            <returns>Supplied <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> for chaining
+            calls.</returns>
+        </member>
+        <member name="T:System.Runtime.CompilerServices.CallerArgumentExpressionAttribute">
+            <summary>Allows capturing of the expressions passed to a method.</summary>
+        </member>
+        <member name="T:System.Diagnostics.CodeAnalysis.NotNullAttribute">
+            <summary>Specifies that an output is not <see langword="null"/> even if
+            the corresponding type allows it. Specifies that an input argument was
+            not <see langword="null"/> when the call returns.</summary>
+        </member>
+    </members>
+</doc>

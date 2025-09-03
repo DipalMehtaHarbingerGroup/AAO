@@ -1,0 +1,224 @@
+﻿@model AAO.Common.BCSCSelfAssessment.QuestionDetails
+@{
+    ViewBag.Title = "Index";
+}
+@{
+    Layout = null;
+}
+<script src="~/Scripts/jquery-ui.js"></script>
+<script src="~/Scripts/jquery.ui.touch-punch.js"></script>
+
+<div class="assessment-screen">
+    <div class="col-lg-12 xs-nopadding">
+        <div class="content-bg">
+            <div class="content-padding">
+
+
+                <!--Question div starts--->
+                <div id="dvQuestion">
+
+                    @if (Model.questionImage.Count == 0 && Convert.ToString(Model.questionText).ToLower() != "null")
+                    {
+                        <div for="questionText" id="labelquestionTextId">@Html.Raw(Model.questionText)</div>
+                    }
+                    else
+                    {
+                        if (Model.questionImage.Count > 0)
+                        {
+                            if (Model.questionText.ToString().ToLower() != "null")
+                            {
+                                <div for="questionText" id="labelquestionTextId">@Html.Raw(Model.questionText)</div>
+
+                            }
+                            if (Model.questionImage.Count > 0 && Model.questionImage.Count < 4)
+                            {
+                                <div class="col-lg-12 nopadding">
+
+                                    @foreach (var item in Model.questionImage)
+                                    {
+                                        <div class="col-sm-2 col-xs-6 nopadding mar10">
+                                            <a href="@Url.Content(item.ImagePath)" class="thumbnail" data-toggle="modal" data-target="#myModal" data-image="@Url.Content(item.ImagePath)">
+                                                <img src="@Url.Content(item.ImagePath)" id="@item.QuestionImageId" alt="Image" class="img-responsive img-center img11" />
+                                                <div class="zoom-icon-background text-right myDIV">
+                                                    <i class="glyphicon glyphicon-zoom-in text-right">
+                                                    </i>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            if (Model.questionImage.Count == 4)
+                            {
+                                <div class="col-lg-12 nopadding">
+
+                                    @foreach (var item in Model.questionImage)
+                                    {
+
+                                        <div class="col-sm-2 col-xs-6 nopadding mar10">
+                                            <a href="@Url.Content(item.ImagePath)" class="thumbnail" data-toggle="modal" data-target="#myModal" data-image="@Url.Content(item.ImagePath)">
+                                                <img src="@Url.Content(item.ImagePath)" id="@item.QuestionImageId" alt="Image" class="img-responsive img-center img11" />
+                                                <div class="zoom-icon-background text-right myDIV"><i class="glyphicon glyphicon-zoom-in text-right" data-image="@Url.Content(item.ImagePath)"></i></div>
+                                            </a>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        }
+                    }
+                    <div class="clearfix"></div>
+                </div>
+                <!--Question div ends!!!--->
+                <div class="clearfix"></div>
+                <!--Answer choice div--->
+                <div id="answerChoice" style="display:none">
+
+                    @foreach (var items in Model.choiceList)
+                    {
+
+                        if (items.ChoiceImage.Count == 0 && items.choiceText.ToString().ToLower() != "null")
+                        {
+
+                            <div class="radio radio ChoiceWrapper" id="radioBtn@(items.choiceId)">
+                                <div class="col-lg-10 col-md-10 col-sm-10 width100percent padright0">
+                                    <div id="showdivstatus@(items.choiceId)">
+                                        <input type="radio" class="ChoiceAnswerclass" name="ChoiceAnswer" value="@items.choiceId" />@items.choiceSequence<span>. </span>@Html.Raw(items.choiceText)
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 text-right nopadding">
+                                    <div id="answertext@(items.choiceId)" class="font12"></div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+
+                        }
+                        else
+                        {
+                            <div class="radio radio ChoiceWrapper" id="radioBtn@(items.choiceId)">
+                                <div class="col-lg-10 col-md-10 col-sm-10 width100percent padright0">
+                                    <div id="showdivstatus@(items.choiceId)">
+                                        <input type="radio" class="ChoiceAnswerclass" name="ChoiceAnswer" value="@items.choiceId" />@items.choiceSequence<span>. </span> @if (items.choiceText.ToString().ToLower() != "null")
+                                        {@Html.Raw(items.choiceText)}
+                                        <div class="col-lg-12 nopadding">
+                                            @foreach (var item in items.ChoiceImage)
+                                            {
+                                                <div class="col-sm-2 nopadding mar10">
+                                                    <a class="thumbnail" data-toggle="modal" data-target="#myModal" data-image="@Url.Content(item.ImagePath)">
+                                                        <img src="@Url.Content(@item.ImagePath)" alt="Image" id="@item.AnswerChoiceImageId" class="img-responsive img-center img11" />
+                                                        <div class="zoom-icon-background myDIV">
+                                                            <i class="glyphicon glyphicon-zoom-in text-right"></i>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 text-right nopadding">
+                                    <div id="answertext@(items.choiceId)" class="font12"></div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+
+                        }
+                    }
+                    
+
+                </div>
+                <!----End of answer choice div--->
+                <!---Hidden fields--->
+                <input type="hidden" name="currentQuestionId" id="currentQuestionId" value="@Model.questionId" />                  
+                    <input type="hidden" name="rightchoiceid" id="rightchoiceid" value="@Model.rightChoiceId" />                  
+                    <input type="hidden" name="userSelectedChoiceflag" id="userSelectedChoiceflag" value="" />
+                    <input type="hidden" name="Assnext" id="Assnext" value="@Model.nextId" />
+                    <input type="hidden" name="Assprev" id="Assprev" value="@Model.previousId" />
+                    <input type="hidden" name="AssExamId" id="AssExamId" value="@Model.examId" />
+                    <input type="hidden" name="AsscurrentQuestionId" id="AsscurrentQuestionId" value="@Model.questionId" />
+                    <input type="hidden" name="AssExamattemptId" id="AssExamattemptId" value="@Model.examAttemptId" />
+                    <input type="hidden" name="AssmarkedStatus" id="AssmarkedStatus" value="@Model.markCheck" />
+                    <input type="hidden" name="AssexamMode" id="AssexamMode" value="@Model.examMode" />
+
+                <!---Hidden fields ends-->
+                <div class="clearfix"></div>
+
+            </div>
+            <div class="col-lg-12 nopadding">
+                <hr>
+            </div>
+            <div class="clearfix"></div>
+            <!--Explanation Div starts--->
+            <div id="ExplainationDiv" style="display:none">
+
+                <div id="Contentcontainer" style="display:none">
+                        @Html.Partial("AdminQuestionContent", Model)
+                    </div>
+
+            </div>
+            <!--Explanation div end---->
+        </div>
+    </div>
+    <div class="clearfix"></div>
+</div>
+<!-----Image model--->
+<div id="myModal" class="modal draggable fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">×</span><span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="image-gallery-title"></h4>
+            </div>
+
+            <div class="modal-body">
+                <img class="img-responsive" style="margin:0 auto;" src="" alt="" id="showimg">
+            </div>
+        </div>
+    </div>
+</div>
+<!---End of Image Model---->
+
+
+<script>
+
+    var AssessmentQuestionViewModel = {
+        next : '@Html.Raw((int?)Model.nextId)',
+        prev : @Html.Raw((int?)Model.previousId),
+        examId :  '@Html.Raw((int?)Model.examId)',
+        currentQuestionId : @Html.Raw((int?)Model.questionId),
+        examAttemptId: @Html.Raw((int?)Model.examAttemptId),
+        markedStatus : (@Html.Raw((bool?)Model.markCheck).ToString().ToLower()),
+        examMode : (@Html.Raw((bool?)Model.examMode).ToString().ToLower()),
+        examAnswerToShow : (@Html.Raw((bool?)Model.examAnswerToShow).ToString().ToLower()),
+        examStatus: @Html.Raw((int?)Model.examStatus),
+        rightChoiceId: @Html.Raw((int?)Model.rightChoiceId),
+        choiceList: @(Html.Raw(Json.Encode(@Model.choiceList))),
+        examTimeType: (@Html.Raw((bool?)Model.examTimeType).ToString().ToLower()),
+        friendlyId: @Html.Raw((int?)Model.FriendlyId),
+        topicName: '@Html.Raw((string)Model.TopicName)',
+        examType: @Html.Raw((int?)Model.ExamType),
+    };
+    $(document).ready(function () {
+
+        $('.responsive-tabs').responsiveTabs({
+            accordionOn: ['xs', 'sm']
+        });
+
+        $('a[href^="http://"], a[href^="https://"]').click(function(e){
+            var decodedUri=decodeURI(this.href);
+            decodedUri= decodedUri.replace(/[^\x20-\x7E]/g, '');
+            $(this).attr("href", decodedUri);
+            $(this).attr('target','_blank');
+        });
+        // $('a[href^="http://"], a[href^="https://"]').not('a[href*=gusdecool]').attr('target', '_blank');
+
+        if(parseInt($("input[name='ChoiceAnswer']:checked").val())>0)
+        {
+            $("#nextID").removeClass("hidden");
+            $("#nextID").addClass("visible");
+        }
+    })
+</script>
+<script src="@Url.Content("~/Scripts/UserView/UserView.js")" type="text/javascript"></script>
+

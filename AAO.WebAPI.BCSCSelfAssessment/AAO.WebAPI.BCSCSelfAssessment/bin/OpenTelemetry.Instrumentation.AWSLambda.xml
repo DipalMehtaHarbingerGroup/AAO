@@ -1,0 +1,216 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>OpenTelemetry.Instrumentation.AWSLambda</name>
+    </assembly>
+    <members>
+        <member name="T:OpenTelemetry.Instrumentation.AWSLambda.AWSLambdaInstrumentationOptions">
+            <summary>
+            AWS lambda instrumentation options.
+            </summary>
+        </member>
+        <member name="P:OpenTelemetry.Instrumentation.AWSLambda.AWSLambdaInstrumentationOptions.DisableAwsXRayContextExtraction">
+            <summary>
+            Gets or sets a value indicating whether AWS X-Ray context extraction should be disabled.
+            </summary>
+        </member>
+        <member name="T:OpenTelemetry.Instrumentation.AWSLambda.AWSLambdaWrapper">
+            <summary>
+            Wrapper class for AWS Lambda handlers.
+            </summary>
+        </member>
+        <member name="P:OpenTelemetry.Instrumentation.AWSLambda.AWSLambdaWrapper.DisableAwsXRayContextExtraction">
+            <summary>
+            Gets or sets a value indicating whether AWS X-Ray propagation should be ignored. Default value is false.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Instrumentation.AWSLambda.AWSLambdaWrapper.Trace``2(OpenTelemetry.Trace.TracerProvider,System.Func{``0,Amazon.Lambda.Core.ILambdaContext,``1},``0,Amazon.Lambda.Core.ILambdaContext,System.Diagnostics.ActivityContext)">
+            <summary>
+            Tracing wrapper for Lambda handler.
+            </summary>
+            <typeparam name="TInput">Input.</typeparam>
+            <typeparam name="TResult">Output result.</typeparam>
+            <param name="tracerProvider">TracerProvider passed in.</param>
+            <param name="lambdaHandler">Lambda handler function passed in.</param>
+            <param name="input">Instance of input.</param>
+            <param name="context">Instance of lambda context.</param>
+            <param name="parentContext">
+            The optional parent context <see cref="T:System.Diagnostics.ActivityContext"/> is used for Activity object creation.
+            If no parent context provided, incoming request is used to extract one.
+            If parent is not extracted from incoming request then X-Ray propagation is used to extract one
+            unless X-Ray propagation is disabled in the configuration for this wrapper.
+            </param>
+            <returns>Instance of output result.</returns>
+        </member>
+        <member name="M:OpenTelemetry.Instrumentation.AWSLambda.AWSLambdaWrapper.Trace``1(OpenTelemetry.Trace.TracerProvider,System.Action{``0,Amazon.Lambda.Core.ILambdaContext},``0,Amazon.Lambda.Core.ILambdaContext,System.Diagnostics.ActivityContext)">
+            <summary>
+            Tracing wrapper for Lambda handler.
+            </summary>
+            <typeparam name="TInput">Input.</typeparam>
+            <param name="tracerProvider">TracerProvider passed in.</param>
+            <param name="lambdaHandler">Lambda handler function passed in.</param>
+            <param name="input">Instance of input.</param>
+            <param name="context">Instance of lambda context.</param>
+            <param name="parentContext">
+            The optional parent context <see cref="T:System.Diagnostics.ActivityContext"/> is used for Activity object creation.
+            If no parent context provided, incoming request is used to extract one.
+            If parent is not extracted from incoming request then X-Ray propagation is used to extract one
+            unless X-Ray propagation is disabled in the configuration for this wrapper.
+            </param>
+        </member>
+        <member name="M:OpenTelemetry.Instrumentation.AWSLambda.AWSLambdaWrapper.TraceAsync``1(OpenTelemetry.Trace.TracerProvider,System.Func{``0,Amazon.Lambda.Core.ILambdaContext,System.Threading.Tasks.Task},``0,Amazon.Lambda.Core.ILambdaContext,System.Diagnostics.ActivityContext)">
+            <summary>
+            Tracing wrapper for async Lambda handler.
+            </summary>
+            <typeparam name="TInput">Input.</typeparam>
+            <param name="tracerProvider">TracerProvider passed in.</param>
+            <param name="lambdaHandler">Lambda handler function passed in.</param>
+            <param name="input">Instance of input.</param>
+            <param name="context">Lambda context (optional, but strongly recommended).</param>
+            <param name="parentContext">
+            The optional parent context <see cref="T:System.Diagnostics.ActivityContext"/> is used for Activity object creation.
+            If no parent context provided, incoming request is used to extract one.
+            If parent is not extracted from incoming request then X-Ray propagation is used to extract one
+            unless X-Ray propagation is disabled in the configuration for this wrapper.
+            </param>
+            <returns>Task.</returns>
+        </member>
+        <member name="M:OpenTelemetry.Instrumentation.AWSLambda.AWSLambdaWrapper.TraceAsync``2(OpenTelemetry.Trace.TracerProvider,System.Func{``0,Amazon.Lambda.Core.ILambdaContext,System.Threading.Tasks.Task{``1}},``0,Amazon.Lambda.Core.ILambdaContext,System.Diagnostics.ActivityContext)">
+            <summary>
+            Tracing wrapper for async Lambda handler.
+            </summary>
+            <typeparam name="TInput">Input.</typeparam>
+            <typeparam name="TResult">Output result.</typeparam>
+            <param name="tracerProvider">TracerProvider passed in.</param>
+            <param name="lambdaHandler">Lambda handler function passed in.</param>
+            <param name="input">Instance of input.</param>
+            <param name="context">Instance of lambda context.</param>
+            <param name="parentContext">
+            The optional parent context <see cref="T:System.Diagnostics.ActivityContext"/> is used for Activity object creation.
+            If no parent context provided, incoming request is used to extract one.
+            If parent is not extracted from incoming request then X-Ray propagation is used to extract one
+            unless X-Ray propagation is disabled in the configuration for this wrapper.
+            </param>
+            <returns>Task of result.</returns>
+        </member>
+        <member name="M:OpenTelemetry.Instrumentation.AWSLambda.Implementation.AWSLambdaResourceDetector.Detect">
+            <summary>
+            Detect the resource attributes for AWS Lambda.
+            </summary>
+            <returns>List of resource attributes pairs.</returns>
+        </member>
+        <member name="T:OpenTelemetry.Instrumentation.AWSLambda.Implementation.AWSLambdaSemanticConventions">
+            <summary>
+            Semantic conventions for AWS Lambda.
+            </summary>
+        </member>
+        <member name="T:OpenTelemetry.Instrumentation.AWSLambda.Implementation.AWSLambdaUtils">
+            <summary>
+            Class for getting AWS Lambda related attributes.
+            </summary>
+        </member>
+        <member name="T:OpenTelemetry.Instrumentation.AWSLambda.TracerProviderBuilderExtensions">
+            <summary>
+            Extension class for TracerProviderBuilder.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Instrumentation.AWSLambda.TracerProviderBuilderExtensions.AddAWSLambdaConfigurations(OpenTelemetry.Trace.TracerProviderBuilder,System.Action{OpenTelemetry.Instrumentation.AWSLambda.AWSLambdaInstrumentationOptions})">
+            <summary>
+            Add AWS Lambda configurations.
+            </summary>
+            <param name="builder"><see cref="T:OpenTelemetry.Trace.TracerProviderBuilder"/> being configured.</param>
+            <param name="configure">AWS lambda instrumentation options.</param>
+            <returns>The instance of <see cref="T:OpenTelemetry.Trace.TracerProviderBuilder"/> to chain the calls.</returns>
+        </member>
+        <member name="T:OpenTelemetry.Internal.Guard">
+            <summary>
+            Methods for guarding against exception throwing values.
+            </summary>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfNull(System.Object,System.String)">
+            <summary>
+            Throw an exception if the value is null.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfNullOrEmpty(System.String,System.String)">
+            <summary>
+            Throw an exception if the value is null or empty.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfNullOrWhitespace(System.String,System.String)">
+            <summary>
+            Throw an exception if the value is null or whitespace.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfZero(System.Int32,System.String,System.String)">
+            <summary>
+            Throw an exception if the value is zero.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="message">The message to use in the thrown exception.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfInvalidTimeout(System.Int32,System.String)">
+            <summary>
+            Throw an exception if the value is not considered a valid timeout.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfOutOfRange(System.Int32,System.String,System.Int32,System.Int32,System.String,System.String,System.String)">
+            <summary>
+            Throw an exception if the value is not within the given range.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+            <param name="min">The inclusive lower bound.</param>
+            <param name="max">The inclusive upper bound.</param>
+            <param name="minName">The name of the lower bound.</param>
+            <param name="maxName">The name of the upper bound.</param>
+            <param name="message">An optional custom message to use in the thrown exception.</param>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfOutOfRange(System.Double,System.String,System.Double,System.Double,System.String,System.String,System.String)">
+            <summary>
+            Throw an exception if the value is not within the given range.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+            <param name="min">The inclusive lower bound.</param>
+            <param name="max">The inclusive upper bound.</param>
+            <param name="minName">The name of the lower bound.</param>
+            <param name="maxName">The name of the upper bound.</param>
+            <param name="message">An optional custom message to use in the thrown exception.</param>
+        </member>
+        <member name="M:OpenTelemetry.Internal.Guard.ThrowIfNotOfType``1(System.Object,System.String)">
+            <summary>
+            Throw an exception if the value is not of the expected type.
+            </summary>
+            <param name="value">The value to check.</param>
+            <param name="paramName">The parameter name to use in the thrown exception.</param>
+            <typeparam name="T">The type attempted to convert to.</typeparam>
+            <returns>The value casted to the specified type.</returns>
+        </member>
+        <member name="T:System.Runtime.CompilerServices.CallerArgumentExpressionAttribute">
+            <summary>
+            Allows capturing of the expressions passed to a method.
+            </summary>
+        </member>
+        <member name="M:System.Runtime.CompilerServices.CallerArgumentExpressionAttribute.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.Runtime.CompilerServices.CallerArgumentExpressionAttribute"/> class.
+            </summary>
+            <param name="parameterName">The name of the targeted parameter.</param>
+        </member>
+        <member name="P:System.Runtime.CompilerServices.CallerArgumentExpressionAttribute.ParameterName">
+            <summary>
+            Gets the target parameter name of the CallerArgumentExpression.
+            </summary>
+        </member>
+    </members>
+</doc>
