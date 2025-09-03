@@ -32,7 +32,7 @@
   </Exception>
   <Exception Keyword="CA0063" Kind="Engine" TreatAsWarning="True">
    <Type>Microsoft.FxCop.Sdk.FxCopException</Type>
-   <ExceptionMessage>* Failed to load rule set file 'D:\AAO.Apps.BCSCSelfAssessment_02Sep2025\AAO.WebAPI.BCSCSelfAssessment\AAO.SQLHelper.BCSCSelfAssessment\..\..\CodeAnalysis\AAO.CodeAnalysis.ruleset' or one of its dependent rule set files. </ExceptionMessage>
+   <ExceptionMessage>* Failed to load rule set file 'D:\AAO\AAO.WebAPI.BCSCSelfAssessment\AAO.SQLHelper.BCSCSelfAssessment\..\..\CodeAnalysis\AAO.CodeAnalysis.ruleset' or one of its dependent rule set files. </ExceptionMessage>
   </Exception>
  </Exceptions>
 </FxCopReport>
